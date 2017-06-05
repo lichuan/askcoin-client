@@ -1,0 +1,753 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7E792BD61EE52E550027C6F3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792BD51EE52E550027C6F3 /* main.m */; };
+		7E792BD91EE52E550027C6F3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792BD81EE52E550027C6F3 /* AppDelegate.m */; };
+		7E792BE11EE52E550027C6F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E792BE01EE52E550027C6F3 /* Assets.xcassets */; };
+		7E792BE41EE52E550027C6F3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7E792BE21EE52E550027C6F3 /* LaunchScreen.storyboard */; };
+		7E792BEF1EE52E550027C6F3 /* AskcoinTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792BEE1EE52E550027C6F3 /* AskcoinTests.m */; };
+		7E792BFA1EE52E560027C6F3 /* AskcoinUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792BF91EE52E560027C6F3 /* AskcoinUITests.m */; };
+		7E792C0A1EE532C20027C6F3 /* ASKRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792C091EE532C20027C6F3 /* ASKRootViewController.m */; };
+		7E792C111EE533910027C6F3 /* GBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792C101EE533910027C6F3 /* GBridgeManager.m */; };
+		B38A92E7B7F5707382D091E8 /* libPods-AskcoinTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B2FBAE0C50352289E2EC5DE /* libPods-AskcoinTests.a */; };
+		CE90F174080E42CB3D0E20EC /* libPods-Askcoin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922A5DC1E62165324358035F /* libPods-Askcoin.a */; };
+		ED46F51D445A82630C724FC1 /* libPods-AskcoinUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 943C0C35991AC54CCA1A727C /* libPods-AskcoinUITests.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7E792BEB1EE52E550027C6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E792BC91EE52E550027C6F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E792BD01EE52E550027C6F3;
+			remoteInfo = Askcoin;
+		};
+		7E792BF61EE52E560027C6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E792BC91EE52E550027C6F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7E792BD01EE52E550027C6F3;
+			remoteInfo = Askcoin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		486191F6053570B21A94A2B5 /* Pods-Askcoin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Askcoin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Askcoin/Pods-Askcoin.debug.xcconfig"; sourceTree = "<group>"; };
+		49259E0AE33AE79C66E8DFE6 /* Pods-AskcoinUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AskcoinUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AskcoinUITests/Pods-AskcoinUITests.release.xcconfig"; sourceTree = "<group>"; };
+		5B2FBAE0C50352289E2EC5DE /* libPods-AskcoinTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AskcoinTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E792BD11EE52E550027C6F3 /* Askcoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Askcoin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E792BD51EE52E550027C6F3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7E792BD71EE52E550027C6F3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7E792BD81EE52E550027C6F3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7E792BE01EE52E550027C6F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7E792BE31EE52E550027C6F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7E792BE51EE52E550027C6F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E792BEA1EE52E550027C6F3 /* AskcoinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AskcoinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E792BEE1EE52E550027C6F3 /* AskcoinTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AskcoinTests.m; sourceTree = "<group>"; };
+		7E792BF01EE52E550027C6F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E792BF51EE52E560027C6F3 /* AskcoinUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AskcoinUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E792BF91EE52E560027C6F3 /* AskcoinUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AskcoinUITests.m; sourceTree = "<group>"; };
+		7E792BFB1EE52E560027C6F3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7E792C081EE532C20027C6F3 /* ASKRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASKRootViewController.h; sourceTree = "<group>"; };
+		7E792C091EE532C20027C6F3 /* ASKRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASKRootViewController.m; sourceTree = "<group>"; };
+		7E792C0F1EE533910027C6F3 /* GBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBridgeManager.h; sourceTree = "<group>"; };
+		7E792C101EE533910027C6F3 /* GBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBridgeManager.m; sourceTree = "<group>"; };
+		91C15B4B4194D68703A0FCEF /* Pods-AskcoinUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AskcoinUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AskcoinUITests/Pods-AskcoinUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		922A5DC1E62165324358035F /* libPods-Askcoin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Askcoin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		943C0C35991AC54CCA1A727C /* libPods-AskcoinUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AskcoinUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5C457B6C1A4E2B0B4A5047E /* Pods-AskcoinTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AskcoinTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AskcoinTests/Pods-AskcoinTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E90D1C127ACA4679819341ED /* Pods-AskcoinTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AskcoinTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AskcoinTests/Pods-AskcoinTests.release.xcconfig"; sourceTree = "<group>"; };
+		E962EB31D8AE3E82A5D36A95 /* Pods-Askcoin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Askcoin.release.xcconfig"; path = "Pods/Target Support Files/Pods-Askcoin/Pods-Askcoin.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7E792BCE1EE52E550027C6F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CE90F174080E42CB3D0E20EC /* libPods-Askcoin.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BE71EE52E550027C6F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B38A92E7B7F5707382D091E8 /* libPods-AskcoinTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BF21EE52E550027C6F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ED46F51D445A82630C724FC1 /* libPods-AskcoinUITests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7E792BC81EE52E550027C6F3 = {
+			isa = PBXGroup;
+			children = (
+				7E792C071EE5325D0027C6F3 /* Source */,
+				7E792BD31EE52E550027C6F3 /* Askcoin */,
+				7E792BED1EE52E550027C6F3 /* AskcoinTests */,
+				7E792BF81EE52E560027C6F3 /* AskcoinUITests */,
+				7E792BD21EE52E550027C6F3 /* Products */,
+				B7947D916AA6A9CB7A9E6C9B /* Pods */,
+				88F8D9F68DBFC03CE32943A7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		7E792BD21EE52E550027C6F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E792BD11EE52E550027C6F3 /* Askcoin.app */,
+				7E792BEA1EE52E550027C6F3 /* AskcoinTests.xctest */,
+				7E792BF51EE52E560027C6F3 /* AskcoinUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7E792BD31EE52E550027C6F3 /* Askcoin */ = {
+			isa = PBXGroup;
+			children = (
+				7E792BD71EE52E550027C6F3 /* AppDelegate.h */,
+				7E792BD81EE52E550027C6F3 /* AppDelegate.m */,
+				7E792BE01EE52E550027C6F3 /* Assets.xcassets */,
+				7E792BE21EE52E550027C6F3 /* LaunchScreen.storyboard */,
+				7E792BE51EE52E550027C6F3 /* Info.plist */,
+				7E792BD41EE52E550027C6F3 /* Supporting Files */,
+			);
+			path = Askcoin;
+			sourceTree = "<group>";
+		};
+		7E792BD41EE52E550027C6F3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7E792BD51EE52E550027C6F3 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7E792BED1EE52E550027C6F3 /* AskcoinTests */ = {
+			isa = PBXGroup;
+			children = (
+				7E792BEE1EE52E550027C6F3 /* AskcoinTests.m */,
+				7E792BF01EE52E550027C6F3 /* Info.plist */,
+			);
+			path = AskcoinTests;
+			sourceTree = "<group>";
+		};
+		7E792BF81EE52E560027C6F3 /* AskcoinUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7E792BF91EE52E560027C6F3 /* AskcoinUITests.m */,
+				7E792BFB1EE52E560027C6F3 /* Info.plist */,
+			);
+			path = AskcoinUITests;
+			sourceTree = "<group>";
+		};
+		7E792C071EE5325D0027C6F3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				7E792C0F1EE533910027C6F3 /* GBridgeManager.h */,
+				7E792C101EE533910027C6F3 /* GBridgeManager.m */,
+				7E792C081EE532C20027C6F3 /* ASKRootViewController.h */,
+				7E792C091EE532C20027C6F3 /* ASKRootViewController.m */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		88F8D9F68DBFC03CE32943A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				922A5DC1E62165324358035F /* libPods-Askcoin.a */,
+				5B2FBAE0C50352289E2EC5DE /* libPods-AskcoinTests.a */,
+				943C0C35991AC54CCA1A727C /* libPods-AskcoinUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B7947D916AA6A9CB7A9E6C9B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				486191F6053570B21A94A2B5 /* Pods-Askcoin.debug.xcconfig */,
+				E962EB31D8AE3E82A5D36A95 /* Pods-Askcoin.release.xcconfig */,
+				D5C457B6C1A4E2B0B4A5047E /* Pods-AskcoinTests.debug.xcconfig */,
+				E90D1C127ACA4679819341ED /* Pods-AskcoinTests.release.xcconfig */,
+				91C15B4B4194D68703A0FCEF /* Pods-AskcoinUITests.debug.xcconfig */,
+				49259E0AE33AE79C66E8DFE6 /* Pods-AskcoinUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7E792BD01EE52E550027C6F3 /* Askcoin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E792BFE1EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "Askcoin" */;
+			buildPhases = (
+				A912D3D7C2EA7B4315C0C74B /* [CP] Check Pods Manifest.lock */,
+				7E792BCD1EE52E550027C6F3 /* Sources */,
+				7E792BCE1EE52E550027C6F3 /* Frameworks */,
+				7E792BCF1EE52E550027C6F3 /* Resources */,
+				FB058D7C0AE954DF27E4C41E /* [CP] Embed Pods Frameworks */,
+				7FD6F0C8ADF4624D805C654D /* [CP] Copy Pods Resources */,
+				7E792C121EE5379F0027C6F3 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Askcoin;
+			productName = Askcoin;
+			productReference = 7E792BD11EE52E550027C6F3 /* Askcoin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7E792BE91EE52E550027C6F3 /* AskcoinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E792C011EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "AskcoinTests" */;
+			buildPhases = (
+				7D10875689E437A9ACCF4FC1 /* [CP] Check Pods Manifest.lock */,
+				7E792BE61EE52E550027C6F3 /* Sources */,
+				7E792BE71EE52E550027C6F3 /* Frameworks */,
+				7E792BE81EE52E550027C6F3 /* Resources */,
+				425005BDF77897CA14E6534A /* [CP] Embed Pods Frameworks */,
+				0ED08BDED52969FAE9EB6C73 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7E792BEC1EE52E550027C6F3 /* PBXTargetDependency */,
+			);
+			name = AskcoinTests;
+			productName = AskcoinTests;
+			productReference = 7E792BEA1EE52E550027C6F3 /* AskcoinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7E792BF41EE52E550027C6F3 /* AskcoinUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E792C041EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "AskcoinUITests" */;
+			buildPhases = (
+				48E97BA1A721C8AFCD5C603E /* [CP] Check Pods Manifest.lock */,
+				7E792BF11EE52E550027C6F3 /* Sources */,
+				7E792BF21EE52E550027C6F3 /* Frameworks */,
+				7E792BF31EE52E550027C6F3 /* Resources */,
+				148EE62D0ABA6F3B88319DC5 /* [CP] Embed Pods Frameworks */,
+				D1AFAB3F5D85BAE1408DF60B /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7E792BF71EE52E560027C6F3 /* PBXTargetDependency */,
+			);
+			name = AskcoinUITests;
+			productName = AskcoinUITests;
+			productReference = 7E792BF51EE52E560027C6F3 /* AskcoinUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7E792BC91EE52E550027C6F3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "朱国清";
+				TargetAttributes = {
+					7E792BD01EE52E550027C6F3 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 732LZHYS9C;
+						ProvisioningStyle = Automatic;
+					};
+					7E792BE91EE52E550027C6F3 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 732LZHYS9C;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7E792BD01EE52E550027C6F3;
+					};
+					7E792BF41EE52E550027C6F3 = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = 732LZHYS9C;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7E792BD01EE52E550027C6F3;
+					};
+				};
+			};
+			buildConfigurationList = 7E792BCC1EE52E550027C6F3 /* Build configuration list for PBXProject "Askcoin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7E792BC81EE52E550027C6F3;
+			productRefGroup = 7E792BD21EE52E550027C6F3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7E792BD01EE52E550027C6F3 /* Askcoin */,
+				7E792BE91EE52E550027C6F3 /* AskcoinTests */,
+				7E792BF41EE52E550027C6F3 /* AskcoinUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7E792BCF1EE52E550027C6F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E792BE41EE52E550027C6F3 /* LaunchScreen.storyboard in Resources */,
+				7E792BE11EE52E550027C6F3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BE81EE52E550027C6F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BF31EE52E550027C6F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0ED08BDED52969FAE9EB6C73 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AskcoinTests/Pods-AskcoinTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		148EE62D0ABA6F3B88319DC5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AskcoinUITests/Pods-AskcoinUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		425005BDF77897CA14E6534A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AskcoinTests/Pods-AskcoinTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		48E97BA1A721C8AFCD5C603E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7D10875689E437A9ACCF4FC1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7E792C121EE5379F0027C6F3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export NODE_BINARY=node\n./react-native-xcode.sh";
+		};
+		7FD6F0C8ADF4624D805C654D /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Askcoin/Pods-Askcoin-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A912D3D7C2EA7B4315C0C74B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D1AFAB3F5D85BAE1408DF60B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AskcoinUITests/Pods-AskcoinUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FB058D7C0AE954DF27E4C41E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Askcoin/Pods-Askcoin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7E792BCD1EE52E550027C6F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E792C0A1EE532C20027C6F3 /* ASKRootViewController.m in Sources */,
+				7E792BD91EE52E550027C6F3 /* AppDelegate.m in Sources */,
+				7E792C111EE533910027C6F3 /* GBridgeManager.m in Sources */,
+				7E792BD61EE52E550027C6F3 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BE61EE52E550027C6F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E792BEF1EE52E550027C6F3 /* AskcoinTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E792BF11EE52E550027C6F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E792BFA1EE52E560027C6F3 /* AskcoinUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7E792BEC1EE52E550027C6F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7E792BD01EE52E550027C6F3 /* Askcoin */;
+			targetProxy = 7E792BEB1EE52E550027C6F3 /* PBXContainerItemProxy */;
+		};
+		7E792BF71EE52E560027C6F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7E792BD01EE52E550027C6F3 /* Askcoin */;
+			targetProxy = 7E792BF61EE52E560027C6F3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		7E792BE21EE52E550027C6F3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7E792BE31EE52E550027C6F3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7E792BFC1EE52E560027C6F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		7E792BFD1EE52E560027C6F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7E792BFF1EE52E560027C6F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 486191F6053570B21A94A2B5 /* Pods-Askcoin.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = Askcoin/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.Askcoin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7E792C001EE52E560027C6F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E962EB31D8AE3E82A5D36A95 /* Pods-Askcoin.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = Askcoin/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.Askcoin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		7E792C021EE52E560027C6F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D5C457B6C1A4E2B0B4A5047E /* Pods-AskcoinTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = AskcoinTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.AskcoinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Askcoin.app/Askcoin";
+			};
+			name = Debug;
+		};
+		7E792C031EE52E560027C6F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E90D1C127ACA4679819341ED /* Pods-AskcoinTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = AskcoinTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.AskcoinTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Askcoin.app/Askcoin";
+			};
+			name = Release;
+		};
+		7E792C051EE52E560027C6F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 91C15B4B4194D68703A0FCEF /* Pods-AskcoinUITests.debug.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = AskcoinUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.AskcoinUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Askcoin;
+			};
+			name = Debug;
+		};
+		7E792C061EE52E560027C6F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 49259E0AE33AE79C66E8DFE6 /* Pods-AskcoinUITests.release.xcconfig */;
+			buildSettings = {
+				DEVELOPMENT_TEAM = 732LZHYS9C;
+				INFOPLIST_FILE = AskcoinUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.guoqing.AskcoinUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Askcoin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7E792BCC1EE52E550027C6F3 /* Build configuration list for PBXProject "Askcoin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E792BFC1EE52E560027C6F3 /* Debug */,
+				7E792BFD1EE52E560027C6F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E792BFE1EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "Askcoin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E792BFF1EE52E560027C6F3 /* Debug */,
+				7E792C001EE52E560027C6F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E792C011EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "AskcoinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E792C021EE52E560027C6F3 /* Debug */,
+				7E792C031EE52E560027C6F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7E792C041EE52E560027C6F3 /* Build configuration list for PBXNativeTarget "AskcoinUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E792C051EE52E560027C6F3 /* Debug */,
+				7E792C061EE52E560027C6F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7E792BC91EE52E550027C6F3 /* Project object */;
+}
