@@ -3,47 +3,42 @@
  */
 import React, {Component} from 'react';
 import {
-    AppRegistry,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
+  AppRegistry,
+  StyleSheet,
+  View,
+  Navigator,
 } from 'react-native';
-export default class Askcoin extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                    welcome
-                </Text>
-                <Text style={styles.instructions}>
-                    To get started, edit index.ios.js
-                </Text>
-                <Text style={styles.instructions}>
-                    Press Cmd+R to reload,{'\n'}
-                    Cmd+D or shake for dev menu
-                </Text>
-            </View>
-        );
+import Screens from './Askcoin/Screen'
+
+var warning = require('fbjs/lib/warning');
+
+class Askcoin extends Component {
+  initialRoute(route, routeStack){
+    return {
+      screen:Screens.Launch.routeKey
+      // screen:Screens.Main.routeKey
     }
+  };
+  renderScene(route, navigator){
+    let routeKey = route.screen;
+    if (routeKey && Screens[routeKey] && Screens[routeKey].rootComponent){
+      let Screen = Screens[routeKey].rootComponent;
+      return <Screen navigator={navigator} screens={Screens}/>
+    }else{
+      warning(false,'Not found the screen :'+routeKey);
+    }
+  }
+  render() {
+    return (
+      <Navigator
+        initialRoute={this.initialRoute()}
+        renderScene={this.renderScene.bind(this)}
+      />
+    );
+  }
 }
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-    },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-    },
+
 });
 
 AppRegistry.registerComponent('Askcoin', () => Askcoin);

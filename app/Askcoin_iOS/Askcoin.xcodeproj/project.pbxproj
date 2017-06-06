@@ -15,6 +15,7 @@
 		7E792BFA1EE52E560027C6F3 /* AskcoinUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792BF91EE52E560027C6F3 /* AskcoinUITests.m */; };
 		7E792C0A1EE532C20027C6F3 /* ASKRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792C091EE532C20027C6F3 /* ASKRootViewController.m */; };
 		7E792C111EE533910027C6F3 /* GBridgeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E792C101EE533910027C6F3 /* GBridgeManager.m */; };
+		7E792C241EE6587B0027C6F3 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E792C1E1EE658310027C6F3 /* libRCTAnimation.a */; };
 		B38A92E7B7F5707382D091E8 /* libPods-AskcoinTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B2FBAE0C50352289E2EC5DE /* libPods-AskcoinTests.a */; };
 		CE90F174080E42CB3D0E20EC /* libPods-Askcoin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 922A5DC1E62165324358035F /* libPods-Askcoin.a */; };
 		ED46F51D445A82630C724FC1 /* libPods-AskcoinUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 943C0C35991AC54CCA1A727C /* libPods-AskcoinUITests.a */; };
@@ -34,6 +35,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 7E792BD01EE52E550027C6F3;
 			remoteInfo = Askcoin;
+		};
+		7E792C1D1EE658310027C6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTAnimation;
+		};
+		7E792C1F1EE658310027C6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
+			remoteInfo = "RCTAnimation-tvOS";
+		};
+		7E792C211EE658600027C6F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 58B511DA1A9E6C8500147676;
+			remoteInfo = RCTAnimation;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -58,6 +80,7 @@
 		7E792C091EE532C20027C6F3 /* ASKRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASKRootViewController.m; sourceTree = "<group>"; };
 		7E792C0F1EE533910027C6F3 /* GBridgeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBridgeManager.h; sourceTree = "<group>"; };
 		7E792C101EE533910027C6F3 /* GBridgeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBridgeManager.m; sourceTree = "<group>"; };
+		7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../react_native/node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		91C15B4B4194D68703A0FCEF /* Pods-AskcoinUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AskcoinUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AskcoinUITests/Pods-AskcoinUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		922A5DC1E62165324358035F /* libPods-Askcoin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Askcoin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		943C0C35991AC54CCA1A727C /* libPods-AskcoinUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AskcoinUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E792C241EE6587B0027C6F3 /* libRCTAnimation.a in Frameworks */,
 				CE90F174080E42CB3D0E20EC /* libPods-Askcoin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,6 +121,7 @@
 		7E792BC81EE52E550027C6F3 = {
 			isa = PBXGroup;
 			children = (
+				7E792C171EE657D40027C6F3 /* Projects */,
 				7E792C071EE5325D0027C6F3 /* Source */,
 				7E792BD31EE52E550027C6F3 /* Askcoin */,
 				7E792BED1EE52E550027C6F3 /* AskcoinTests */,
@@ -167,6 +192,23 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
+		7E792C171EE657D40027C6F3 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		7E792C191EE658310027C6F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7E792C1E1EE658310027C6F3 /* libRCTAnimation.a */,
+				7E792C201EE658310027C6F3 /* libRCTAnimation-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		88F8D9F68DBFC03CE32943A7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,6 +250,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7E792C221EE658600027C6F3 /* PBXTargetDependency */,
 			);
 			name = Askcoin;
 			productName = Askcoin;
@@ -295,6 +338,12 @@
 			mainGroup = 7E792BC81EE52E550027C6F3;
 			productRefGroup = 7E792BD21EE52E550027C6F3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 7E792C191EE658310027C6F3 /* Products */;
+					ProjectRef = 7E792C181EE658310027C6F3 /* RCTAnimation.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				7E792BD01EE52E550027C6F3 /* Askcoin */,
@@ -303,6 +352,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		7E792C1E1EE658310027C6F3 /* libRCTAnimation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTAnimation.a;
+			remoteRef = 7E792C1D1EE658310027C6F3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7E792C201EE658310027C6F3 /* libRCTAnimation-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRCTAnimation-tvOS.a";
+			remoteRef = 7E792C1F1EE658310027C6F3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		7E792BCF1EE52E550027C6F3 /* Resources */ = {
@@ -521,6 +587,11 @@
 			isa = PBXTargetDependency;
 			target = 7E792BD01EE52E550027C6F3 /* Askcoin */;
 			targetProxy = 7E792BF61EE52E560027C6F3 /* PBXContainerItemProxy */;
+		};
+		7E792C221EE658600027C6F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RCTAnimation;
+			targetProxy = 7E792C211EE658600027C6F3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
