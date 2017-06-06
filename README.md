@@ -1,4 +1,10 @@
 # 运行方法
+## 依赖环境
+```
+ node 7.6以上，安装方法：http://www.cnblogs.com/shuigu/p/6189226.html
+ pod 1.0以上，安装方法：http://www.cnblogs.com/shuigu/p/6217391.html
+
+```
 ## Androd:
 ```
 #要求安装有 node 7.6以上
