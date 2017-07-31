@@ -20,18 +20,18 @@ $npm install
 # 连接设备，可以使用android模拟器，也可以使用真实设备，可以根据自己的情况来判断
 接下来，可以有2种方式来启动app
 ##
-方法一(使用androidstudioIDE运行)：
-# 启动node服务器
-$npm start
-#使用IDE打开
-用android studio打开askcoin/AskProject/android/
-#启动
-菜单（Run）-run
+	方法一(使用androidstudioIDE运行)：
+	# 启动node服务器
+	$npm start
+	#使用IDE打开
+	$用android studio打开askcoin/AskProject/android/
+	#启动
+	$菜单（Run）-run
 ###
 ###
-方法二(直接使用命令):
-##启动
-react-native run-android
+	方法二(直接使用命令):
+	##启动
+	$react-native run-android
 ```
 
 ##IOS:
