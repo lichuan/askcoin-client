@@ -8,42 +8,20 @@ import LogoView from "../ui/loginLogoview.js";
 import IPSelectView from "../ui/ipaddressspinnerview.js";
 //字体
 import {fontstyles} from "../../../style/appstyle.js";
-//类型
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    // alignItems: "center",
-    // justifyContent:"center",
-  },
-  logo: {
-    flex: 3,
-    alignItems: "center",
-    justifyContent:"center",
-  },
-  serverIp: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent:"center",
-  },
-  wallet: {
-    flex: 3,
-    alignItems: "center",
-    justifyContent:"center",
-  },
-  selectBtn: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#D1EEEE"
-  },
-  bk: {
-    borderColor: "red",
-    borderWidth: 1
-  }
-});
-
+//适配
+import {devDpi, devHeight, devWidth, getAdapterSize} from "../../../style/dimens.js";
+//颜色
+import {borderBgColor, btnBgColor} from "../../../style/color.js";
 export default class LoadingServeLayout extends Component {
   constructor(props) {
     super(props);
+    this.initProps();
+  }
+  static defaultProps = {
+    onEnterCommunicationClick:()=>{},
+  }
+  initProps(){
+      this.onEnterCommunicationClick = this.props.onEnterCommunicationClick;
   }
   render() {
     var mView = (
@@ -51,16 +29,58 @@ export default class LoadingServeLayout extends Component {
         <View style={[styles.logo, styles.bk]}>
           <LogoView></LogoView>
         </View>
-        <View style={[styles.serverIp, styles.bk]}>
-            <IPSelectView></IPSelectView>
+        <View style={[styles.partTwo]}>
+          <View style={[styles.serverIp, styles.bk]}>
+              <IPSelectView></IPSelectView>
+          </View>
+          <View style={[styles.wallet, styles.bk]}>
+            <TouchableOpacity style={[styles.selectBtn]} onPress={this.onEnterCommunicationClick}>
+              <Text style={[fontstyles.mainTextSize]}>{"进入问答社区"}</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={[styles.wallet, styles.bk]}>
-          <TouchableOpacity style={[styles.selectBtn]}>
-            <Text style={[fontstyles.mainTextSize]}>{"进入问答社区"}</Text>
-          </TouchableOpacity>
-        </View>
+
       </View>
     );
     return mView;
   }
+
+
 }
+
+//类型
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+  logo: {
+    flex: 3,
+    alignItems: "center",
+    justifyContent:"center",
+  },
+  partTwo:{
+    flex: 6,
+  },
+  serverIp: {
+    flex: 2,
+    alignItems: "center",
+    justifyContent:"center",
+  },
+  wallet: {
+    flex: 5,
+    flexDirection:"row",
+    alignItems: "center",
+    justifyContent:"space-around",
+  },
+  selectBtn: {
+    width:devWidth/2,
+    height:devHeight/16,
+    backgroundColor: btnBgColor,
+    alignItems: "center",
+    justifyContent:"space-around",
+  },
+  bk: {
+    borderColor: "red",
+    borderWidth: 0,
+  }
+});

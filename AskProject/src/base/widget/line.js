@@ -1,3 +1,5 @@
+
+
 import React,{ Component } from "react";
 
 import {
@@ -6,17 +8,22 @@ import {
   StyleSheet,
 } from "react-native";
 
-const styles = StyleSheet.create({
-
-});
-export default class LoadingServerActivity extends Component{
+//灰色line
+export  class LineGreyView extends Component{
   constructor(props){
     super(props);
   }
   render(){
     var mView = (
-      <View></View>
+      <View style={[styles.lineGrey]}></View>
     );
     return mView;
   }
 }
+
+const styles = StyleSheet.create({
+  lineGrey:{
+    borderWidth:0.6,
+    borderColor:"#ccc",
+  }
+});

@@ -11,5 +11,6 @@ import {
 } from 'react-native';
 
 import LanunchApp from "./src/main/activity/LaunchApp.js"
-
+// import Test from "./src/module/login/layout/activity_register.js"
+// import Test from "./src/test/progress_spinkit.js"
 AppRegistry.registerComponent('AskProject', () => LanunchApp);
