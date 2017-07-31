@@ -1,0 +1,25 @@
+# OSX
+#
+.DS_Store
+
+# Xcode
+
+
+# Android/IntelliJ
+#
+AskProject/android/build/
+AskProject/android/.idea
+AskProject/android/.gradle
+AskProject/android/local.properties
+AskProject/android/*.iml
+
+
+# node.js
+#
+AskProject/node_modules/
+npm-debug.log
+yarn-error.log
+
+
+
+
