@@ -8,24 +8,26 @@ export const devDpi = PixelRatio.get();
 
 //以尺寸2为目标
  getAdapterSize = (size) => {
-  if (devDpi == 1) {
-    let n = size / 2;
-    return n;
-  } else if (devDpi == 1.5) {
-    let m = size * 0.5;
-    let n = size / 2;
-    return m + n;
-  } else if (devDpi == 2) {
-    return size;
-  } else if (devDpi == 3) {
-    let n = size / 2;
-    return size + n;
-  } else if (devDpi == 3.5) {
-    let m = size * 0.5;
-    let n = size / 2;
-    return size + m + n;
-  } else {
-    return size;
-  }
+  // if (devDpi == 1) {
+  //   let n = size / 2;
+  //   return n;
+  // } else if (devDpi == 1.5) {
+  //   let m = size * 0.5;
+  //   let n = size / 2;
+  //   return m + n;
+  // } else if (devDpi == 2) {
+  //   return size;
+  // } else if (devDpi == 3) {
+  //   let n = size / 2;
+  //   return size + n;
+  // } else if (devDpi == 3.5) {
+  //   let m = size * 0.5;
+  //   let n = size / 2;
+  //   return size + m + n;
+  // } else {
+    let temp = devDpi/2;
+    let tempSize = temp*size;
+    return tempSize;
+  // }
 }
 export {getAdapterSize};
