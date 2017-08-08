@@ -20,6 +20,9 @@ const selectWalletText = "选择钱包文件";
 const startResumeText = "开始恢复";
 //恢复布局
 export default class ResumeFromBackupLayout extends Component {
+  static defaultProps = {
+    onClick:()=>{},
+  }
   render() {
     var mView = (
       <ScrollView style={[styles.scroll]}>
@@ -44,7 +47,7 @@ export default class ResumeFromBackupLayout extends Component {
               </View>
             </View>
             <View style={[styles.btnRoot, styles.bk]}>
-              <ButtonView text={startResumeText}></ButtonView>
+              <ButtonView text={startResumeText} onClick={this.onResumeWallet}></ButtonView>
             </View>
           </View>
         </View>
@@ -52,6 +55,11 @@ export default class ResumeFromBackupLayout extends Component {
     );
     return mView;
   }
+
+  onResumeWallet=()=>{
+    this.props.onClick(); 
+  }
+
 }
 
 const styles = StyleSheet.create({

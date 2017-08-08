@@ -49,15 +49,16 @@ export default class BackupActivity extends Component {
   }
   //备份按钮
   onBackUpBtnClick = () => {
-    this.setDialogVisible(true);
+    this.navigate("Home");
+    // this.setDialogVisible(true);
   }
-  //dialog,取消按钮
-  ondialogCancleClick=()=>{
-    this.setDialogVisible(false);
-  }
-  ondialogSureClick=()=>{
-    this.setDialogVisible(false);
-  }
+  // //dialog,取消按钮
+  // ondialogCancleClick=()=>{
+  //   this.setDialogVisible(false);
+  // }
+  // ondialogSureClick=()=>{
+  //   this.setDialogVisible(false);
+  // }
 }
 
 const styles = StyleSheet.create({

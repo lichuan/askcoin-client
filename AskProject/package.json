@@ -12,6 +12,7 @@
     "react-native-menu": "^0.21.0",
     "react-native-root-toast": "^1.1.2",
     "react-native-spinkit": "^1.0.3",
+    "react-native-vector-icons": "^4.3.0",
     "react-navigation": "^1.0.0-beta.11"
   },
   "devDependencies": {

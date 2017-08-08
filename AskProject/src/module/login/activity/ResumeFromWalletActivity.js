@@ -31,7 +31,7 @@ export default class ResumeWalletActivity extends Component {
   render() {
     var mView = (
       <View style={[styles.root]}>
-        <ResumeFromBackupLayout></ResumeFromBackupLayout>
+        <ResumeFromBackupLayout onClick={this.onResumeWallet}></ResumeFromBackupLayout>
       </View>
     );
     return mView;
@@ -41,13 +41,15 @@ export default class ResumeWalletActivity extends Component {
   }
   componentDidUnMount() {
     BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
-    this._timer && clearTimeout(this._timer);
   }
   //返回键
   onBackPress = () => {
     // console.log("按back键");
     this.goBack();
     return true;
+  }
+  onResumeWallet=()=>{
+    this.navigate("Home");
   }
 }
 

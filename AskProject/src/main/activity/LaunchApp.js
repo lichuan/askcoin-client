@@ -13,8 +13,10 @@ import loadingseverActivity from "../../module/login/activity/loadingseveractivi
 import RegisterActivity from "../../module/login/activity/registeractivity.js";
 //备份界面
 import BackupActivity from "../../module/login/activity/BackupActivity.js";
+//恢复
 import ResumeWalletActivity from "../../module/login/activity/ResumeFromWalletActivity.js";
-
+//主界面
+import MainActivity from "./MainActivity.js";
 
 //
 var LaunchApp = StackNavigator({
@@ -37,6 +39,13 @@ var LaunchApp = StackNavigator({
   //恢复备份界面，从钱包
   ResumeFromWallet:{
     screen:ResumeWalletActivity
+  },
+  //主界面
+  Home:{
+    screen:MainActivity,
+    navigationOptions:{
+        header: null,
+    }
   }
 });
 
