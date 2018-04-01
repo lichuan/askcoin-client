@@ -18,7 +18,7 @@ export default class NavButton extends Component{
         if(this.props.data.type == 'text'){
             return(
                 <TouchableOpacity
-                  style={{height: 44,justifyContent: 'center',alignItems: 'center',paddingHorizontal:10}}
+                  style={[{height: 44,justifyContent: 'center',alignItems: 'center',paddingHorizontal:15},this.props.btnStyle]}
                   onPress={this.props.data.onPress}>
                   <Text style={[{fontSize: FONTSIZE.large,color: COLOR.primaryTextColor},
                   this.props.data.style]}>
@@ -30,7 +30,7 @@ export default class NavButton extends Component{
             return(
                 <TouchableOpacity
                   onPress={this.props.data.onPress}
-                  style={{width:44,height:44,justifyContent: 'center',alignItems:'center'}}>
+                  style={[{paddingHorizontal:15,height:44,justifyContent: 'center',alignItems:'center'},this.props.btnStyle]}>
                   <Image
                     source={this.props.data.uri}
                     style={[{width: 9,height:15,resizeMode:'contain'},this.props.data.style]}/>
@@ -39,7 +39,7 @@ export default class NavButton extends Component{
         } if(this.props.data.type == 'icon'){
             return(
                 <TouchableOpacity
-                  style={{height: 44,width: 44,justifyContent: 'center',alignItems: 'center'}}
+                  style={[{height: 44,paddingHorizontal:15,justifyContent: 'center',alignItems: 'center'},this.props.btnStyle]}
                   onPress={this.props.data.onPress}>
                   <Icon
                     name={this.props.data.name ? this.props.data.name : 'arrow-back' }

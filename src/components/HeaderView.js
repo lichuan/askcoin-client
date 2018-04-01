@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 	container: {
 		width: ScreenWidth,
 		height: 44,
-		backgroundColor: COLOR.normalColor,
 		paddingTop: Platform.OS === 'ios' ? IphoneTop : 0,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
 		height: 44,
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 10,
+		paddingLeft: 15,
 	},
 	right: {
 		bottom: 0,
@@ -54,13 +53,13 @@ const styles = StyleSheet.create({
 		height: 44,
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingRight: 10,
+		paddingRight: 15,
 	},
 	title: {
 	},
 	text: {
-        fontSize:FONTSIZE.primary,
-        color:COLOR.primaryTextColor,
+    fontSize:FONTSIZE.primary,
+    color:COLOR.primaryTextColor,
 	},
 	shadow: {
 		borderBottomWidth: 1,
@@ -75,13 +74,14 @@ export default class HeaderView extends Component {
 			leftItems,
 			rightItems,
 			headerTitle,
-			showShadow
+			showShadow,
+      headerStyle
 		} = this.props;
 
 		let headerViewStyle = [styles.container,showShadow?styles.shadow:{}];
 
 		return (
-			<View style={headerViewStyle}>
+			<View style={[headerViewStyle,headerStyle]}>
 				<View style={styles.left}>
 					{leftItems && leftItems()}
 				</View>

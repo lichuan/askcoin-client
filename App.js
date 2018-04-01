@@ -15,8 +15,10 @@ import {
   StackNavigator
 } from 'react-navigation';
 import './src/global/GlobalRegister';
-import SplashScreen from 'react-native-splash-screen';
+import ArrowLeft from './src/resource/icons/arrow_left.png';
 import NavButton from './src/components/NavButton';
+
+import SplashScreen from 'react-native-splash-screen';
 import LanguageSwitch from './src/pages/login/LanguageSwitch';
 import ApiServerSwitch from './src/pages/login/ApiServerSwitch';
 import Register from './src/pages/login/Register';
@@ -24,6 +26,12 @@ import RegisterSuccess from './src/pages/login/RegisterSuccess';
 import WalletRestore from './src/pages/login/WalletRestore';
 import Tabs from './src/pages/main/Tabs';
 import ApiSwitch from './src/pages/advanced/ApiSwitch';
+import QuestionDetail from './src/pages/my/QuestionDetail';
+import ReplyDetail from './src/pages/my/ReplyDetail';
+import AnswerDetail from './src/pages/my/AnswerDetail';
+import CheckAnswerDetail from './src/pages/my/CheckAnswerDetail';
+
+import AskQuestion from './src/pages/my/AskQuestion';
 
 
 export default class App extends Component<{}> {
@@ -65,10 +73,25 @@ const AppNavigator = StackNavigator({
   },
   ApiSwitch: {
     screen: ApiSwitch
+  },
+  QuestionDetail: {
+    screen: QuestionDetail
+  },
+  ReplyDetail:{
+    screen: ReplyDetail
+  },
+  AnswerDetail:{
+    screen: AnswerDetail
+  },
+  CheckAnswerDetail:{
+    screen: CheckAnswerDetail
+  },
+  AskQuestion:{
+    screen: AskQuestion
   }
 },{
-  initialRouteName:'Tabs',
-  initialRouteParams:{name:'语言选择'},
+  initialRouteName:'ApiServerSwitch',
+  initialRouteParams:{name:'选择节点服务器'},
   headerMode:'screen',
   navigationOptions:({navigation}) => {
     let {state,goBack} = navigation;
@@ -95,7 +118,8 @@ const AppNavigator = StackNavigator({
       headerLeft:(
         <NavButton
           data={{
-            type:'icon',
+            type:'image',
+            uri:ArrowLeft,
             onPress: onLeftPress
               ? onLeftPress
               :()=>{

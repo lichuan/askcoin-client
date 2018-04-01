@@ -17,7 +17,8 @@ import PropTypes from 'prop-types';
 export default class NavBar extends Component {
   static propTypes = {
     titleList:PropTypes.array.isRequired,
-    onChangeSegment:PropTypes.func.isRequired
+    onChangeSegment:PropTypes.func.isRequired,
+    onPress:PropTypes.func
   };
 
   constructor(props) {
@@ -28,13 +29,11 @@ export default class NavBar extends Component {
   }
 
   render() {
-    const {titleList,onChangeSegment,navigation} = this.props;
+    const {titleList,onChangeSegment,navigation, onPress} = this.props;
     return (
       <View style={styles.nav}>
         <TouchableOpacity
-          onPress={()=>{
-            navigation && navigation.goBack();
-          }}
+          onPress={onPress}
           style={styles.backBtn}>
             <Image
               source={arrowLeft}

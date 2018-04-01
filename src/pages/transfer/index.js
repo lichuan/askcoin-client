@@ -131,6 +131,9 @@ export default class index extends Component {
         style={styles.bg}>
         <NavBar
           titleList={['转账','转账记录']}
+          onPress={()=>{
+            this.props.navigation && this.props.navigation.goBack();
+          }}
           onChangeSegment={(index)=>{
             this.setState({
               selectedIndex:index

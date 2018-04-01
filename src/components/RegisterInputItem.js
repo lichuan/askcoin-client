@@ -55,7 +55,7 @@ export default class RegisterInputItem extends Component {
           placeholderTextColor={COLOR.grayTextColor}
           value={this.props.value}
           keyboardType={this.props.keyboardType}
-          secureTextEntry={this.state.secureTextEntry}
+          secureTextEntry={this.props.secureTextEntry}
           onChangeText={this.props.onChangeText}
           editable={this.props.editable}
           maxLength={this.props.maxLength}/>

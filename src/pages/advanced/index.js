@@ -16,6 +16,9 @@ import {
 } from 'react-native';
 import UnOpenedItem from '../../components/UnOpenedItem';
 import RowItem from '../../components/RowItem';
+import HeaderView from '../../components/HeaderView';
+import NavButton from '../../components/NavButton';
+import arrowLeft from '../../resource/icons/arrow_left.png';
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
@@ -46,6 +49,20 @@ export default class index extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <HeaderView
+          headerTitle="我的"
+          headerStyle={styles.header}
+          leftItems={()=>
+            <NavButton
+              btnStyle={{paddingHorizontal:0}}
+              data={{
+                type:'image',
+                uri:arrowLeft,
+                onPress:()=>{
+                  this.props.navigation && this.props.navigation.goBack();
+                }
+              }}/>
+          }/>
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={STYLE.BACKGROUND}>
@@ -79,5 +96,8 @@ const styles = StyleSheet.create({
     flex:1,
     paddingTop:Platform.OS === 'ios' ? IphoneTop : 0,
     backgroundColor:COLOR.bgColor
+  },
+  header:{
+    backgroundColor:COLOR.primaryColor
   }
 });

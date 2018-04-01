@@ -17,6 +17,14 @@ import ScrollableTabView,{DefaultTabBar}from 'react-native-scrollable-tab-view';
 import MyAnswer from './MyAnswer';
 import MyQuestion from './MyQuestion';
 
+import myBg from '../../resource/icons/my_bg.png';
+import headerBg from '../../resource/icons/1.png';
+import zzJbIcon from '../../resource/icons/zz_jb.png';
+import HeaderView from '../../components/HeaderView';
+import arrowLeft from '../../resource/icons/arrow_left.png';
+import NavButton from '../../components/NavButton';
+import MyBtTw from '../../resource/icons/my_bt_tw.png'
+
 const IphoneTop = isIphoneX() ? 40 : 20;
 
 export default class index extends Component {
@@ -63,48 +71,66 @@ export default class index extends Component {
           <MyAnswer tabLabel="我的回答" navigation={this.props.navigation}/>
 
         </ScrollableTabView>
+        {this.renderImageButton()}
       </View>
     )
+  }
+
+  askQuestion(){
+    this.props.navigation && this.props.navigation.navigate('AskQuestion',{name:'发起提问'});
   }
 
   renderHeader(){
     return(
       <ImageBackground
-        source={bg}
+        source={myBg}
         style={styles.bg}>
-        <Text
-          style={styles.title}>
-          {'ASKCOIN'}
+        <HeaderView
+          headerTitle="我的"
+          leftItems={()=>
+            <NavButton
+              btnStyle={{paddingHorizontal:0}}
+              data={{
+                type:'image',
+                uri:arrowLeft,
+                onPress:()=>{
+                  this.props.navigation && this.props.navigation.goBack();
+                }
+              }}
+            />
+          }/>
+        <Image
+          source={headerBg}
+          style={styles.header}/>
+        <Text style={styles.title}>
+          {'杨欧巴'}
         </Text>
-        <View style={styles.info}>
+        <Text style={styles.idText}>
+          {'#123456'}
+        </Text>
+        <View style={styles.amtItem}>
+          <Text style={styles.amtTitle}>{'账户余额:'}</Text>
           <Image
-            source={headerBg}
-            style={styles.header}/>
-          <View style={styles.headerRight}>
-            <View style={styles.headerRightItem}>
-              <Text style={styles.title}>
-                {'杨欧巴'}
-              </Text>
-              <Text style={styles.idText}>
-                {'#1234569'}
-              </Text>
-            </View>
-            <View style={[styles.headerRightItem,{marginTop:16}]}>
-              <Text style={styles.amtTitle}>
-                {'账户余额:'}
-              </Text>
-              <View style={styles.amtItem}>
-                <Image
-                  style={styles.amtImg}
-                  source={homeMoneyIcon}/>
-                <Text style={styles.amtText}>
-                  {200}
-                </Text>
-              </View>
-            </View>
-          </View>
+            style={styles.amtImg}
+            source={zzJbIcon}/>
+          <Text style={styles.amtText}>{'200'}</Text>
         </View>
       </ImageBackground>
+    )
+  }
+
+  renderImageButton() {
+    return(
+      <TouchableOpacity
+        onPress={()=>{
+          this.askQuestion();
+        }}
+        style={styles.imgBtn}>
+        <ImageBackground
+          style={styles.img}
+          source={MyBtTw}>
+        </ImageBackground>
+      </TouchableOpacity>
     )
   }
 }
@@ -124,5 +150,58 @@ const styles = StyleSheet.create({
   },
   scrollableTabView: {
     backgroundColor: '#fff',
+  },
+  bg:{
+    width:ScreenWidth,
+    height: ScreenWidth / 1.369,
+    alignItems:'center'
+  },
+  header:{
+    width:65,
+    height:65,
+    borderRadius:32.5,
+    marginVertical:15
+  },
+  title:{
+    fontSize:FONTSIZE.normal,
+    color:COLOR.primaryTextColor,
+  },
+  idText:{
+    fontSize:FONTSIZE.small,
+    color:'#999',
+    marginTop:10
+  },
+  amtItem:{
+    flexDirection:'row',
+    marginTop:10,
+    alignItems:'center'
+  },
+  amtTitle:{
+    fontSize:FONTSIZE.small,
+    color:COLOR.primaryTextColor,
+    marginRight:15
+  },
+  amtImg:{
+    width:16,
+    height:17,
+    marginRight:8
+  },
+  amtText:{
+    fontSize:FONTSIZE.primary,
+    color:COLOR.primaryTextColor,
+  },
+  back:{
+    width: 9,
+    height:15,
+    resizeMode:'contain'
+  },
+  imgBtn:{
+    position:'absolute',
+    right: 10,
+    bottom: 23,
+  },
+  img:{
+    width:59,
+    height:59,
   }
 });

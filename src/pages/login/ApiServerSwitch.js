@@ -43,7 +43,7 @@ export default class ApiServerSwitch extends Component {
   }
 
   onRegister() {
-    this.props.navigation && this.props.navigation.navigate('Register',{name:'注册'})
+    this.props.navigation && this.props.navigation.navigate('LanguageSwitch',{name:'语言选择'})
   }
 
   switchLanguage(items) {

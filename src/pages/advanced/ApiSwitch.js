@@ -16,6 +16,7 @@ import SwipeOut from 'react-native-swipeout';
 import SwitchButton from '../../components/SwitchButton';
 import ApiPopup from './ApiPopup';
 import NavButton from '../../components/NavButton';
+import HintCell from '../../components/HintCell';
 
 export default class ApiSwitch extends Component {
 
@@ -82,14 +83,7 @@ export default class ApiSwitch extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.hint}>
-          <Image
-            style={styles.laBa}
-            source={laBa}/>
-          <Text style={styles.hintTitle}>
-            {'向左滑动可以删除节点哦~'}
-          </Text>
-        </View>
+        <HintCell hintTitle="向左滑动可以删除节点哦~"/>
         <FlatList
           style={styles.list}
           data={this.data}
@@ -145,23 +139,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f2f2f2',
   },
-  hint: {
-    flexDirection:'row',
-    justifyContent:'center',
-    alignItems:'center',
-    height:40,
-    backgroundColor:'#fff2c8'
-  },
-  laBa: {
-    width:21,
-    height:21,
-    marginRight:15,
-    resizeMode:'contain'
-  },
-  hintTitle:{
-    fontSize:COLOR.primary,
-    color:COLOR.normalTextColor
-  },
+
   list:{
     backgroundColor:COLOR.bgColor,
     flex:1
