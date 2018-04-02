@@ -32,15 +32,38 @@ import AnswerDetail from './src/pages/my/AnswerDetail';
 import CheckAnswerDetail from './src/pages/my/CheckAnswerDetail';
 
 import AskQuestion from './src/pages/my/AskQuestion';
+import SplashView from './src/pages/login/SplashView';
 
 
 export default class App extends Component<{}> {
+  constructor(props){
+    super(props);
+    this.state = {
+      showLoading:true
+    }
+  }
 
   componentDidMount() {
     SplashScreen.hide();
+    this.timer = setTimeout(()=>{
+      this.setState({
+        showLoading:false
+      })
+    },2000);
+  }
+
+  componentWillUnmount() {
+    this.timer && clearTimeout(this.timer);
   }
 
   render() {
+    if(this.state.showLoading){
+      return(
+        <SplashView
+          onPress={()=>this.setState({showLoading:false})}/>
+      )
+    }
+
     return (
       <View style={STYLE.BACKGROUND}>
         <StatusBar
@@ -132,9 +155,10 @@ const AppNavigator = StackNavigator({
         <View style={{width: 48,height: 48}}/>
       ),
       headerTitleStyle:{
+        flex:1,
+        textAlign:'center',
         fontSize:FONTSIZE.large,
-        color:COLOR.primaryTextColor,
-        alignSelf:'center'
+        color:COLOR.primaryTextColor
       },
     }
   }

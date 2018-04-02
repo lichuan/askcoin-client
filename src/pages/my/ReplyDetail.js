@@ -127,6 +127,7 @@ export default class ReplyDetail extends Component {
                 minimumTrackTintColor='#1fb28a'
                 maximumTrackTintColor='#d3d3d3'
                 thumbTintColor='#1a9274'
+                thumbTouchSize={{width:180,height:40}}
                 debugTouchArea={false}
                 thumbStyle={styles.thumbStyle}
                 step={1}/>
@@ -217,6 +218,7 @@ export default class ReplyDetail extends Component {
                   style={styles.slide}
                   minimumValue={0}
                   maximumValue={60}
+                  thumbTouchSize={{width:180,height:40}}
                   minimumTrackTintColor='#1fb28a'
                   maximumTrackTintColor='#d3d3d3'
                   thumbTintColor='#1a9274'

@@ -176,6 +176,7 @@ export default class QuestionDetail extends Component {
                 style={styles.slide}
                 minimumValue={0}
                 maximumValue={60}
+                thumbTouchSize={{width:180,height:40}}
                 minimumTrackTintColor='#1fb28a'
                 maximumTrackTintColor='#d3d3d3'
                 thumbTintColor='#1a9274'

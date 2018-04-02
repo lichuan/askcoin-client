@@ -12,7 +12,8 @@ import {
   ImageBackground,
   FlatList,
   StatusBar,
-  Platform
+  Platform,
+  KeyboardAvoidingView
 } from 'react-native';
 import zzBg from '../../resource/icons/zz_bg.png';
 
@@ -102,25 +103,31 @@ export default class index extends Component {
   }
 
   componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
+    /*this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setHidden(false);
-    });
+    });*/
   }
 
   componentWillUnmount() {
-    this._navListener.remove();
+    //this._navListener.remove();
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        {this.renderHeader()}
-        {
-          this.state.selectedIndex === 0
-            ? this.renderFirstPage()
-            : this.renderSecondPage()
-        }
-      </View>
+      <KeyboardAvoidingView
+        behavior={'position'}
+        keyboardVerticalOffset={50}
+        contentContainerStyle={styles.container}
+        style={styles.container}>
+        <View style={styles.container}>
+          {this.renderHeader()}
+          {
+            this.state.selectedIndex === 0
+              ? this.renderFirstPage()
+              : this.renderSecondPage()
+          }
+        </View>
+      </KeyboardAvoidingView>
     )
   }
 
@@ -162,39 +169,39 @@ export default class index extends Component {
   renderFirstPage() {
     return(
       <View style={styles.firstPage}>
-        <View style={styles.content}>
-          <InputBox
-            source={zzIdIcon}
-            editable={true}
-            placeholder={'请输入收款人ID'}
-            showRightImage={false}/>
-          <Image
-            source={zzBtIcon}
-            style={styles.bt}/>
-          <ImageBackground
-            style={styles.tx}
-            source={zzTxIcon}>
+          <View style={styles.content}>
+            <InputBox
+              source={zzIdIcon}
+              editable={true}
+              placeholder={'请输入收款人ID'}
+              showRightImage={false}/>
             <Image
-              source={userBg}
-              style={styles.user}/>
-          </ImageBackground>
+              source={zzBtIcon}
+              style={styles.bt}/>
+            <ImageBackground
+              style={styles.tx}
+              source={zzTxIcon}>
+              <Image
+                source={userBg}
+                style={styles.user}/>
+            </ImageBackground>
 
-          <InputBox
-            itemStyle={styles.moneyItem}
-            source={zzMoneyIcon}
-            editable={true}
-            placeholder={'请输入您的转账金额'}
-            showRightImage={false}/>
-          <InputBox
-            itemStyle={styles.bzItem}
-            source={zzBzIcon}
-            editable={true}
-            placeholder={'请输入您的备注信息'}
-            showRightImage={false}/>
-        </View>
-        <Button
-          title={'发送'}
-          btnStyle={styles.bottomBtn}/>
+            <InputBox
+              itemStyle={styles.moneyItem}
+              source={zzMoneyIcon}
+              editable={true}
+              placeholder={'请输入您的转账金额'}
+              showRightImage={false}/>
+            <InputBox
+              itemStyle={styles.bzItem}
+              source={zzBzIcon}
+              editable={true}
+              placeholder={'请输入您的备注信息'}
+              showRightImage={false}/>
+          </View>
+          <Button
+            title={'发送'}
+            btnStyle={styles.bottomBtn}/>
       </View>
     )
   }

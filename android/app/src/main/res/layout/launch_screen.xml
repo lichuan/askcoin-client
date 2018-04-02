@@ -36,7 +36,7 @@
         android:layout_marginBottom="47dp"
         android:enabled="false"
         android:layout_width="285dp"
-        android:layout_height="55dp"
+        android:layout_height="40dp"
         android:background="#fff7b3"
         android:textSize="15sp"
         android:textColor="#f5ba1a"

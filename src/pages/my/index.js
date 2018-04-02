@@ -38,13 +38,13 @@ export default class index extends Component {
   }
 
   componentDidMount() {
-    this._navListener = this.props.navigation.addListener('didFocus', () => {
+    /*this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setHidden(false);
-    });
+    });*/
   }
 
   componentWillUnmount() {
-    this._navListener.remove();
+    //this._navListener.remove();
   }
 
   render() {
