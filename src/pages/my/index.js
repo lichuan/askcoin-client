@@ -11,7 +11,8 @@ import {
   StyleSheet,
   StatusBar,
   Platform,
-  ImageBackground
+  ImageBackground,
+  Animated
 } from 'react-native';
 import ScrollableTabView,{DefaultTabBar}from 'react-native-scrollable-tab-view';
 import MyAnswer from './MyAnswer';
@@ -24,13 +25,17 @@ import HeaderView from '../../components/HeaderView';
 import arrowLeft from '../../resource/icons/arrow_left.png';
 import NavButton from '../../components/NavButton';
 import MyBtTw from '../../resource/icons/my_bt_tw.png'
+import SwipeTopBar from '../../components/SwipeTopBar';
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
 export default class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      scrollValue:new Animated.Value(0),
+      selectedPageIndex:0
+    };
   }
 
   componentWillMount() {
@@ -51,16 +56,21 @@ export default class index extends Component {
     return (
       <View style={styles.container}>
         {this.renderHeader()}
+
         <ScrollableTabView
-          /*renderTabBar={() =>
-            <DefaultTabBar
-              style={styles.tabStyle}
-              tabs={['我的提问','我的回答']}
+          style={{backgroundColor:COLOR.whiteColor}}
+          renderTabBar={() =>
+            <SwipeTopBar
+              activeTab={this.state.selectedPageIndex}
+              scrollValue={this.state.scrollValue}
+              containerWidth={ScreenWidth * 2 / 3 }
+              style={{width:ScreenWidth * 2 / 3, alignSelf:'center'}}
               inactiveTextColor="#9a9a99"
               activeTextColor="#fbb422"
               textStyle={FONTSIZE.normal}
               underlineStyle={styles.tabBarUnderlineStyle}/>
-          }*/
+          }
+          tabBarBackgroundColor={COLOR.whiteColor}
           tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
           tabBarTextStyle={styles.tabBarTextStyle}
           tabBarInactiveTextColor={'#9a9a99'}
@@ -68,7 +78,7 @@ export default class index extends Component {
           locked={true}>
 
           <MyQuestion tabLabel="我的提问" navigation={this.props.navigation}/>
-          <MyAnswer tabLabel="我的回答" navigation={this.props.navigation}/>
+          <MyAnswer  tabLabel="我的回答" navigation={this.props.navigation}/>
 
         </ScrollableTabView>
         {this.renderImageButton()}
@@ -119,6 +129,13 @@ export default class index extends Component {
     )
   }
 
+
+ /* renderTabBar(){
+    return(
+
+    )
+  }*/
+
   renderImageButton() {
     return(
       <TouchableOpacity
@@ -147,6 +164,8 @@ const styles = StyleSheet.create({
   tabBarUnderlineStyle: {
     backgroundColor: COLOR.normalColor,
     height: 2,
+    width: ScreenWidth * (2 / 3) / 4,
+    marginLeft: ScreenWidth * (2 / 3) / 8
   },
   scrollableTabView: {
     backgroundColor: '#fff',

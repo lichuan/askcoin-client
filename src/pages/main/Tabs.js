@@ -33,7 +33,7 @@ const Tabs = TabNavigator({
           normalSource={HomeNormalIcon}
           focusedSource={HomeFocusedIcon}
           focused={focused}
-          label={'首页'}/>
+          label={'抢答'}/>
       ),
     }
   },

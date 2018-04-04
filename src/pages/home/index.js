@@ -12,6 +12,7 @@ import {
   FlatList,
   ImageBackground,
   StatusBar,
+  ScrollView,
   Platform
 } from 'react-native';
 import bg from '../../resource/icons/bg.png';
@@ -71,11 +72,13 @@ export default class index extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView
+        stickyHeaderIndices={[1]}
+        style={styles.container}>
         {this.renderHeader()}
         {this.renderHeaderItem()}
         {this.renderListView()}
-      </View>
+      </ScrollView>
     )
   }
 
@@ -123,13 +126,15 @@ export default class index extends Component {
 
   renderHeaderItem() {
     return(
-      <View style={styles.headerItem}>
-        <Image
-          style={styles.ymIcon}
-          source={homeYmIcon}/>
-        <Text style={styles.headerItemTitle}>
-          {'限时抢答'}
-        </Text>
+      <View>
+        <View style={styles.headerItem}>
+          <Image
+            style={styles.ymIcon}
+            source={homeYmIcon}/>
+          <Text style={styles.headerItemTitle}>
+            {'限时抢答'}
+          </Text>
+        </View>
       </View>
     )
   }
