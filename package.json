@@ -9,14 +9,18 @@
     "test": "jest"
   },
   "dependencies": {
+    "emoji-datasource": "2.4.4",
+    "lodash": "^4.17.5",
     "react": "16.0.0",
     "react-native": "0.51.0",
+    "react-native-modal-dropdown": "^0.6.2",
     "react-native-parallax-scroll-view": "^0.21.0",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-splash-screen": "^3.0.6",
     "react-native-swipeout": "^2.3.3",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.5.8",
+    "string.fromcodepoint": "^0.2.1",
     "teaset": "^0.5.6"
   },
   "devDependencies": {

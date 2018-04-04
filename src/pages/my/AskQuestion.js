@@ -16,11 +16,15 @@ import myBq from '../../resource/icons/my_bq.png';
 import myJb from '../../resource/icons/my_jb.png';
 import UserHeader from './UserHeader';
 import Button from '../../components/Button';
+import { EmojiOverlay } from '../../components/EmojiOverlay';
 
 export default class AskQuestion extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      showPicker: false,
+      value:'',
+    };
   }
 
   componentWillMount() {
@@ -29,6 +33,13 @@ export default class AskQuestion extends Component {
 
   componentDidMount() {
 
+  }
+
+  emojiSelected(emoji) {
+    this.setState({
+      showPicker: false,
+      value:this.state.value + emoji
+    })
   }
 
   render() {
@@ -51,6 +62,16 @@ export default class AskQuestion extends Component {
           <View style={{height:10}}/>
           {this.renderButton()}
         </KeyboardAvoidingView>
+
+        <EmojiOverlay
+          clearButtonText={'取消'}
+          style={styles.picker}
+          visible={this.state.showPicker}
+          onTapOutside={() => this.setState({showPicker: false})}
+          horizontal={true}
+          onEmojiSelected={(emoji)=>{
+            this.emojiSelected(emoji)
+          }}/>
       </View>
     )
   }
@@ -59,6 +80,12 @@ export default class AskQuestion extends Component {
     return(
       <View style={styles.inputView}>
         <TextInput
+          onChangeText={(val)=>{
+            this.setState({
+              value:val
+            })
+          }}
+          value={this.state.value}
           placeholder={'请在这里描述你的问题(250字以内)'}
           placeholderTextColor={COLOR.grayTextColor}
           underlineColorAndroid={'transparent'}
@@ -69,7 +96,12 @@ export default class AskQuestion extends Component {
           <Text style={styles.emotionText}>
             {'#添加标签'}
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=>{
+              this.setState({
+                showPicker:true
+              })
+            }}>
             <Image
               source={myBq}
               style={styles.emotion}/>
@@ -159,10 +191,11 @@ const styles = StyleSheet.create({
     color:COLOR.normalTextColor
   },
   btn:{
-    marginHorizontal:20,
-    width:ScreenWidth - 40
+    width:325,
+    alignSelf:'center'
   },
-  btnText:{
-    color:COLOR.whiteColor
+  picker:{
+    height: 400,
+    backgroundColor: '#f4f4f4'
   }
 });

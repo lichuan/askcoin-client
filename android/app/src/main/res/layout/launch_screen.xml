@@ -37,8 +37,8 @@
         android:enabled="false"
         android:layout_width="285dp"
         android:layout_height="40dp"
-        android:background="#fff7b3"
+        android:background="#fdf187"
         android:textSize="15sp"
-        android:textColor="#f5ba1a"
+        android:textColor="#f0ab51"
         android:text="Welcome to ASKCOIN~"/>
 </LinearLayout>

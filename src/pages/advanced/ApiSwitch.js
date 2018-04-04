@@ -17,6 +17,7 @@ import SwitchButton from '../../components/SwitchButton';
 import ApiPopup from './ApiPopup';
 import NavButton from '../../components/NavButton';
 import HintCell from '../../components/HintCell';
+import AlertControl from '../../components/AlertControl';
 
 export default class ApiSwitch extends Component {
 
@@ -92,6 +93,7 @@ export default class ApiSwitch extends Component {
           ItemSeparatorComponent={()=>this.renderItemSeparator()}/>
         <ApiPopup
           ref={(r)=>this.apiPopup = r}/>
+        <AlertControl ref={r=>{this._alert=r}}/>
       </View>
     )
   }
@@ -103,7 +105,22 @@ export default class ApiSwitch extends Component {
         backgroundColor:'#FD808F',
         color:COLOR.whiteColor,
         onPress:()=>{
-          alert(index);
+          this._alert.show({
+            desc:'温馨提示',
+            title : "非常抱歉您的备份文件失败，请重新选择~",
+            titleStyle : {},
+            message : '',
+            messageStyle : {},
+            buttons : [
+              {title:'取消'},
+              {
+                title:'确认',
+                onPress:()=>{
+
+                }
+              },
+            ] ,
+          });
         }
       }
     ];

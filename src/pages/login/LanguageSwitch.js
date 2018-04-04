@@ -18,7 +18,8 @@ import loginChoose from '../../resource/icons/login_choose.png';
 
 import Button from '../../components/Button';
 import InputBox from '../../components/InputBox';
-import {PopoverPicker} from 'teaset';
+
+import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class LanguageSwitch extends Component {
   constructor(props) {
@@ -44,28 +45,15 @@ export default class LanguageSwitch extends Component {
   }
 
   onRegister() {
-    this.props.navigation && this.props.navigation.navigate('Register',{name:'注册'})
+    this.props.navigation && this.props.navigation.navigate('ApiServerSwitch',{name:'选择节点服务器'})
   }
 
-  switchLanguage(items) {
-    let {pickerLayout} = this.state;
+  switchLanguage() {
+    this.pickerModal && this.pickerModal.show();
   }
 
   render() {
-    let pickerItems = this.language.map((lang,id)=>{
-      return(
-        <View style={styles.pickerItem} key={id}>
-          <Text style={styles.pickerText}>
-            {lang}
-          </Text>
-          {
-            this.state.selectedIndex === id
-              ? <Image style={styles.choose}/>
-              : null
-          }
-        </View>
-      )
-    });
+
     return (
       <View style={styles.container}>
         <Image
@@ -77,18 +65,27 @@ export default class LanguageSwitch extends Component {
         <Text style={styles.titleCN}>
           {'请您选择语言'}
         </Text>
-        <InputBox
-          onLayout={e => {
+
+        <ModalDropdown
+          style={styles.picker}
+          ref={(r)=>this.pickerModal = r}
+          options={this.language}
+          onSelect={(index, value)=> {
             this.setState({
-              pickerLayout:e.nativeEvent.layout
+              selectedIndex:index
             })
           }}
-          onRightBtnPress={()=>this.switchLanguage(pickerItems)}
-          source={loginTb}
-          itemStyle={styles.box}
-          editable={false}
-          placeholder={'请选择语言'}
-          showRightImage={true}/>
+          defaultIndex={0}
+          renderRow={this.renderDropRow.bind(this)}>
+          <InputBox
+            onRightBtnPress={()=>this.switchLanguage()}
+            source={loginTb}
+            itemStyle={styles.box}
+            editable={false}
+            value={this.language[this.state.selectedIndex]}
+            placeholder={'请选择语言'}
+            showRightImage={true}/>
+        </ModalDropdown>
 
         <Button
           onPress={()=>this.onRegister()}
@@ -98,6 +95,23 @@ export default class LanguageSwitch extends Component {
     )
   }
 
+  renderDropRow(option, index, isSelected) {
+    return(
+      <TouchableOpacity style={styles.pickerItem}
+            key={index}>
+        <Text style={styles.pickerText}>
+          {option}
+        </Text>
+        {
+          isSelected
+            ? <Image
+                style={styles.choose}
+                source={loginChoose}/>
+            : null
+        }
+      </TouchableOpacity>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -125,16 +139,8 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
   box:{
-    borderRadius:5,
-    borderWidth:1,
-    borderColor:COLOR.borderColor,
-    backgroundColor:'#fffbdf',
-    width: 325,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal:15,
-    marginTop:30
+    marginHorizontal:0,
+    height:45
   },
   pickerItem:{
     borderWidth:1,
@@ -170,5 +176,12 @@ const styles = StyleSheet.create({
   choose:{
     width:19,
     height:15
+  },
+  picker:{
+    width:325,
+    padding:0,
+    justifyContent:'center',
+    alignSelf:'center',
+    marginTop:30
   }
 });

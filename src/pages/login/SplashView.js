@@ -50,7 +50,6 @@ export default class SplashView extends Component {
         <Button
           onPress={this.props.onPress}
           btnStyle={styles.btn}
-          titleStyle={styles.title}
           title={'Welcome to ASKCOIN~'}/>
       </View>
     )
@@ -89,9 +88,5 @@ const styles = StyleSheet.create({
     marginBottom:47,
     width:285,
     height:40,
-    backgroundColor:'#fff7b3'
   },
-  title:{
-    color:'#f5ba1a'
-  }
 });

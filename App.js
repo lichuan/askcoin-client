@@ -113,8 +113,8 @@ const AppNavigator = StackNavigator({
     screen: AskQuestion
   }
 },{
-  initialRouteName:'ApiServerSwitch',
-  initialRouteParams:{name:'选择节点服务器'},
+  initialRouteName:'LanguageSwitch',
+  initialRouteParams:{name:'语言选择'},
   headerMode:'screen',
   navigationOptions:({navigation}) => {
     let {state,goBack} = navigation;

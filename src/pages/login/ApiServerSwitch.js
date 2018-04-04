@@ -17,20 +17,21 @@ import loginApi from '../../resource/icons/login_api.png';
 
 import Button from '../../components/Button';
 import InputBox from '../../components/InputBox';
-import {PopoverPicker} from 'teaset';
+
+import loginChoose from '../../resource/icons/login_choose.png';
+import ModalDropdown from 'react-native-modal-dropdown';
 
 export default class ApiServerSwitch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
-      pickerLayout:{}
+      selectedIndex: 0
     };
   }
 
-  language = [
-    '汉语',
-    'English'
+  apiList = [
+    '服务器节点1',
+    '服务器节点2'
   ];
 
 
@@ -43,28 +44,15 @@ export default class ApiServerSwitch extends Component {
   }
 
   onRegister() {
-    this.props.navigation && this.props.navigation.navigate('LanguageSwitch',{name:'语言选择'})
+    this.props.navigation && this.props.navigation.navigate('Register',{name:'注册'});
   }
 
-  switchLanguage(items) {
-    let {pickerLayout} = this.state;
+  switchLanguage() {
+    this.pickerModal && this.pickerModal.show();
   }
 
   render() {
-    let pickerItems = this.language.map((lang,id)=>{
-      return(
-        <View style={styles.pickerItem} key={id}>
-          <Text style={styles.pickerText}>
-            {lang}
-          </Text>
-          {
-            this.state.selectedIndex === id
-              ? <Image style={styles.choose}/>
-              : null
-          }
-        </View>
-      )
-    });
+
     return (
       <View style={styles.container}>
         <Image
@@ -73,18 +61,27 @@ export default class ApiServerSwitch extends Component {
         <Text style={styles.title}>
           {'请您选择API节点服务器'}
         </Text>
-        <InputBox
-          onLayout={e => {
+
+        <ModalDropdown
+          style={styles.picker}
+          ref={(r)=>this.pickerModal = r}
+          options={this.apiList}
+          onSelect={(index, value)=> {
             this.setState({
-              pickerLayout:e.nativeEvent.layout
+              selectedIndex:index
             })
           }}
-          onRightBtnPress={()=>this.switchLanguage(pickerItems)}
-          source={loginApi}
-          itemStyle={styles.box}
-          editable={false}
-          placeholder={'请选择API节点服务器'}
-          showRightImage={true}/>
+          defaultIndex={0}
+          renderRow={this.renderDropRow.bind(this)}>
+          <InputBox
+            onRightBtnPress={()=>this.switchLanguage()}
+            source={loginApi}
+            value={this.apiList[this.state.selectedIndex]}
+            itemStyle={styles.box}
+            editable={false}
+            placeholder={'请选择API节点服务器'}
+            showRightImage={true}/>
+        </ModalDropdown>
 
         <Button
           onPress={()=>this.onRegister()}
@@ -94,6 +91,23 @@ export default class ApiServerSwitch extends Component {
     )
   }
 
+  renderDropRow(option, index, isSelected) {
+    return(
+      <TouchableOpacity style={styles.pickerItem}
+                        key={index}>
+        <Text style={styles.pickerText}>
+          {option}
+        </Text>
+        {
+          isSelected
+            ? <Image
+              style={styles.choose}
+              source={loginChoose}/>
+            : null
+        }
+      </TouchableOpacity>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
@@ -116,15 +130,8 @@ const styles = StyleSheet.create({
     marginVertical:45
   },
   box:{
-    borderRadius:5,
-    borderWidth:1,
-    borderColor:COLOR.borderColor,
-    backgroundColor:'#fffbdf',
-    width: 325,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal:15,
+    marginHorizontal:0,
+    height:45
   },
   pickerItem:{
     borderWidth:1,
@@ -160,5 +167,10 @@ const styles = StyleSheet.create({
   choose:{
     width:19,
     height:15
+  },
+  picker:{
+    width:325,
+    padding:0,
+    marginTop:30
   }
 });

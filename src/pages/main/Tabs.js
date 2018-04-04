@@ -96,7 +96,7 @@ const Tabs = TabNavigator({
     iconStyle:{
       margin:0,
       padding:0,
-      height:44,
+      height:40,
       width:ScreenWidth/4
     },
     showLabel:false,
