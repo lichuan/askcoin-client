@@ -67,6 +67,7 @@ export default class LanguageSwitch extends Component {
         </Text>
 
         <ModalDropdown
+          dropdownStyle={styles.dropdownStyle}
           style={styles.picker}
           ref={(r)=>this.pickerModal = r}
           options={this.language}
@@ -183,5 +184,10 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignSelf:'center',
     marginTop:30
+  },
+  dropdownStyle:{
+    margin:0,
+    padding:0,
+    height:92
   }
 });

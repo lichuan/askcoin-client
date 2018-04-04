@@ -63,6 +63,7 @@ export default class ApiServerSwitch extends Component {
         </Text>
 
         <ModalDropdown
+          dropdownStyle={styles.dropdownStyle}
           style={styles.picker}
           ref={(r)=>this.pickerModal = r}
           options={this.apiList}
@@ -172,5 +173,10 @@ const styles = StyleSheet.create({
     width:325,
     padding:0,
     marginTop:30
+  },
+  dropdownStyle:{
+    margin:0,
+    padding:0,
+    height:92
   }
 });
