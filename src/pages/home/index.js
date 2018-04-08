@@ -53,6 +53,62 @@ export default class index extends Component {
       id:'#23333',
       money:233,
       question:'求四川老乡？'
+    },
+    {
+      img:itemHeaderBg2,
+      name:'王大林',
+      id:'#123456',
+      money:223,
+      question:'有没有朋友一起去喝酒？'
+    },
+    {
+      img:itemHeaderBg3,
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      img:itemHeaderBg2,
+      name:'王大林',
+      id:'#123456',
+      money:223,
+      question:'有没有朋友一起去喝酒？'
+    },
+    {
+      img:itemHeaderBg3,
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      img:itemHeaderBg2,
+      name:'王大林',
+      id:'#123456',
+      money:223,
+      question:'有没有朋友一起去喝酒？'
+    },
+    {
+      img:itemHeaderBg3,
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      img:itemHeaderBg3,
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      img:itemHeaderBg3,
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
     }
   ];
 
