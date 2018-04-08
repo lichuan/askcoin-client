@@ -56,7 +56,6 @@ class SwipeTopBar extends Component{
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
-    console.log(name);
     return <Button
       style={styles.flexOne}
       key={name}
@@ -98,7 +97,7 @@ class SwipeTopBar extends Component{
         {
           translateX: this.props.scrollValue.interpolate({
             inputRange: [0, 1,],
-            outputRange: [0, containerWidth / numberOfTabs * 2 / 3,],
+            outputRange: [0, containerWidth / numberOfTabs],
           })
         }
       ]

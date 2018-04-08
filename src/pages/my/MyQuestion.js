@@ -41,6 +41,24 @@ export default class MyQuestion extends Component {
       id:'#23333',
       money:233,
       question:'求四川老乡？'
+    },
+    {
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
+    },
+    {
+      name:'王小林',
+      id:'#23333',
+      money:233,
+      question:'求四川老乡？'
     }
   ];
 

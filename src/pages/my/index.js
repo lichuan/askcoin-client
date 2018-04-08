@@ -12,7 +12,8 @@ import {
   StatusBar,
   Platform,
   ImageBackground,
-  Animated
+  Animated,
+  ScrollView
 } from 'react-native';
 import ScrollableTabView,{DefaultTabBar}from 'react-native-scrollable-tab-view';
 import MyAnswer from './MyAnswer';
@@ -29,7 +30,9 @@ import SwipeTopBar from '../../components/SwipeTopBar';
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
+
 export default class index extends Component {
+  tabs = ['我的提问','我的回答'];
   constructor(props) {
     super(props);
     this.state = {
@@ -43,44 +46,23 @@ export default class index extends Component {
   }
 
   componentDidMount() {
-    /*this._navListener = this.props.navigation.addListener('didFocus', () => {
-      StatusBar.setHidden(false);
-    });*/
+
   }
 
   componentWillUnmount() {
-    //this._navListener.remove();
+
   }
 
   render() {
     return (
       <View style={styles.container}>
-        {this.renderHeader()}
-
-        <ScrollableTabView
-          style={{backgroundColor:COLOR.whiteColor}}
-          renderTabBar={() =>
-            <SwipeTopBar
-              activeTab={this.state.selectedPageIndex}
-              scrollValue={this.state.scrollValue}
-              containerWidth={ScreenWidth * 2 / 3 }
-              style={{width:ScreenWidth * 2 / 3, alignSelf:'center'}}
-              inactiveTextColor="#9a9a99"
-              activeTextColor="#fbb422"
-              textStyle={FONTSIZE.normal}
-              underlineStyle={styles.tabBarUnderlineStyle}/>
-          }
-          tabBarBackgroundColor={COLOR.whiteColor}
-          tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
-          tabBarTextStyle={styles.tabBarTextStyle}
-          tabBarInactiveTextColor={'#9a9a99'}
-          tabBarActiveTextColor={'#fbb422'}
-          locked={true}>
-
-          <MyQuestion tabLabel="我的提问" navigation={this.props.navigation}/>
-          <MyAnswer  tabLabel="我的回答" navigation={this.props.navigation}/>
-
-        </ScrollableTabView>
+        <ScrollView
+          style={styles.container}
+          stickyHeaderIndices={[1]}>
+          {this.renderHeader()}
+          {this.renderTabBar()}
+          {this.renderPage()}
+        </ScrollView>
         {this.renderImageButton()}
       </View>
     )
@@ -130,11 +112,44 @@ export default class index extends Component {
   }
 
 
- /* renderTabBar(){
+  renderTabBar(){
     return(
-
+      <View style={styles.tabBar}>
+        <SwipeTopBar
+          goToPage={(index)=>{
+            if(index === 0){
+              this.state.scrollValue.setValue(0);
+            }else {
+              this.state.scrollValue.setValue(1);
+            }
+            this.setState({
+              selectedPageIndex:index
+            })
+          }}
+          tabs={this.tabs}
+          activeTab={this.state.selectedPageIndex}
+          scrollValue={this.state.scrollValue}
+          containerWidth={ScreenWidth * 2 / 3 }
+          style={{width:ScreenWidth * 2 / 3}}
+          inactiveTextColor="#9a9a99"
+          activeTextColor="#fbb422"
+          textStyle={styles.tabText}
+          underlineStyle={styles.tabBarUnderlineStyle}/>
+      </View>
     )
-  }*/
+  }
+
+  renderPage(){
+    if(this.state.selectedPageIndex === 0 ){
+      return(
+        <MyQuestion navigation={this.props.navigation}/>
+      )
+    }else{
+      return(
+        <MyAnswer navigation={this.props.navigation}/>
+      )
+    }
+  }
 
   renderImageButton() {
     return(
@@ -222,5 +237,14 @@ const styles = StyleSheet.create({
   img:{
     width:59,
     height:59,
+  },
+  tabText:{
+    fontSize:FONTSIZE.normal
+  },
+  tabBar:{
+    width:ScreenWidth,
+    backgroundColor:COLOR.whiteColor,
+    justifyContent:'center',
+    alignItems:'center'
   }
 });

@@ -41,6 +41,30 @@ export default class MyQuestion extends Component {
       id:'#23333',
       money:233,
       question:'求四川老乡？'
+    },
+    {
+      name:'王玉林',
+      id:'#25689',
+      money:300,
+      question:'为什么共享汽车可以作为现阶段的资本风口呢？对此您有什么看法？'
+    },
+    {
+      name:'王大林',
+      id:'#123456',
+      money:223,
+      question:'有没有朋友一起去喝酒？'
+    },
+    {
+      name:'王玉林',
+      id:'#25689',
+      money:300,
+      question:'为什么共享汽车可以作为现阶段的资本风口呢？对此您有什么看法？'
+    },
+    {
+      name:'王大林',
+      id:'#123456',
+      money:223,
+      question:'有没有朋友一起去喝酒？'
     }
   ];
 
