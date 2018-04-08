@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
 import MyAvatar from '../../resource/icons/1.png';
 import myBq from '../../resource/icons/my_bq.png';
@@ -45,11 +46,8 @@ export default class AskQuestion extends Component {
   render() {
     return (
       <View style={STYLE.BACKGROUND}>
-        <KeyboardAvoidingView
-          behavior={'position'}
-          keyboardVerticalOffset={10}
+        <ScrollView
           style={STYLE.BACKGROUND}>
-
           <UserHeader
             avatarSource={MyAvatar}
             name={'杨欧巴'}
@@ -61,17 +59,16 @@ export default class AskQuestion extends Component {
           {this.renderInputCell()}
           <View style={{height:10}}/>
           {this.renderButton()}
-        </KeyboardAvoidingView>
-
-        <EmojiOverlay
-          clearButtonText={'取消'}
-          style={styles.picker}
-          visible={this.state.showPicker}
-          onTapOutside={() => this.setState({showPicker: false})}
-          horizontal={true}
-          onEmojiSelected={(emoji)=>{
-            this.emojiSelected(emoji)
-          }}/>
+          <EmojiOverlay
+            clearButtonText={'取消'}
+            style={styles.picker}
+            visible={this.state.showPicker}
+            onTapOutside={() => this.setState({showPicker: false})}
+            horizontal={true}
+            onEmojiSelected={(emoji)=>{
+              this.emojiSelected(emoji)
+            }}/>
+        </ScrollView>
       </View>
     )
   }
@@ -85,7 +82,7 @@ export default class AskQuestion extends Component {
               value:val
             })
           }}
-          value={this.state.value}
+          defaultValue={this.state.value}
           placeholder={'请在这里描述你的问题(250字以内)'}
           placeholderTextColor={COLOR.grayTextColor}
           underlineColorAndroid={'transparent'}
