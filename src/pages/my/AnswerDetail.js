@@ -69,7 +69,6 @@ export default class AnswerDetail extends Component {
     return (
       <View style={STYLE.BACKGROUND}>
         <ScrollView
-          stickyHeaderIndices={[2,5]}
           style={STYLE.BACKGROUND}>
           {this.renderHeader()}
           <View style={{height:10}}/>
