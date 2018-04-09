@@ -81,7 +81,9 @@ class EmojiPicker extends Component {
   render() {
     return (
       <View style={[styles.container, this.props.style]}>
-        <ScrollView horizontal={true}>
+        <ScrollView
+          style={{paddingBottom:15}}
+          horizontal={true}>
           {this.state.categories.map(this.renderCategory.bind(this))}
         </ScrollView>
         {this.props.hideClearButton ? null : <ClearButon {...this.props} />}
@@ -127,7 +129,8 @@ class EmojiCategory extends Component {
 const ClearButon = props => {
   return (
     <TouchableOpacity
-      onPress={() => props.onEmojiSelected(null)}>
+      style={styles.clear}
+      onPress={() => props.onCancel && props.onCancel()}>
       <Text style={[styles.clearButton, props.clearButtonStyle]}>
         {props.clearButtonText || 'Clear'}
       </Text>
@@ -148,9 +151,13 @@ let styles = StyleSheet.create({
   container: {
     padding: padding,
   },
+  clear:{
+    width:64,
+    height:40
+  },
   clearButton: {
-    flex: 1,
-    padding: 15,
+    width: 64,
+    height: 40,
     textAlign: 'center',
     color: 'black',
     textAlignVertical: 'center',
@@ -194,6 +201,7 @@ let styles = StyleSheet.create({
 
 EmojiPicker.propTypes = {
   onEmojiSelected: PropTypes.func.isRequired,
+  onCancel: PropTypes.func,
 }
 
 export { EmojiPicker as default, EmojiOverlay as EmojiOverlay }

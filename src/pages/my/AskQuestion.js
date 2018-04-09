@@ -10,7 +10,8 @@ import {
   TextInput,
   StyleSheet,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  BackHandler
 } from 'react-native';
 import MyAvatar from '../../resource/icons/1.png';
 import myBq from '../../resource/icons/my_bq.png';
@@ -33,8 +34,23 @@ export default class AskQuestion extends Component {
   }
 
   componentDidMount() {
-
+    BackHandler.addEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonPressAndroid);
+  }
+
+  onBackButtonPressAndroid = () => {
+    if (this.state.showPicker) {
+      this.setState({
+        showPicker:false
+      })
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   emojiSelected(emoji) {
     this.setState({
@@ -60,6 +76,12 @@ export default class AskQuestion extends Component {
           <View style={{height:10}}/>
           {this.renderButton()}
           <EmojiOverlay
+            onCancel={()=>{
+              this.setState({
+                showPicker:false
+              })
+            }}
+            hideClearButton={false}
             clearButtonText={'取消'}
             style={styles.picker}
             visible={this.state.showPicker}
@@ -89,21 +111,23 @@ export default class AskQuestion extends Component {
           maxLength={250}
           multiline={true}
           style={styles.input}/>
-        <View style={styles.menuItem}>
-          <Text style={styles.emotionText}>
-            {'#添加标签'}
-          </Text>
-          <TouchableOpacity
-            onPress={()=>{
-              this.setState({
-                showPicker:true
-              })
-            }}>
+        <TouchableOpacity
+          style={styles.menu}
+          onPress={()=>{
+            this.setState({
+              showPicker:true
+            })
+          }}>
+
+          <View style={styles.menuItem}>
+            <Text style={styles.emotionText}>
+              {'#添加表情'}
+            </Text>
             <Image
               source={myBq}
               style={styles.emotion}/>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
     )
   }
@@ -151,11 +175,13 @@ const styles = StyleSheet.create({
     fontSize:FONTSIZE.normal,
     color:COLOR.normalTextColor
   },
+  menu:{
+    marginTop:8,
+    alignSelf:'flex-end',
+  },
   menuItem:{
     flexDirection:'row',
-    alignSelf:'flex-end',
     alignItems:'center',
-    marginTop:8
   },
   emotion:{
     width:20,
