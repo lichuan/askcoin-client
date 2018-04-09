@@ -158,7 +158,8 @@ const AppNavigator = StackNavigator({
         flex:1,
         textAlign:'center',
         fontSize:FONTSIZE.large,
-        color:COLOR.primaryTextColor
+        color:COLOR.primaryTextColor,
+        fontWeight:'normal'
       },
     }
   }
