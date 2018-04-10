@@ -184,6 +184,8 @@ export default class index extends Component {
               <Image
                 source={userBg}
                 style={styles.user}/>
+              <View
+                style={styles.grayUser}/>
             </ImageBackground>
 
             <InputBox
@@ -346,6 +348,16 @@ const styles = StyleSheet.create({
     borderRadius:28.5,
     marginLeft:9
   },
+
+  grayUser:{
+    width:57,
+    height:57,
+    borderRadius:28.5,
+    left:9,
+    position:'absolute',
+    backgroundColor:'#000c'
+  },
+
   bottomBtn: {
     width:325,
     marginTop:2,
