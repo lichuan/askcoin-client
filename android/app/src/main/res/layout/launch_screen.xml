@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <ImageView
+        android:layout_marginTop="47dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/qdy_money"/>
+
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/qdy_pic"
+        android:id="@+id/imageView" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Waiting to get into the App"
+        android:textSize="15sp"
+        android:textColor="#5c5c5c"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:layout_marginBottom="47dp"
+        android:enabled="false"
+        android:layout_width="285dp"
+        android:layout_height="40dp"
+        android:background="#fdf187"
+        android:textSize="15sp"
+        android:textColor="#f0ab51"
+        android:text="Welcome to ASKCOIN~"/>
+</LinearLayout>

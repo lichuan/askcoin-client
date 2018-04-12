@@ -1,0 +1,35 @@
+{
+  "name": "AskCoin",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "test": "jest"
+  },
+  "dependencies": {
+    "emoji-datasource": "2.4.4",
+    "lodash": "^4.17.5",
+    "react": "16.0.0",
+    "react-native": "0.51.0",
+    "react-native-parallax-scroll-view": "^0.21.0",
+    "react-native-scrollable-tab-view": "^0.8.0",
+    "react-native-splash-screen": "^3.0.6",
+    "react-native-swipeout": "^2.3.3",
+    "react-native-swiper": "^1.5.13",
+    "react-native-vector-icons": "^4.5.0",
+    "react-navigation": "^1.5.8",
+    "string.fromcodepoint": "^0.2.1",
+    "teaset": "^0.5.6"
+  },
+  "devDependencies": {
+    "babel-jest": "23.0.0-alpha.0",
+    "babel-preset-react-native": "4.0.0",
+    "jest": "22.4.2",
+    "react-test-renderer": "16.0.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
