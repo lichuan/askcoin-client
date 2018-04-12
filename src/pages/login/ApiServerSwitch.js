@@ -19,13 +19,19 @@ import Button from '../../components/Button';
 import InputBox from '../../components/InputBox';
 
 import loginChoose from '../../resource/icons/login_choose.png';
-import ModalDropdown from 'react-native-modal-dropdown';
+import CommonPopupMenu from './CommonPopupMenu';
 
 export default class ApiServerSwitch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selectedIndex: 0,
+      inputLayout:{
+        x:0,
+        y:0,
+        width:0,
+        height:0,
+      }
     };
   }
 
@@ -48,7 +54,7 @@ export default class ApiServerSwitch extends Component {
   }
 
   switchLanguage() {
-    this.pickerModal && this.pickerModal.show();
+    this.popupMenu && this.popupMenu.open();
   }
 
   render() {
@@ -62,51 +68,39 @@ export default class ApiServerSwitch extends Component {
           {'请您选择API节点服务器'}
         </Text>
 
-        <ModalDropdown
-          dropdownStyle={styles.dropdownStyle}
-          style={styles.picker}
-          ref={(r)=>this.pickerModal = r}
-          options={this.apiList}
-          onSelect={(index, value)=> {
+        <InputBox
+          onLayout={(e)=>{
             this.setState({
-              selectedIndex:index
+              inputLayout: e.nativeEvent.layout
             })
           }}
-          defaultIndex={0}
-          renderRow={this.renderDropRow.bind(this)}>
-          <InputBox
-            onRightBtnPress={()=>this.switchLanguage()}
-            source={loginApi}
-            value={this.apiList[this.state.selectedIndex]}
-            itemStyle={styles.box}
-            editable={false}
-            placeholder={'请选择API节点服务器'}
-            showRightImage={true}/>
-        </ModalDropdown>
+          onRightBtnPress={()=>this.switchLanguage()}
+          source={loginApi}
+          value={this.apiList[this.state.selectedIndex]}
+          itemStyle={styles.box}
+          editable={false}
+          placeholder={'请选择API节点服务器'}
+          showRightImage={true}/>
 
         <Button
           onPress={()=>this.onRegister()}
           btnStyle={styles.bottomBtn}
           title={'进入问答社区'}/>
-      </View>
-    )
-  }
 
-  renderDropRow(option, index, isSelected) {
-    return(
-      <TouchableOpacity style={styles.pickerItem}
-                        key={index}>
-        <Text style={styles.pickerText}>
-          {option}
-        </Text>
-        {
-          isSelected
-            ? <Image
-              style={styles.choose}
-              source={loginChoose}/>
-            : null
-        }
-      </TouchableOpacity>
+        <CommonPopupMenu
+          menuStyle={{
+            top:this.state.inputLayout.y + this.state.inputLayout.height,
+            left:this.state.inputLayout.x,
+          }}
+          onItemSelected={(index)=>{
+            this.setState({
+              selectedIndex:index
+            })
+          }}
+          ref={r=>this.popupMenu = r}
+          list={this.apiList}
+          selectedIndex={this.state.selectedIndex}/>
+      </View>
     )
   }
 }

@@ -30,12 +30,14 @@ export default class InputBox extends Component{
     showRightImage:PropTypes.bool,
     source:Image.propTypes.source,
     onRightBtnPress:PropTypes.func,
-    onLayout:PropTypes.func
+    onLayout:PropTypes.func,
   };
 
   render(){
+    let MyComponent = this.props.editable ? View : TouchableOpacity
     return(
-      <View
+      <MyComponent
+        onPress={this.props.onRightBtnPress}
         onLayout={this.props.onLayout}
         style={[styles.box,this.props.itemStyle]}>
         <Image
@@ -53,20 +55,19 @@ export default class InputBox extends Component{
           editable={this.props.editable}
           maxLength={this.props.maxLength}/>
           {this.renderRightImage()}
-      </View>
+      </MyComponent>
     )
 }
 
   renderRightImage(){
       if(this.props.showRightImage){
           return(
-              <TouchableOpacity
-                onPress={this.props.onRightBtnPress}
-                  style={{marginLeft: 15}}>
-                  <Image
-                    source={loginBt}
-                    style={styles.loginBt}/>
-              </TouchableOpacity>
+              <View
+                style={{marginLeft: 15}}>
+                <Image
+                  source={loginBt}
+                  style={styles.loginBt}/>
+              </View>
           )
       }
     }

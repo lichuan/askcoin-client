@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
     borderRadius:28.5,
     left:9,
     position:'absolute',
-    backgroundColor:'#000c'
+    backgroundColor:'#cccc'
   },
 
   bottomBtn: {

@@ -15,6 +15,7 @@ import {
   View,
   Platform,
 } from 'react-native'
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import emoji from 'emoji-datasource'
 
@@ -49,9 +50,17 @@ const filteredEmojis = emoji.filter(e => isAndroid ? !!e.google : !includes(blac
 const groupedAndSorted = groupBy(orderBy(filteredEmojis, 'sort_order'), 'category')
 // convert the emoji object to a character
 const emojisByCategory = mapValues(groupedAndSorted, group => group.map(charFromEmojiObj))
-
 const CATEGORIES = ['People', 'Nature', 'Foods', 'Activity', 'Places', 'Objects', 'Symbols', 'Flags']
-
+const CATEGORIESOBJ = [
+  {name:'人类',key:'People'},
+  {name:'自然',key:'Nature'},
+  {name:'食物',key:'Foods'},
+  {name:'活动',key:'Activity'},
+  {name:'地点',key:'Places'},
+  {name:'物品',key:'Objects'},
+  {name:'符号',key:'Symbols'},
+  {name:'旗帜',key:'Flags'},
+];
 
 class EmojiPicker extends Component {
   state = {
@@ -80,17 +89,71 @@ class EmojiPicker extends Component {
 
   render() {
     return (
-      <View style={[styles.container, this.props.style]}>
-        <ScrollView
-          style={{paddingBottom:15}}
-          horizontal={true}>
-          {this.state.categories.map(this.renderCategory.bind(this))}
-        </ScrollView>
-        {this.props.hideClearButton ? null : <ClearButon {...this.props} />}
+      <View style={this.props.style}>
+        <ScrollableTabView
+          tabBarPosition={'bottom'}
+          style={styles.scrollableTabView}
+          tabBarUnderlineStyle={styles.tabBarUnderlineStyle}
+          tabBarTextStyle={styles.tabBarTextStyle}
+          tabBarInactiveTextColor={'#888'}
+          tabBarActiveTextColor={COLOR.normalColor}>
+          {
+            CATEGORIESOBJ.map((obj)=>{
+              return(
+                <EmojiView
+                  key={obj.key}
+                  onEmojiSelected={this.props.onEmojiSelected}
+                  category={obj.key}
+                  tabLabel={obj.name}/>
+              )
+            })
+          }
+        </ScrollableTabView>
+
+        {
+          this.props.hideClearButton
+            ? null
+            : <ClearButon {...this.props} />
+        }
       </View>
     )
   }
 
+}
+
+class EmojiView extends Component{
+  static propTypes = {
+    category:PropTypes.string.isRequired,
+    onEmojiSelected:PropTypes.func,
+    emojiSize:PropTypes.number,
+  };
+
+  render(){
+    let {category,onEmojiSelected,emojiSize} = this.props;
+    let emojis = emojisByCategory[category];
+    let size = emojiSize || defaultEmojiSize;
+    let style = {
+      fontSize: size-4,
+      color: 'black',
+      textAlign: 'center',
+      padding: padding,
+    };
+
+    return(
+      <ScrollView
+        style={{flex:1}}>
+        <View style={{flex:1,flexDirection:'row',flexWrap:'wrap', padding: 16}}>
+          {emojis.map(e =>
+            <Text style={style}
+                  key={e}
+                  onPress={() => onEmojiSelected && onEmojiSelected(e)}>
+              {e}
+            </Text>
+          )}
+        </View>
+      </ScrollView>
+    )
+  }
 }
 
 class EmojiCategory extends Component {
@@ -106,7 +169,7 @@ class EmojiCategory extends Component {
       color: 'black',
       textAlign: 'center',
       padding: padding,
-    }
+    };
 
     return (
       <View style={style.categoryOuter}>
@@ -148,16 +211,14 @@ const EmojiOverlay = props => (
 )
 
 let styles = StyleSheet.create({
-  container: {
-    padding: padding,
-  },
   clear:{
-    width:64,
-    height:40
+    width:128,
+    height:40,
+    justifyContent:'center',
+    alignItems:'center',
+    alignSelf:'center'
   },
   clearButton: {
-    width: 64,
-    height: 40,
     textAlign: 'center',
     color: 'black',
     textAlignVertical: 'center',
@@ -197,7 +258,17 @@ let styles = StyleSheet.create({
     justifyContent: 'center',
     textAlignVertical: 'center',
   },
-})
+  tabBarTextStyle: {
+    fontSize: 14,
+  },
+  tabBarUnderlineStyle: {
+    backgroundColor: COLOR.normalColor,
+    height: 2,
+  },
+  scrollableTabView: {
+    flex:1
+  },
+});
 
 EmojiPicker.propTypes = {
   onEmojiSelected: PropTypes.func.isRequired,
