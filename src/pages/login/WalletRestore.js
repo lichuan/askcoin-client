@@ -43,7 +43,6 @@ export default class WalletRestore extends Component {
         <KeyboardAvoidingView
           contentContainerStyle={{alignItems:'center'}}
           behavior={'position'}
-          keyboardVerticalOffset={50}
           style={styles.keyboard}>
           <Image
             style={styles.titleBg}

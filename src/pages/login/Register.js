@@ -45,7 +45,6 @@ export default class Register extends Component {
       <View style={styles.container}>
         <KeyboardAvoidingView
           behavior={'position'}
-          keyboardVerticalOffset={50}
           style={styles.keyboard}>
           <Image
             source={loginBg}

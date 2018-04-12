@@ -116,7 +116,6 @@ export default class index extends Component {
     return (
       <KeyboardAvoidingView
         behavior={'position'}
-        keyboardVerticalOffset={50}
         contentContainerStyle={styles.container}
         style={styles.container}>
         <View style={styles.container}>
