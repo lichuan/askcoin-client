@@ -1,4 +1,4 @@
-package com.askcoin;
+package me.askcoin;
 
 import android.app.Application;
 
