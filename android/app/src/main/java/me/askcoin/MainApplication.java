@@ -3,8 +3,6 @@ package me.askcoin;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-
-import me.askcoin.BuildConfig;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.facebook.react.ReactNativeHost;
