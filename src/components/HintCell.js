@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     height:40,
-    backgroundColor:'#fff2c8'
+    backgroundColor:'#fff2c8',
+    paddingHorizontal: 48
   },
   laBa: {
     width:21,

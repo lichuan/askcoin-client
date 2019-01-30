@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import arrowRight from '../resource/icons/arrow_right.png';
 import PropTypes from 'prop-types';
+import login from '../resource/icons/login_account.png'
 
 export default class RowItem extends Component {
   static propTypes = {
@@ -21,15 +22,18 @@ export default class RowItem extends Component {
     hideLine:PropTypes.bool
   };
   render() {
-    const {name, onPress,desc,hideLine} = this.props;
+    const {name, onPress,desc,hideLine, icon} = this.props;
     return (
       <TouchableOpacity
         onPress={onPress}>
         <View style={{backgroundColor:COLOR.whiteColor}}>
           <View style={styles.item}>
+            <View style={{flexDirection:'row',alignItems:'center'}}>
+            <Image style={{width:25,height:25}} source={icon}/>
             <Text style={styles.name}>
               {name}
             </Text>
+            </View>
             <View style={styles.rightItem}>
               <Text style={styles.desc}>
                 {desc}
@@ -61,7 +65,8 @@ const styles = StyleSheet.create({
   },
   name:{
     fontSize:FONTSIZE.primary,
-    color:COLOR.primaryTextColor
+    color:COLOR.primaryTextColor,
+    marginLeft:13
   },
   desc:{
     fontSize:FONTSIZE.primary,

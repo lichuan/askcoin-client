@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderRadius:5
   },
   title:{
-    color:COLOR.normalColor,
-    fontSize:FONTSIZE.normal,
+    color:COLOR.btnColor,
+    fontSize:17,
   }
 });

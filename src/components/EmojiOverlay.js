@@ -17,7 +17,8 @@ import {
 } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-import emoji from 'emoji-datasource'
+import emoji from 'emoji-datasource';
+import {I18n} from '../language/I18n'
 
 import {
   groupBy,
@@ -51,16 +52,16 @@ const groupedAndSorted = groupBy(orderBy(filteredEmojis, 'sort_order'), 'categor
 // convert the emoji object to a character
 const emojisByCategory = mapValues(groupedAndSorted, group => group.map(charFromEmojiObj))
 const CATEGORIES = ['People', 'Nature', 'Foods', 'Activity', 'Places', 'Objects', 'Symbols', 'Flags']
-const CATEGORIESOBJ = [
-  {name:'人类',key:'People'},
-  {name:'自然',key:'Nature'},
-  {name:'食物',key:'Foods'},
-  {name:'活动',key:'Activity'},
-  {name:'地点',key:'Places'},
-  {name:'物品',key:'Objects'},
-  {name:'符号',key:'Symbols'},
-  {name:'旗帜',key:'Flags'},
-];
+const CATEGORIESOBJ = ()=>{ return [
+  {name:I18n.t('people'),key:'People'},
+  {name:I18n.t('nature'),key:'Nature'},
+  {name:I18n.t('foods'),key:'Foods'},
+  {name:I18n.t('activity'),key:'Activity'},
+  {name:I18n.t('places'),key:'Places'},
+  {name:I18n.t('objects'),key:'Objects'},
+  {name:I18n.t('symbols'),key:'Symbols'},
+  {name:I18n.t('flags'),key:'Flags'},
+]};
 
 class EmojiPicker extends Component {
   state = {
@@ -98,7 +99,7 @@ class EmojiPicker extends Component {
           tabBarInactiveTextColor={'#888'}
           tabBarActiveTextColor={COLOR.normalColor}>
           {
-            CATEGORIESOBJ.map((obj)=>{
+            CATEGORIESOBJ().map((obj)=>{
               return(
                 <EmojiView
                   key={obj.key}

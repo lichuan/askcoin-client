@@ -18,7 +18,7 @@ import {
 } from "react-native";
 
 import PropTypes from 'prop-types';
-import thumbImg from '../resource/icons/my_gt_top.png';
+import thumbImg from '../resource/icons/zz_jb.png';
 
 var TRACK_SIZE = 4;
 var THUMB_SIZE = 20;
@@ -515,13 +515,17 @@ export default class Slider extends Component {
     let currentValue = this._getCurrentValue();
     if (!thumbImage) {
       return (
-        <ImageBackground
-          style={defaultStyles.thumbImage}
-          source={thumbImg}>
+        <View
+            resizeMode={'contain'}
+            style={defaultStyles.thumbBackground}>
+          <Image
+              style={defaultStyles.thumbImage}
+              resizeMode={'contain'}
+              source={thumbImg}/>
           <Text style={defaultStyles.descText}>
-            {"+" + currentValue + '/' + maximumValue}
+            {`+${Math.round(currentValue * this.props.rate)}/${Math.round(maximumValue * this.props.rate)}`}
           </Text>
-        </ImageBackground>
+        </View>
       );
     }
 
@@ -558,15 +562,17 @@ var defaultStyles = StyleSheet.create({
     opacity: 0.5,
   },
   thumbImage:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'flex-end',
-    paddingHorizontal:8,
-    width:65,
-    height:16,
+    height:12,
   },
   descText:{
+    width:'auto',
     fontSize:10,
-    color:'#ffff'
+    color:'#F0AB51'
+  },
+  thumbBackground: {
+    paddingHorizontal:6,
+    flexDirection:'row',
+    height:16,
+    alignItems:'center',
   }
 });

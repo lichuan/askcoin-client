@@ -142,7 +142,6 @@ const styles = StyleSheet.create({
     flex:1,
     marginHorizontal:0,
     borderRadius:10,
-    backgroundColor:COLOR.whiteColor,
   }
 });
 

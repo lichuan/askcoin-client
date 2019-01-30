@@ -11,19 +11,23 @@ import {
   StyleSheet,
   KeyboardAvoidingView
 } from 'react-native';
-import RegisterInputItem from '../../components/RegisterInputItem';
 import loginBg from '../../resource/icons/login_bg.png';
 import loginTb from '../../resource/icons/login_tb.png';
-import loginChoose from '../../resource/icons/login_choose.png';
 
 import Button from '../../components/Button';
 import InputBox from '../../components/InputBox';
 import CommonPopupMenu from './CommonPopupMenu';
+import { I18n } from '../../language/I18n'
+import {initRouter, setRouterName} from "../../net/net";
+
+const SharedPreferences = require('react-native-shared-preferences');
+
 
 export default class LanguageSwitch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      test:true,
       selectedIndex: 0,
       inputLayout:{
         x:0,
@@ -34,22 +38,31 @@ export default class LanguageSwitch extends Component {
     };
   }
 
+
+
+
+
   language = [
-    '汉语',
+    '中文',
     'English'
   ];
 
-
-  componentWillMount() {
-
+  componentWillMount(){
+    SharedPreferences.getItem('laned',(res)=>{
+      if(res === '1'){
+        this.props.navigation && this.props.navigation.replace('Register')
+      }
+    });
   }
 
-  componentDidMount() {
 
+  componentDidMount() {
+    initRouter(this)
   }
 
   onRegister() {
-    this.props.navigation && this.props.navigation.navigate('ApiServerSwitch',{name:'选择节点服务器'})
+    SharedPreferences.setItem('laned','1');
+    this.props.navigation && this.props.navigation.replace('Register',{name:'注册'})
   }
 
   switchLanguage() {
@@ -57,7 +70,8 @@ export default class LanguageSwitch extends Component {
   }
 
   render() {
-
+    setRouterName('LanguageSwitch');
+    initRouter(this)
     return (
       <View style={styles.container}>
         <Image
@@ -67,7 +81,7 @@ export default class LanguageSwitch extends Component {
           {'Switch Language'}
         </Text>
         <Text style={styles.titleCN}>
-          {'请您选择语言'}
+          {'请选择语言'}
         </Text>
 
         <InputBox
@@ -80,14 +94,14 @@ export default class LanguageSwitch extends Component {
           source={loginTb}
           itemStyle={styles.box}
           editable={false}
-          value={this.language[this.state.selectedIndex]}
-          placeholder={'请选择语言'}
+          value={I18n.locale === 'en'?'English':'中文'}
+          placeholder={I18n.t('switchLanguage')}
           showRightImage={true}/>
 
         <Button
           onPress={()=>this.onRegister()}
           btnStyle={styles.bottomBtn}
-          title={'进入'}/>
+          title={I18n.t('enter')}/>
 
         <CommonPopupMenu
           menuStyle={{
@@ -95,13 +109,20 @@ export default class LanguageSwitch extends Component {
             left:this.state.inputLayout.x,
           }}
           onItemSelected={(index)=>{
+            if(index===0){
+              I18n.locale='zh';
+              SharedPreferences.setItem('lan', 'zh')
+            }else {
+              I18n.locale='en';
+              SharedPreferences.setItem('lan', 'en')
+            }
             this.setState({
               selectedIndex:index
             })
           }}
           ref={r=>this.popupMenu = r}
           list={this.language}
-          selectedIndex={this.state.selectedIndex}/>
+          selectedIndex={I18n.locale === 'en'?1:0}/>
       </View>
     )
   }
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
   box:{
     marginHorizontal:0,
     height:45,
-    marginTop:20
+    marginTop:20,
   },
   pickerItem:{
     borderWidth:1,
@@ -146,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal:15,
     justifyContent:'space-between',
-    alignSelf:'center'
+    alignSelf:'center',
   },
   icon:{
     width: 16,

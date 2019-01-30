@@ -21,6 +21,8 @@ import HomeFocusedIcon from '../../resource/icons/home_bt1_click.png';
 import MyFocusedIcon from '../../resource/icons/home_bt2_click.png';
 import TransferFocusedIcon from '../../resource/icons/home_bt3_click.png';
 import AdvanceFocusedIcon from '../../resource/icons/home_bt4_click.png';
+import {I18n} from '../../language/I18n'
+
 
 const isShowLine = Platform.OS === 'android' && Platform.Version < 21;
 const Tabs = TabNavigator({
@@ -33,7 +35,7 @@ const Tabs = TabNavigator({
           normalSource={HomeNormalIcon}
           focusedSource={HomeFocusedIcon}
           focused={focused}
-          label={'抢答'}/>
+          label={I18n.t('questions')}/>
       ),
     }
   },
@@ -46,7 +48,7 @@ const Tabs = TabNavigator({
           normalSource={MyNormalIcon}
           focusedSource={MyFocusedIcon}
           focused={focused}
-          label={'我的'}/>
+          label={I18n.t('my')}/>
       ),
     }
   },
@@ -59,7 +61,7 @@ const Tabs = TabNavigator({
           normalSource={TransferNormalIcon}
           focusedSource={TransferFocusedIcon}
           focused={focused}
-          label={'转账'}/>
+          label={I18n.t('transfer')}/>
       ),
     }
   },
@@ -72,7 +74,7 @@ const Tabs = TabNavigator({
           normalSource={AdvanceNormalIcon}
           focusedSource={AdvanceFocusedIcon}
           focused={focused}
-          label={'高级'}/>
+          label={I18n.t('more')}/>
       ),
     }
   },

@@ -13,96 +13,100 @@ import {
   FlatList,
   StatusBar,
   Platform,
-  KeyboardAvoidingView
+  KeyboardAvoidingView, Modal, Clipboard, ScrollView
 } from 'react-native';
+import UserStore from '../../stores/user'
+import {observer} from 'mobx-react'
 import zzBg from '../../resource/icons/zz_bg.png';
 
-import headerBg from '../../resource/icons/1.png';
-import userBg from '../../resource/icons/2.png';
+import userBg from '../../resource/avatars/1.png';
 import zzJbIcon from '../../resource/icons/zz_jb.png';
 import zzMoneyIcon from '../../resource/icons/zz_money.png';
-import zzTxIcon from '../../resource/icons/zz_tx.png';
 import zzBtIcon from '../../resource/icons/zz_bt.png';
-import zzLine from '../../resource/icons/zz_line.png';
 import zzBzIcon from '../../resource/icons/zz_bz.png';
 import zzIdIcon from '../../resource/icons/zz_id.png';
 
 import InputBox from '../../components/InputBox';
 import NavBar from '../../components/NavBar';
 import Button from '../../components/Button';
+import ModalContainer from '../../views/modalContainer'
+import {I18n} from '../../language/I18n';
+import {queryAccount, transfer, History, toast, handleErrorModal, appState, initRouter} from '../../net/net'
+import {defaultAvatars} from "../../resource/avatars";
+import styled from 'styled-components/native';
+
+var Buffer = require('buffer/').Buffer;
+
+
+Date.prototype.format = function(fmt) {
+  var o = {
+    "M+" : this.getMonth()+1,                 //month
+    "d+" : this.getDate(),                    //day
+    "h+" : this.getHours(),                   //hour
+    "m+" : this.getMinutes(),                 //min
+    "s+" : this.getSeconds(),                 //s
+    "q+" : Math.floor((this.getMonth()+3)/3), //
+    "S"  : this.getMilliseconds()             //ms
+  };
+  if(/(y+)/.test(fmt)) {
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+  }
+  for(var k in o) {
+    if(new RegExp("("+ k +")").test(fmt)){
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    }
+  }
+  return fmt;
+}
+
+
+String.prototype.format = function() {
+  if (arguments.length == 0) return this;
+  var obj = arguments[0];
+  var s = this;
+  for (var key in obj) {
+    s = s.replace(new RegExp("\\{\\{" + key + "\\}\\}", "g"), obj[key]);
+  }
+  return s;
+}
+
+const Triangle = styled.View`
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-left-color: #E2E2E4;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-top-width: 6px;
+`;
+
+const Line = styled.View`
+  height: 100%;
+  width: 2px;
+  background-color: #E2E2E4;
+`
+
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
-export default class index extends Component {
+class index extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex:0
+      selectedIndex: 0,
+      memo: false,
+      id: '',
+      amount: '',
+      memoContent: '',
+      memoModalContent: ''
     };
   }
 
-
-  data = [
-    {
-      date:'2018/03/26',
-      time:'21:57',
-      avatar:userBg,
-      title:'回复打赏',
-      status:'+',
-      money:60,
-      desc:'Sally给你打赏了60ASKCOIN哦'
-    },
-    {
-      date:'2018/03/26',
-      time:'21:54',
-      avatar:headerBg,
-      title:'手续费',
-      status:'-',
-      money:100,
-      desc:'你被扣除了手续费60ASKCOIN哦'
-    },
-    {
-      date:'2018/03/26',
-      time:'21:57',
-      avatar:userBg,
-      title:'回复打赏',
-      status:'+',
-      money:60,
-      desc:'Sally给你打赏了60ASKCOIN哦'
-    },
-    {
-      date:'2018/03/26',
-      time:'21:54',
-      avatar:headerBg,
-      title:'手续费',
-      status:'-',
-      money:100,
-      desc:'你被扣除了手续费60ASKCOIN哦'
-    },
-    {
-      date:'2018/03/26',
-      time:'21:57',
-      avatar:userBg,
-      title:'回复打赏',
-      status:'+',
-      money:60,
-      desc:'Sally给你打赏了60ASKCOIN哦'
-    },
-    {
-      date:'2018/03/26',
-      time:'21:54',
-      avatar:headerBg,
-      title:'手续费',
-      status:'-',
-      money:100,
-      desc:'你被扣除了手续费60ASKCOIN哦'
-    }
-  ];
   componentWillMount() {
 
   }
 
   componentDidMount() {
+    initRouter(this)
     /*this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setHidden(false);
     });*/
@@ -114,311 +118,538 @@ export default class index extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-        behavior={'position'}
-        contentContainerStyle={styles.container}
-        style={styles.container}>
-        <View style={styles.container}>
-          {this.renderHeader()}
-          {
-            this.state.selectedIndex === 0
-              ? this.renderFirstPage()
-              : this.renderSecondPage()
-          }
-        </View>
-      </KeyboardAvoidingView>
+        <KeyboardAvoidingView
+            behavior={'position'}
+            contentContainerStyle={styles.container}
+            style={styles.container}>
+          <ScrollView keyboardShouldPersistTaps={true}>
+          <View style={styles.container}>
+            {this.renderHeader()}
+            {
+              this.state.selectedIndex === 0
+                  ? this.renderFirstPage()
+                  : this.renderSecondPage()
+            }
+          </View>
+          <Modal transparent
+                 visible={this.state.memo}>
+            <ModalContainer>
+              <View style={{
+                width: ScreenWidth / 8 * 7,
+                paddingVertical: 20,
+                paddingHorizontal: 15,
+                alignItems: 'center',
+                backgroundColor: '#fff',
+                borderRadius: 5
+              }}>
+                <Text style={{fontSize: 18}}>{'memo'}</Text>
+                <Text
+                    style={{
+                      backgroundColor: '#FFF2C8',
+                      width: ScreenWidth / 8 * 7 - 30,
+                      padding: 10,
+                      marginTop: 20,
+                      borderRadius: 5
+                    }}
+                >{Buffer.from(this.state.memoModalContent,'base64').toString()}</Text>
+                <View style={{
+                  width: ScreenWidth / 8 * 7 - 30,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 24
+                }}>
+                  <Button title={I18n.t('copyMemo')} onPress={()=>{
+                    Clipboard.setString(Buffer.from(this.state.memoModalContent, 'base64').toString());
+                    toast(I18n.t('copyOK'));
+                  }}/>
+                  <Button title={I18n.t('close')}
+                          onPress={() => {
+                            this.setState({memo: false})
+                          }}/>
+                </View>
+              </View>
+            </ModalContainer>
+
+          </Modal>
+          </ScrollView>
+        </KeyboardAvoidingView>
     )
   }
 
-  renderHeader(){
-    return(
-      <ImageBackground
-        source={zzBg}
-        style={styles.bg}>
-        <NavBar
-          titleList={['转账','转账记录']}
-          onPress={()=>{
-            this.props.navigation && this.props.navigation.goBack();
-          }}
-          onChangeSegment={(index)=>{
-            this.setState({
-              selectedIndex:index
-            });
-          }}/>
-        <Image
-          source={headerBg}
-          style={styles.header}/>
-        <View style={styles.headerItem}>
-          <Text style={styles.nameText}>{'杨欧巴'}</Text>
-          <Text style={styles.idText}>{'ID:123456'}</Text>
-        </View>
-        <View style={styles.headerItem}>
-          <Text style={styles.amtTitle}>{'账户余额:'}</Text>
-          <View style={styles.amtItem}>
-            <Image
-              style={styles.amtImg}
-              source={zzJbIcon}/>
-            <Text style={styles.amtText}>{'200'}</Text>
+  renderHeader() {
+    return (
+        <ImageBackground
+            source={zzBg}
+            style={styles.bg}>
+          <NavBar
+              titleList={[I18n.t('transfer'), I18n.t('transactionHistory')]}
+              onPress={() => {
+                this.props.navigation && this.props.navigation.goBack();
+              }}
+              onChangeSegment={(index) => {
+                this.setState({
+                  selectedIndex: index
+                });
+              }}/>
+          <Image
+              resizeMode={'contain'}
+              source={defaultAvatars[UserStore.avatar - 1].avatar}
+              style={styles.header}/>
+          <View style={styles.headerItem}>
+            <Text style={styles.nameText}>{Buffer.from(UserStore.name,'base64').toString()}</Text>
+            <Text style={styles.idText}>{`ID:${UserStore.id}`}</Text>
           </View>
-        </View>
-      </ImageBackground>
+          <View style={styles.headerItem}>
+            <Text style={styles.amtTitle}>{I18n.t('balance')}</Text>
+            <View style={styles.amtItem}>
+              <Image
+                  resizeMode={'contain'}
+                  style={styles.amtImg}
+                  source={zzJbIcon}/>
+              <Text style={styles.amtText}>{UserStore.balance}</Text>
+            </View>
+          </View>
+        </ImageBackground>
     )
   }
 
   renderFirstPage() {
-    return(
-      <View style={styles.firstPage}>
+    const {amount, memoContent} = this.state;
+    console.log('queryuser----->',UserStore.queryUser)
+    return (
+        <View style={styles.firstPage}>
           <View style={styles.content}>
             <InputBox
-              source={zzIdIcon}
-              editable={true}
-              placeholder={'请输入收款人ID'}
-              showRightImage={false}/>
+                onChangeText={(text) => {
+                  this.setState({id: text === ''?'':parseInt(text)})
+                  setTimeout(() => {
+                    if(!this.state.id || this.state.id === 0){
+                      UserStore.handleQueryUser({
+                        name: '',
+                        avatar: -1,
+                        id: 0,
+                        pubkey:''
+                      })
+                    }else if(parseInt(text) === this.state.id) {
+                      queryAccount(this.state.id)
+                    }
+                  }, 500)
+                }}
+                value={this.state.id.toString()}
+                keyboardType={'numeric'}
+                source={zzIdIcon}
+                editable={true}
+                placeholder={I18n.t('idNumber')}
+                showRightImage={false}/>
             <Image
-              source={zzBtIcon}
-              style={styles.bt}/>
-            <ImageBackground
-              style={styles.tx}
-              source={zzTxIcon}>
-              <Image
-                source={userBg}
-                style={styles.user}/>
-              <View
-                style={styles.grayUser}/>
-            </ImageBackground>
+                source={zzBtIcon}
+                style={styles.bt}/>
+            <View style={styles.tx}>
+              <View style={styles.avatarBg}>
+                <Image
+                    resizeMode={'contain'}
+                    source={UserStore.queryUser.avatar === -1 ? userBg : defaultAvatars[UserStore.queryUser.avatar-1].avatar}
+                    style={styles.user}/>
+              </View>
+              <TextInput
+                  editable={false}
+                  underlineColorAndroid={'transparent'}
+                  value={UserStore.queryUser.name === '' ? I18n.t('autoName') : Buffer.from(UserStore.queryUser.name, 'base64').toString()}
+                  style={[styles.nickname,{color: UserStore.queryUser.name === ''? '': '#BE8200'}]}
+              />
+            </View>
 
             <InputBox
-              itemStyle={styles.moneyItem}
-              source={zzMoneyIcon}
-              editable={true}
-              placeholder={'请输入您的转账金额'}
-              showRightImage={false}/>
+                value={this.state.amount.toString()}
+                onChangeText={(text) => {
+                  this.setState({amount: text === ''? '': parseInt(text)})
+                }}
+                keyboardType={'numeric'}
+                itemStyle={styles.moneyItem}
+                source={zzMoneyIcon}
+                editable={true}
+                placeholder={I18n.t('transferAmount')}
+                showRightImage={false}/>
             <InputBox
-              itemStyle={styles.bzItem}
-              source={zzBzIcon}
-              editable={true}
-              placeholder={'请输入您的备注信息'}
-              showRightImage={false}/>
+                value={this.state.memoContent}
+                onChangeText={(text) => {
+                  this.setState({memoContent: text})
+                }}
+                itemStyle={styles.bzItem}
+                source={zzBzIcon}
+                editable={true}
+                placeholder={I18n.t('inputMemo')}
+                showRightImage={false}/>
           </View>
           <Button
-            title={'发送'}
-            btnStyle={styles.bottomBtn}/>
-      </View>
+              onPress={() => {
+                initRouter(this)
+                console.log('id------>',this.state.id)
+                if(this.state.id === '' || isNaN(this.state.id)){
+                  toast(I18n.t('inputError13'))
+                  return
+                }
+                if(this.state.id === 0 ){
+                  toast(I18n.t('inputError17'))
+                  return
+                }
+                if(amount === '' || isNaN(this.state.amount)){
+                  toast(I18n.t('inputError14'))
+                  return
+                }
+                if(amount === 0){
+                  toast(I18n.t('inputError16'))
+                  return
+                }
+                transfer(amount, memoContent)
+              }}
+              title={I18n.t('send')}
+              btnStyle={styles.bottomBtn}/>
+        </View>
     )
   }
 
   renderSecondPage() {
-    return(
-      <FlatList
-        style={styles.list}
-        data={this.data}
-        keyExtractor={(item,index)=>index}
-        renderItem={({item,index})=>this.renderItem(item,index)}
-        ItemSeparatorComponent={()=>this.renderItemSeparator()}/>
+    return (
+        <FlatList
+            style={styles.list}
+            data={History.history.slice().reverse()}
+            keyExtractor={(item, index) => index}
+            renderItem={({item, index}) => this.renderItem(item, index)}
+            ItemSeparatorComponent={() => this.renderItemSeparator()}/>
     )
   }
 
-  renderItem(item,index){
-    return(
-      <View style={styles.item}>
-        <View style={styles.leftItem}>
-          <Text style={styles.date}>
-            {item.date}
-          </Text>
-          <Text style={[styles.date,{marginTop:14}]}>
-            {item.time}
-          </Text>
-        </View>
-        <Image
-          style={styles.line}
-          source={zzLine}/>
-        <Image
-          style={styles.avatar}
-          source={item.avatar}/>
+  loadHistoryContent = (history) => {
+    const returnHistory = {};
+    if(history.target_name){
+      history.name = Buffer.from(history.target_name, 'base64').toString();
+    }
+    switch (history.type) {
+      case 1:
+        returnHistory.title = I18n.t('tt1');
+        returnHistory.content = I18n.t('tx1',history);
+        break;
+      case 2:
+        returnHistory.title = I18n.t('tt2');
+        returnHistory.content = I18n.t('tx2',history);
+        break;
+      case 3:
+        returnHistory.title = I18n.t('tt1');
+        returnHistory.content = I18n.t('tx3', history);
+        break;
+      case 4:
+        returnHistory.title = I18n.t('tt5');
+        returnHistory.content = I18n.t('tx4', history);
+        break;
+      case 5:
+        returnHistory.title = I18n.t('tt1');;
+        returnHistory.content = I18n.t('tx5',history);
+        break;
+      case 6:
+        returnHistory.title = I18n.t('tt1');;
+        returnHistory.content = I18n.t('tx6', history);
+        break;
+      case 7:
+        returnHistory.title = I18n.t('tt4');
+        returnHistory.content = I18n.t('tx7', history);
+        break;
+      case 8:
+        returnHistory.title = I18n.t('tt4');
+        returnHistory.content = I18n.t('tx8', history);
+        break;
+      case 9:
+        returnHistory.title = I18n.t('tt1');
+        returnHistory.content = I18n.t('tx9', history);
+        break;
+      case 10:
+        returnHistory.title = I18n.t('tt5');
+        returnHistory.content = I18n.t('tx10', history);
+        break;
+      case 11:
+        returnHistory.title = I18n.t('tt6');
+        returnHistory.content = I18n.t('tx11', history);
+        break;
+      case 12:
+        returnHistory.title = I18n.t('tt6');
+        returnHistory.content = I18n.t('tx12', history);
+        break;
+      default:
+    }
+    return returnHistory;
+  };
 
-        <View style={styles.rightItem}>
-          <View style={styles.titleItem}>
-            <Text style={styles.title}>{item.title}</Text>
+  loadConfirms = (app_block_id,block_id)=>{
+    let confirms = 0;
+    if(app_block_id - block_id +1 < 0 ||  app_block_id - block_id +1 === 0 ){
+      confirms = 0;
+    }else if(app_block_id - block_id +1 > 1000) {
+      confirms = 1000
+    }else {
+      confirms = app_block_id - block_id +1
+    }
+    return confirms === 1000? 'confirmed': `${confirms} confirms`
+  };
 
-            <View style={{flexDirection:'row',alignItems:'center'}}>
-              <Text style={styles.moneyText}>{item.status}</Text>
-              <Image
-                source={zzJbIcon}
-                style={styles.itemMoney}/>
-              <Text style={styles.moneyText}>{item.money}</Text>
-            </View>
 
+  renderItem(item, index) {
+    const date = new Date(item.utc*1000);
+    return (
+        <View style={styles.item}>
+          <View style={styles.leftItem}>
+            <Text style={styles.date}>
+              {`${date.format("yyyy/MM/dd")}`}
+            </Text>
+            <Text style={[styles.date, {marginTop: 14}]}>
+              {`${date.toLocaleTimeString()}`}
+            </Text>
           </View>
-          <Text
-            numberOfLines={2}
-            style={styles.desc}>
-            {item.desc}
-          </Text>
+          <Line/>
+          <Triangle/>
+          {item.target_id === 0 ?(
+              <Image
+                  style={styles.avatar}
+                  source={defaultAvatars[UserStore.avatar-1].avatar}/>
+          ): (
+              <Image
+                  style={styles.avatar}
+                  source={defaultAvatars[item.target_avatar -1].avatar}/>
+          )}
+          <View style={styles.rightItem}>
+            <View style={styles.titleItem}>
+              <Text style={styles.title}>{this.loadHistoryContent(item).title}</Text>
+              <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+                <Text style={styles.moneyText}>{[1,3,4,5,6,7,9].indexOf(item.type)=== -1?'+':'-'}</Text>
+                <Image
+                    resizeMode={'contain'}
+                    source={zzJbIcon}
+                    style={styles.itemMoney}/>
+                <Text style={[styles.moneyText, {marginLeft: 4}]}>{item.change}</Text>
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => {
+
+            }}>
+              <Text
+                  style={styles.desc}>
+                {this.loadHistoryContent(item).content}
+              </Text>
+            </TouchableOpacity>
+                <View style={{flexDirection: 'row', alignSelf: 'flex-end', marginTop: 8}}>
+                  {item.memo ? (
+                      <TouchableOpacity onPress={() => {
+                        this.setState({memo: true, memoModalContent: item.memo})
+                      }}>
+                        <Text
+                            style={{
+                              color: '#BE8200',
+                              backgroundColor: '#FFE457',
+                              fontSize: 12,
+                              borderRadius: 5,
+                              paddingHorizontal: 4
+                            }}>{'memo'}</Text>
+                      </TouchableOpacity>
+                  ):(null)}
+                  <Text style={{
+                    color: '#3C7C65',
+                    backgroundColor: '#7BF0C5',
+                    fontSize: 12,
+                    marginLeft: 12,
+                    borderRadius: 5,
+                    paddingHorizontal: 4
+                  }}>{this.loadConfirms(appState.blockID, item.block_id)}</Text>
+                </View>
+          </View>
         </View>
-      </View>
     )
   }
 
-  renderItemSeparator(){
-    return(
-      <View style={{height:1,backgroundColor:COLOR.bgColor}}/>
+  renderItemSeparator() {
+    return (
+        <View style={{height: 1, backgroundColor: COLOR.bgColor}}/>
     )
   }
 }
 
+export default observer(index)
+
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    paddingTop:Platform.OS === 'ios' ? IphoneTop : 0,
-    backgroundColor:COLOR.bgColor
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? IphoneTop : 0,
+    backgroundColor: COLOR.bgColor
   },
-  bg:{
+  bg: {
     width: ScreenWidth,
     height: ScreenWidth / 1.984,
-    alignItems:'center'
+    alignItems: 'center'
   },
-  header:{
-    width:65,
-    height:65,
-    borderRadius:32.5,
-    marginVertical:15
+  header: {
+    width: 65,
+    height: 65,
+    marginVertical: 15
   },
-  nameText:{
-    fontSize:FONTSIZE.normal,
-    color:'#f5ba1aff',
+  nameText: {
+    fontSize: FONTSIZE.normal,
+    color: '#BE8200',
   },
-  idText:{
-    marginLeft:15,
-    fontSize:FONTSIZE.small,
-    color:'#f5ba1aff'
+  idText: {
+    marginLeft: 15,
+    fontSize: FONTSIZE.small,
+    color: '#BE8200'
   },
-  amtTitle:{
-    fontSize:FONTSIZE.small,
-    color:'#f5ba1aff'
+  amtTitle: {
+    fontSize: 14,
+    color: '#BE8200'
   },
-  amtText:{
-    fontSize:FONTSIZE.normal,
-    color:'#f5ba1aff',
+  amtText: {
+    fontSize: 14,
+    color: '#BE8200',
   },
-  headerItem:{
-    flexDirection:'row',
-    alignItems:'center'
+  headerItem: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  amtItem:{
-    flexDirection:'row',
-    alignItems:'center',
-    marginLeft:15
+  amtItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15
   },
-  amtImg:{
-    width:16,
-    height:17,
-    marginRight:8
+  amtImg: {
+    width: 14,
+    height: 18,
+    marginRight: 8
   },
-  firstPage:{
-    flex:1,
-    padding:10
+  firstPage: {
+    flex: 1,
+    padding: 10
   },
-  content:{
-    backgroundColor:COLOR.whiteColor,
-    borderRadius:5,
-    paddingVertical:15,
-    paddingHorizontal:10,
-    alignItems:'center'
+  content: {
+    backgroundColor: COLOR.whiteColor,
+    borderRadius: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    alignItems: 'center'
   },
-  moneyItem:{
-    marginTop:17,
+  moneyItem: {
+    marginTop: 17,
   },
-  bzItem:{
-    marginTop:14
+  bzItem: {
+    marginTop: 14
   },
-  bt:{
-    marginTop:15,
-    width:34,
-    height:29
+  bt: {
+    marginTop: 15,
+    width: 34,
+    height: 29
   },
-  tx:{
-    width:298,
-    height:75,
-    justifyContent:'center'
+  tx: {
+    paddingHorizontal: 8,
+    width: 325,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
-  user:{
-    width:57,
-    height:57,
-    borderRadius:28.5,
-    marginLeft:9
+  user: {
+    width: 57,
+    height: 57,
   },
 
-  grayUser:{
-    width:57,
-    height:57,
-    borderRadius:28.5,
-    left:9,
-    position:'absolute',
-    backgroundColor:'#cccc'
+  grayUser: {
+    width: 57,
+    height: 57,
+    borderRadius: 28.5,
+    left: 9,
+    position: 'absolute',
+    backgroundColor: '#cccc'
   },
 
   bottomBtn: {
-    width:325,
-    marginTop:2,
-    alignSelf:'center'
+    width: 325,
+    marginTop: 2,
+    alignSelf: 'center'
   },
-  list:{
-    flex:1,
-    paddingVertical:10,
-    backgroundColor:COLOR.bgColor,
-    paddingHorizontal:10
+  list: {
+    flex: 1,
+    paddingVertical: 10,
+    backgroundColor: COLOR.bgColor,
+    paddingHorizontal: 10
   },
-  item:{
-    flexDirection:'row',
-    backgroundColor:COLOR.whiteColor,
-    alignItems:'center'
+  item: {
+    flexDirection: 'row',
+    backgroundColor: COLOR.whiteColor,
+    alignItems: 'center',
   },
-  leftItem:{
-    paddingHorizontal:15,
-    alignItems:'center',
-    justifyContent:'center'
+  leftItem: {
+    paddingHorizontal: 15,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  date:{
-    fontSize:FONTSIZE.small,
-    color:'#f3bd7c'
+  date: {
+    fontSize: FONTSIZE.small,
+    color: '#f3bd7c'
   },
-  line:{
-    width:9,
-    height:79,
-    resizeMode:'contain',
-    marginRight:14
+  line: {
+    width: 9,
+    height: '100%',
+    resizeMode: 'contain',
+    marginRight: 14
   },
-  avatar:{
-    width:57,
-    height:57,
-    resizeMode:'contain'
+  avatar: {
+    width: 57,
+    height: 57,
+    resizeMode: 'contain'
   },
-  rightItem:{
-    paddingHorizontal:15,
-    flex:1,
-    justifyContent:'center'
+  rightItem: {
+    marginTop: 20,
+    paddingHorizontal: 15,
+    flex: 1,
+    justifyContent: 'center',
+    marginBottom: 24,
   },
-  titleItem:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  titleItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
-  title:{
-    fontSize:FONTSIZE.normal,
-    color:'#f1ac08'
+  title: {
+    marginTop: 8,
+    fontSize: FONTSIZE.normal,
+    color: '#f1ac08',
   },
-  moneyText:{
-    fontSize:FONTSIZE.normal,
-    color:'#f8d8b6'
+  moneyText: {
+    fontSize: 14,
+    color: '#F0AB51'
   },
-  itemMoney:{
-    width:16,
-    height:17,
-    marginHorizontal:8
+  itemMoney: {
+    width: 14,
+    height: 18,
+    marginLeft: 8
   },
-  desc:{
-    fontSize:FONTSIZE.small,
-    color:'#555',
-    marginTop:8
+  desc: {
+    fontSize: FONTSIZE.small,
+    color: '#555',
+    lineHeight: 20
   },
+  avatarBg: {
+    width: 82,
+    height: 82,
+    borderRadius: 41,
+    backgroundColor: '#FFFBDF',
+    borderWidth: 1,
+    borderColor: COLOR.borderColor,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100
+  },
+  nickname: {
+    backgroundColor: '#FFFBDF',
+    textAlign: 'center',
+    height: 40,
+    marginLeft: -8,
+    flex: 1,
+    paddingLeft: -8,
+    borderRadius: 5,
+    borderColor: COLOR.borderColor,
+    borderWidth: 1,
+  }
 });

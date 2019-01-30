@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   normalTitle:{
     fontSize:FONTSIZE.primary,
-    color:'#f5ba1aff',
+    color:'#BE8200',
   },
   selectedTitle:{
     fontSize:FONTSIZE.primary,

@@ -9,12 +9,18 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  Modal
+  Modal,
+  ToastAndroid
 } from 'react-native';
 import PropTypes from 'prop-types';
 import InputBox from '../../components/InputBox';
 import Button from '../../components/Button';
 import ApiIcon from '../../resource/icons/api.png';
+import ip_img from '../../resource/icons/ip.png';
+import {I18n} from "../../language/I18n";
+import {toast} from '../../net/net'
+
+
 
 const leftValue = (ScreenWidth - 285 - 40) / 2;
 export default class ApiPopup extends Component {
@@ -26,7 +32,8 @@ export default class ApiPopup extends Component {
     super(props);
     this.state = {
       visible: false,
-      value:''
+      address:'',
+      name:''
     }
   }
 
@@ -42,20 +49,37 @@ export default class ApiPopup extends Component {
   close() {
     this.setState({
       visible: false,
-      value: ''
+      name: '',
+      address:''
     });
     this.props.onRequestClose && this.props.onRequestClose();
   }
 
 
-  onCommit(){
-    let v = this.state.value.trim();
-    if(!v){
-      return;
-    }else{
-
+  onCommit=()=>{
+    const name = this.state.name.trim();
+    const address = this.state.address.trim();
+    if(name === ''){
+      toast(I18n.t('inputAPINodeName'));
+      return
     }
-  }
+    if(address === ''){
+      toast(I18n.t('InputAPINodeAddress'));
+      return
+    }
+    if(address.indexOf('ws://') !== 0){
+      toast(I18n.t('apiStartWithws'));
+      return
+    }
+
+    if(address.indexOf(' ') !== -1){
+      toast(I18n.t('apiNoSpace'));
+      return
+    }
+
+      this.setState({visible:false});
+      this.props.onAdd && this.props.onAdd(name, address)
+  };
 
 
   render() {
@@ -79,17 +103,27 @@ export default class ApiPopup extends Component {
           <View style={styles.alert}>
             <InputBox
               onChangeText={(v)=>{
-                this.setState({value:v})
+                this.setState({name:v})
               }}
-              value={this.state.value}
-              placeholder={'请输入API节点服务器'}
+              value={this.state.name}
+              placeholder={I18n.t('inputAPINodeName')}
               source={ApiIcon}
               itemStyle={styles.input}
               showRightImage={false}/>
+            <InputBox
+                onChangeText={(v)=>{
+                  v = v.replace(/：/g,":")
+                  this.setState({address:v})
+                }}
+                value={this.state.address}
+                placeholder={I18n.t('InputAPINodeAddress')}
+                source={ip_img}
+                itemStyle={[styles.input,{marginTop:20}]}
+                showRightImage={false}/>
             <Button
-              onPress={()=>{
-                this.onCommit()
-              }}
+              onPress={
+                this.onCommit
+              }
               btnStyle={styles.btn}
               title={'确定'}/>
           </View>

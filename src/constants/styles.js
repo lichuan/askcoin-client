@@ -21,6 +21,7 @@ const COLOR = {
   bgColor:'#f8f8f8',
   diverColor:'#e7e7e7',
   whiteColor:'#fff',
+  btnColor:'#BE8200'
 };
 
 const FONTSIZE = {

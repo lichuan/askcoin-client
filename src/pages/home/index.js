@@ -15,108 +15,39 @@ import {
   ScrollView,
   Platform
 } from 'react-native';
+import {I18n} from '../../language/I18n'
+import {observer} from 'mobx-react/native'
+import TopicStore from '../../stores/topic'
+import UserStore from '../../stores/user'
+
+var Buffer = require('buffer/').Buffer
+
+
 import bg from '../../resource/icons/bg.png';
-import headerBg from '../../resource/icons/1.png';
-import homeMoneyIcon from '../../resource/icons/home_money.png';
+import homeMoneyIcon from '../../resource/icons/zz_jb.png';
 import homeYmIcon from '../../resource/icons/home_ym.png';
-import homeBt from '../../resource/icons/home_bt.png';
-import itemHeaderBg1 from '../../resource/icons/2.png';
-import itemHeaderBg2 from '../../resource/icons/3.png';
-import itemHeaderBg3 from '../../resource/icons/4.png';
+import homeBtEN from '../../resource/icons/home_bt.png';
+import homeBtCH from '../../resource/icons/home_bt_73.png';
+import {appState, initRouter,compare} from '../../net/net'
+import {defaultAvatars} from '../../resource/avatars'
+
+
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
-export default class index extends Component {
+ class index extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
-  data = [
-    {
-      img:itemHeaderBg1,
-      name:'王玉林',
-      id:'#25689',
-      money:300,
-      question:'为什么共享汽车可以作为现阶段的资本风口呢？对此您有什么看法？'
-    },
-    {
-      img:itemHeaderBg2,
-      name:'王大林',
-      id:'#123456',
-      money:223,
-      question:'有没有朋友一起去喝酒？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    },
-    {
-      img:itemHeaderBg2,
-      name:'王大林',
-      id:'#123456',
-      money:223,
-      question:'有没有朋友一起去喝酒？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    },
-    {
-      img:itemHeaderBg2,
-      name:'王大林',
-      id:'#123456',
-      money:223,
-      question:'有没有朋友一起去喝酒？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    },
-    {
-      img:itemHeaderBg2,
-      name:'王大林',
-      id:'#123456',
-      money:223,
-      question:'有没有朋友一起去喝酒？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    },
-    {
-      img:itemHeaderBg3,
-      name:'王小林',
-      id:'#23333',
-      money:233,
-      question:'求四川老乡？'
-    }
-  ];
 
   componentWillMount() {
 
   }
 
   componentDidMount() {
+    initRouter(this)
     /*this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setHidden(true);
     });*/
@@ -128,246 +59,251 @@ export default class index extends Component {
 
   render() {
     return (
-      <ScrollView
-        stickyHeaderIndices={[1]}
-        style={styles.container}>
-        {this.renderHeader()}
-        {this.renderHeaderItem()}
-        {this.renderListView()}
-      </ScrollView>
+        <ScrollView
+            stickyHeaderIndices={[1]}
+            style={styles.container}>
+          {this.renderHeader()}
+          {this.renderHeaderItem()}
+          {this.renderListView()}
+        </ScrollView>
     )
   }
 
 
-  renderHeader(){
-    return(
-      <ImageBackground
-        source={bg}
-        style={styles.bg}>
-        <Text
-          style={styles.title}>
-          {'ASKCOIN'}
-        </Text>
-        <View style={styles.info}>
-          <Image
-            source={headerBg}
-            style={styles.header}/>
-          <View style={styles.headerRight}>
-            <View style={styles.headerRightItem}>
-              <Text style={styles.title}>
-                {'杨欧巴'}
-              </Text>
-              <Text style={styles.idText}>
-                {'#1234569'}
-              </Text>
-            </View>
-            <View style={[styles.headerRightItem,{marginTop:16}]}>
-              <Text style={styles.amtTitle}>
-                {'账户余额:'}
-              </Text>
-              <View style={styles.amtItem}>
-                <Image
-                  style={styles.amtImg}
-                  source={homeMoneyIcon}/>
-                <Text style={styles.amtText}>
-                  {200}
-                </Text>
+  renderHeader() {
+    return (
+        <ImageBackground
+            source={bg}
+            style={styles.bg}>
+          <Text
+              style={styles.title}>
+            {'ASKCOIN'}
+          </Text>
+          <View style={styles.info}>
+            <Image
+                resizeMode={'contain'}
+                source={defaultAvatars[UserStore.avatar-1].avatar}
+                style={styles.header}/>
+            <View style={styles.headerRight}>
+              <View style={styles.headerRightItem}>
+                <Text style={styles.title}>{Buffer.from(UserStore.name,'base64').toString()}</Text>
+              </View>
+              <View style={styles.headerRightItem}>
+                <Text style={styles.amtTitle}>{I18n.t('balance')}</Text>
+                <View style={styles.amtItem}>
+                  <Image
+                      resizeMode={'contain'}
+                      style={styles.amtImg}
+                      source={homeMoneyIcon}/>
+                  <Text style={styles.amtText}>{UserStore.balance}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-      </ImageBackground>
+        </ImageBackground>
     )
   }
 
   renderHeaderItem() {
-    return(
-      <View>
-        <View style={styles.headerItem}>
-          <Image
-            style={styles.ymIcon}
-            source={homeYmIcon}/>
-          <Text style={styles.headerItemTitle}>
-            {'限时抢答'}
-          </Text>
+    return (
+        <View>
+          <View style={styles.headerItem}>
+            <Image
+                resizeMode={'contain'}
+                style={styles.ymIcon}
+                source={homeYmIcon}/>
+            <Text style={styles.headerItemTitle}>{I18n.t('latestQuestions')}</Text>
+          </View>
         </View>
-      </View>
     )
   }
 
   renderListView() {
-    return(
-      <FlatList
-        style={styles.list}
-        data={this.data}
-        keyExtractor={(item,index)=>index}
-        renderItem={({item,index})=>this.renderItem(item,index)}
-        ItemSeparatorComponent={()=>this.renderItemSeparator()}/>
+    return (
+        <FlatList
+            style={styles.list}
+            data={TopicStore.topics.slice().sort(compare('block_id'))}
+            keyExtractor={(item, index) => index}
+            renderItem={({item, index}) => this.renderItem(item, index)}
+            ItemSeparatorComponent={() => this.renderItemSeparator()}/>
     )
   }
 
-  renderItem(item,index){
-    return(
-      <View style={styles.item}>
-        <View style={styles.itemTop}>
-          <Image
-            style={styles.itemImg}
-            source={item.img}/>
-          <View style={styles.nameItem}>
-            <Text style={styles.name}>
-              {item.name}
-            </Text>
-            <Text style={styles.itemIdText}>
-              {item.id}
+
+  renderItem(item, index) {
+    return (
+        <View style={styles.item}>
+          <View style={styles.itemTop}>
+            <Image
+                resizeMode={'contain'}
+                style={styles.itemImg}
+                source={defaultAvatars[item.avatar-1].avatar}/>
+            <View style={styles.nameItem}>
+              <Text style={styles.name}>
+                {Buffer.from(item.name,'base64').toString()}
+              </Text>
+              <Text style={styles.itemIdText}>
+                {`#${item.id}`}
+              </Text>
+            </View>
+            <Image
+                resizeMode={'contain'}
+                source={homeMoneyIcon}
+                style={styles.amtImg}/>
+            <Text style={styles.amtText}>
+              {item.topic_reward}
             </Text>
           </View>
-          <Image
-            source={homeMoneyIcon}
-            style={styles.amtImg}/>
-          <Text style={styles.amtText}>
-            {item.money}
+          <Text style={styles.itemQuestion}>
+            {Buffer.from(item.topic_data,'base64').toString()}
           </Text>
+          <TouchableOpacity
+              onPress={()=>{
+                TopicStore.handleSelectTopic(item)
+                appState.replyMode = 0;
+                this.props.navigation && this.props.navigation.navigate('Reply', {name: '抢答回复'});
+              }}
+              style={styles.itemBtn}>
+            <Image
+                style={styles.itemBtnImg}
+                source={I18n.locale === 'en' ? homeBtEN : homeBtCH}/>
+          </TouchableOpacity>
         </View>
-        <Text style={styles.itemQuestion}>
-          {item.question}
-        </Text>
-        <TouchableOpacity
-          style={styles.itemBtn}>
-          <Image
-            style={styles.itemBtnImg}
-            source={homeBt}/>
-        </TouchableOpacity>
-      </View>
     )
   }
 
-  renderItemSeparator(){
-    return(
-      <View style={{height:10,backgroundColor:COLOR.bgColor}}/>
+  renderItemSeparator() {
+    return (
+        <View style={{height: 10, backgroundColor: COLOR.bgColor}}/>
     )
   }
 
 }
 
+export default observer(index)
+
 const styles = StyleSheet.create({
-  bg:{
+  bg: {
     width: ScreenWidth,
     height: ScreenWidth / 2.06,
-    alignItems:'center',
-    justifyContent:'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  title:{
-    fontSize:FONTSIZE.primary,
-    color:'#ffff',
+  title: {
+    fontSize: FONTSIZE.primary,
+    color: '#ffff',
   },
-  info:{
-    marginTop:35,
-    alignItems:'center',
-    flexDirection:'row'
+  info: {
+    marginTop: 35,
+    alignItems: 'center',
+    flexDirection: 'row'
   },
-  header:{
-    width:65,
-    height:65,
-    borderRadius:32.5
+  header: {
+    width: 65,
+    height: 65,
   },
-  headerRight:{
-    marginLeft:20
+  headerRight: {
+    height: 40,
+    marginLeft: 8,
+    justifyContent: 'space-between'
   },
-  headerRightItem:{
-    flexDirection:'row',
-    alignItems:'center'
+  headerRightItem: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  idText:{
-    marginLeft:15,
-    fontSize:FONTSIZE.small,
-    color:'#ffff'
+  idText: {
+    marginLeft: 15,
+    fontSize: FONTSIZE.small,
+    color: '#ffff'
   },
-  amtTitle:{
-    fontSize:FONTSIZE.normal,
-    color:'#ffff'
+  amtTitle: {
+    fontSize: FONTSIZE.small,
+    color: '#ffff'
   },
-  amtText:{
-    fontSize:FONTSIZE.normal,
-    color:'#ffd565ff',
+  amtText: {
+    fontSize: 14,
+    color: '#F0AB51',
   },
-  amtItem:{
-    flexDirection:'row',
-    alignItems:'center',
-    marginLeft:14
+  amtItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 14
   },
-  amtImg:{
-    width:16,
-    height:17,
-    marginRight:8
+  amtImg: {
+    width: 14,
+    height: 18,
+    marginRight: 8
   },
-  headerItem:{
-    flexDirection:'row',
-    backgroundColor:COLOR.whiteColor,
-    height:54,
-    alignItems:'center'
+  headerItem: {
+    flexDirection: 'row',
+    backgroundColor: COLOR.whiteColor,
+    height: ScreenHeight / 11,
+    alignItems: 'center'
   },
-  ymIcon:{
-    width:27,
-    height:27,
-    marginRight:18,
-    marginLeft:15
+  ymIcon: {
+    height: '80%',
+    marginRight: 15,
+    marginLeft: 15,
+    borderBottomColor: '#FFD565',
+    borderBottomWidth: 1,
   },
-  headerItemTitle:{
-    fontSize:FONTSIZE.normal,
-    color:'#ffd565'
+  headerItemTitle: {
+    fontSize: FONTSIZE.normal,
+    color: '#ffd565'
   },
-  list:{
-    flex:1,
-    paddingVertical:10,
-    backgroundColor:COLOR.bgColor,
-    paddingHorizontal:10
+  list: {
+    flex: 1,
+    paddingVertical: 10,
+    backgroundColor: COLOR.bgColor,
+    paddingHorizontal: 10
   },
-  item:{
-    backgroundColor:COLOR.whiteColor,
-    borderRadius:5,
-    paddingTop:17,
-    paddingHorizontal:10,
-    paddingBottom:10
+  item: {
+    backgroundColor: COLOR.whiteColor,
+    borderRadius: 5,
+    paddingTop: 17,
+    paddingHorizontal: 10,
+    paddingBottom: 10
   },
-  itemTop:{
-    flexDirection:'row',
-    alignItems:'center',
+  itemTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  name:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor
+  name: {
+    marginTop: 4,
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor
   },
-  itemImg:{
-    width:35,
-    height:35,
-    borderRadius:17.5
+  itemImg: {
+    width: 35,
+    height: 35,
   },
-  nameItem:{
-    marginLeft:14,
-    marginRight:14,
-    flex:1
+  nameItem: {
+    marginLeft: 10,
+    marginRight: 14,
+    flex: 1
   },
-  itemIdText:{
-    color:'#acacac',
-    fontSize:FONTSIZE.small,
-    marginTop:10
+  itemIdText: {
+    color: '#acacac',
+    fontSize: FONTSIZE.small,
+    marginTop: 4
   },
-  itemQuestion:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor,
-    marginTop:13
+  itemQuestion: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor,
+    marginTop: 0,
+    lineHeight: 24,
   },
-  itemBtn:{
-    alignSelf:'flex-end',
-    marginTop:8
+  itemBtn: {
+    alignSelf: 'flex-end',
+    marginTop: 8
   },
-  itemBtnImg:{
-    width:73,
-    height:26
+  itemBtnImg: {
+    width: 73,
+    height: 26
   },
-  container:{
-    flex:1,
-    paddingTop:Platform.OS === 'ios' ? IphoneTop : 0,
-    backgroundColor:COLOR.bgColor
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS === 'ios' ? IphoneTop : 0,
+    backgroundColor: COLOR.bgColor
   }
 });

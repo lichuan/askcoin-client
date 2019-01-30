@@ -12,46 +12,25 @@ import {
   ScrollView,
   FlatList
 } from 'react-native';
-import MyAvatar from '../../resource/icons/1.png';
+import UserStore from '../../stores/user'
+import {I18n} from '../../language/I18n'
+import TopicStore from '../../stores/topic'
 import zzJbIcon from '../../resource/icons/zz_jb.png';
 import TitleCell from './TitleCell';
-import itemHeaderBg1 from '../../resource/icons/3.png';
-import Slider from '../../components/Slider';
-import MyArrowRight from '../../resource/icons/my_arrow_right.png';
-import MyNew from '../../resource/icons/my_new.png';
-export default class AnswerDetail extends Component {
+import QuestionItem from "../../components/questionItem";
+import {appState, stopDetailProbe} from "../../net/net";
+import {defaultAvatars} from "../../resource/avatars";
+import {observer} from 'mobx-react'
 
-  data = [
-    {
-      name:'王玉林',
-      money:1,
-      value:1,
-      question:'为什么共享汽车可以作为现阶段的资本风口呢？对此您有什么看法？'
-    },
-    {
-      name:'王大林',
-      money:2,
-      value:15,
-      question:'有没有朋友一起去喝酒？'
-    },
-    {
-      name:'王小林',
-      money:3,
-      value:20,
-      question:'求四川老乡？',
-      back:[
-        {
-          name:'小明',
-          message:'共享单车代表社会的进步呢！共享单车代表社会的进步呢！共享单车代表社会的进步呢！'
-        }
-      ]
-    }
-  ];
+class AnswerDetail extends Component {
+
+  contentHeight = 0;
 
   constructor(props) {
     super(props);
     this.state = {
-      data:this.data
+      data: this.data,
+      listHeight:0
     };
   }
 
@@ -60,343 +39,364 @@ export default class AnswerDetail extends Component {
   }
 
   componentDidMount() {
-
+    appState.toDetail = false;
+    appState.detailType = 0;
+    appState.questionProbe = 0;
   }
 
+  componentWillUnmount() {
+    stopDetailProbe();
+  }
+
+  reply = () => {
+    appState.replyMode = 1;
+    this.props.navigation && this.props.navigation.navigate('Reply');
+  };
+
+  replyAll = () => {
+    appState.replyMode = 1;
+    this.props.navigation && this.props.navigation.navigate('ReplyAll');
+  };
+
+  loadAwardForItem = (item) => {
+    let award = 0;
+    TopicStore.replies.slice().filter((subItem) => {
+      return subItem.type === 1 && subItem.reply_to === item.reply_key
+    }).forEach((subItem) => {
+      award += subItem.balance
+    })
+    return award;
+  };
 
 
   render() {
     return (
-      <View style={STYLE.BACKGROUND}>
-        <ScrollView
-          style={STYLE.BACKGROUND}>
-          {this.renderHeader()}
-          <View style={{height:10}}/>
-          <TitleCell title="回答的问题"/>
-          {this.renderAmtView()}
-          <View style={{height:10}}/>
-          <TitleCell title="全部回答"/>
-          {this.renderListView()}
-        </ScrollView>
-      </View>
+        <View>
+          <FlatList
+              inverted={true}
+              ListFooterComponent={(
+                    <View>
+                      {this.renderHeader()}
+                      <View style={{height: 10}}/>
+                      <TitleCell title={I18n.t('questionToAnswer')}/>
+                      {this.renderAmtView()}
+                      <View style={{height: 10}}/>
+                      <TitleCell title={I18n.t('allReplies')}/>
+                    </View>
+                )
+              }
+              style={styles.list}
+              data={TopicStore.replies.slice().filter((item) => {
+                return item.type === 0
+              }).reverse()}
+              keyExtractor={(item, index) => index}
+              renderItem={({item, index}) => this.renderItem(item, index)}
+              ItemSeparatorComponent={() => this.renderItemSeparator()}/>
+          <View style={{flex:1}}/>
+        </View>
     )
   }
 
-  renderHeader(){
-    return(
-      <View style={styles.header}>
-        <Image
-          style={styles.avatar}
-          source={MyAvatar}/>
-        <View style={styles.rightItem}>
-          <View style={styles.rightTopItem}>
-            <Text style={styles.name}>{'杨欧巴'}</Text>
-            <Text style={styles.idText}>{'#123456'}</Text>
-          </View>
-          <View style={styles.rightBottomItem}>
-            <Text style={styles.amtTitle}>{'账户余额:'}</Text>
-            <Image
-              style={styles.amtImg}
-              source={zzJbIcon}/>
-            <Text style={styles.amtText}>{'200'}</Text>
-          </View>
-        </View>
-      </View>
-    )
-  }
-
-  renderAmtView() {
-    return(
-      <View style={styles.descView}>
-        <View style={styles.userItem}>
-          <Image
-            style={styles.itemImg}
-            source={MyAvatar}/>
-          <Text style={[styles.name,{marginLeft:15}]}>
-            {'杨欧巴'}
-          </Text>
-        </View>
-        <View style={styles.topItem}>
-          <View style={styles.childItem}>
-          <Text style={styles.grayTitle}>{'总打赏金额'}</Text>
-            <Text style={[styles.normalTitle,{marginTop:10}]}>{200}</Text>
-          </View>
-          <View style={styles.line}/>
-          <View style={styles.childItem}>
-            <Text style={styles.grayTitle}>{'已打赏金额'}</Text>
-            <Text style={[styles.normalTitle,{marginTop:10}]}>{150}</Text>
-          </View>
-          <View style={styles.line}/>
-          <View style={styles.childItem}>
-            <Text style={styles.grayTitle}>{'剩余打赏金额'}</Text>
-            <Text style={[styles.normalTitle,{marginTop:10}]}>{50}</Text>
-          </View>
-        </View>
-        <Text
-          style={styles.questText}>
-          {'为什么共享单车可以作为现阶段的资本风口呢?对此你有什么看法?'}
-        </Text>
-      </View>
-    )
-  }
-
-  renderListView(){
+  renderHeader() {
     return (
-      <FlatList
-        style={styles.list}
-        data={this.state.data}
-        keyExtractor={(item,index)=>index}
-        renderItem={({item,index})=>this.renderItem(item,index)}
-        ItemSeparatorComponent={()=>this.renderItemSeparator()}/>
-    )
-  }
-
-  renderItem(item,index){
-    return(
-      <View style={styles.item}>
-        <Image
-          style={styles.itemImg}
-          source={itemHeaderBg1}/>
-        <View style={styles.itemRight}>
-          <View style={styles.itemRightTop}>
-            <Text style={styles.name}>{item.name}</Text>
-            <View style={{flexDirection:'row',alignItems:'center'}}>
-              <Text style={styles.moneyText}>{'+'}</Text>
-              <Image
-                source={zzJbIcon}
-                style={styles.itemMoney}/>
-              <Text style={styles.moneyText}>{item.money}</Text>
+        <View style={styles.header}>
+          <Image
+              resizeMode={'contain'}
+              style={styles.avatar}
+              source={defaultAvatars[TopicStore.selectTopic.avatar - 1].avatar}/>
+          <View style={styles.rightItem}>
+            <View style={styles.rightTopItem}>
+              <Text style={styles.name}>{Buffer.from(TopicStore.selectTopic.name, 'base64').toString()}</Text>
+            </View>
+            <View style={styles.rightBottomItem}>
+              <Text style={styles.idText}>{`#${TopicStore.selectTopic.id}`}</Text>
             </View>
           </View>
+        </View>
+    )
+  }
 
-          <Text
-            style={styles.itemRightQuestion}>
-            {item.question}
-          </Text>
+  loadAward = (pass) => {
+    let awarded = 0;
+    TopicStore.replies.filter((item) => {
+      return item.type === 1
+    }).forEach((item) => {
+      awarded += item.balance;
+    });
 
-          <View style={styles.itemRightBottom}>
-            <TouchableOpacity>
-              <View style={styles.btn}>
-                <Text style={styles.btnText}>
-                  {item.back && item.back.length > 0 ? '回复' : '追加回复'}
-                </Text>
-              </View>
-            </TouchableOpacity>
+    if (pass) {
+      return awarded
+    } else {
+      return TopicStore.selectTopic.topic_reward - awarded
+    }
+  };
+
+
+  renderAmtView() {
+    return (
+        <View style={styles.descView}>
+          <View style={styles.topItem}>
+            <View style={styles.childItem}>
+              <Text style={styles.grayTitle}>{I18n.t('totalReward')}</Text>
+              <Text style={[styles.normalTitle, {marginTop: 10}]}>{TopicStore.selectTopic.topic_reward}</Text>
+            </View>
+            <View style={styles.line}/>
+            <View style={styles.childItem}>
+              <Text style={styles.grayTitle}>{I18n.t('amountAwarded')}</Text>
+              <Text style={[styles.normalTitle, {marginTop: 10}]}>{this.loadAward(true)}</Text>
+            </View>
+            <View style={styles.line}/>
+            <View style={styles.childItem}>
+              <Text style={styles.grayTitle}>{I18n.t('remainingReward')}</Text>
+              <Text style={[styles.normalTitle, {marginTop: 10}]}>{this.loadAward(false)}</Text>
+            </View>
           </View>
+          <Text selectable={true}
+                style={styles.questText}>
+            {Buffer.from(TopicStore.selectTopic.topic_data, 'base64').toString()}
+          </Text>
+        </View>
+    )
+  }
 
-          {
-            item.back && item.back.length > 0
-              ? <View style={styles.messageItem}>
-                  <Text
-                    style={styles.message}>
-                    {item.back[0].name + '：' + item.back[0].message}
-                  </Text>
-                  <TouchableOpacity
-                    onPress={()=>{
-                      this.props.navigation && this.props.navigation.navigate('CheckAnswerDetail',{name:'查看回答'});
-                    }}
-                    style={{marginTop:10}}>
-                    <View style={styles.moreMessageItem}>
-                      <Text style={styles.messageTitle}>
-                        {'共' + item.back.length + '条回复'}
-                      </Text>
-                      <Image
-                        style={styles.arrowRight}
-                        source={MyArrowRight}/>
-                      <Image
-                        style={styles.news}
-                        source={MyNew}/>
+
+  renderItem(item, index) {
+    return (
+        <View>
+          <QuestionItem>
+            <QuestionItem.InfoView>
+              <QuestionItem.Avatar
+                  resizeMode={'contain'}
+                  source={defaultAvatars[item.avatar - 1].avatar}/>
+              <View style={{justifyContent: 'space-between', marginLeft: 12}}>
+                <QuestionItem.Nickname>{Buffer.from(item.name, 'base64').toString()}</QuestionItem.Nickname>
+                <QuestionItem.ID>{`#${item.id}`}</QuestionItem.ID>
+              </View>
+              <QuestionItem.Amount>
+                <QuestionItem.Money>{'+'}</QuestionItem.Money>
+                <QuestionItem.MoneyIcon
+                    resizeMode={'contain'}
+                    source={zzJbIcon}/>
+                <QuestionItem.Money>{this.loadAwardForItem(item)}</QuestionItem.Money>
+              </QuestionItem.Amount>
+            </QuestionItem.InfoView>
+            <QuestionItem.Content selectable={true} space>
+              <QuestionItem.Content selectable={true} reply space>
+                {item.reply_to ? `@${Buffer.from(TopicStore.replies.find((subItem) => {
+                  return subItem.reply_key === item.reply_to
+                }).name, 'base64')}, ` : ''}
+              </QuestionItem.Content>
+              {Buffer.from(item.reply_data, 'base64').toString()}
+            </QuestionItem.Content>
+            {item.id === UserStore.id ? (null) : (
+                <View style={styles.itemRightBottom}>
+                  <TouchableOpacity onPress={() => {
+                    TopicStore.handleSelectReply(item);
+                    appState.replyMode = 1;
+                    this.props.navigation && this.props.navigation.navigate('Reply');
+                  }}>
+                    <View style={styles.btn}>
+                      <Text style={styles.btnText}>{I18n.t('reply')}</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{marginLeft: 8}} onPress={() => {
+                    TopicStore.handleSelectReply(item);
+                    appState.replyMode = 2;
+                    this.props.navigation && this.props.navigation.navigate('Reply');
+                  }}>
+                    <View style={styles.btn}>
+                      <Text style={styles.btnText}>{I18n.t('replyToAll')}</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-              : null
-          }
+            )}
+          </QuestionItem>
         </View>
-      </View>
     )
   }
 
-  renderItemSeparator(){
-    return(
-      <View style={{height:2,backgroundColor:COLOR.diverColor}}/>
+  renderItemSeparator() {
+    return (
+        <View style={{height: 1, backgroundColor: COLOR.diverColor}}/>
     )
   }
 }
+
+export default observer(AnswerDetail)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f2f2',
   },
-  header:{
-    height:80,
-    flexDirection:'row',
-    paddingHorizontal:15,
-    backgroundColor:COLOR.whiteColor,
-    alignItems:'center',
-    width:ScreenWidth
+  header: {
+    height: 80,
+    flexDirection: 'row',
+    paddingHorizontal: 15,
+    backgroundColor: COLOR.whiteColor,
+    alignItems: 'center',
+    width: ScreenWidth
   },
-  avatar:{
-    width:65,
-    height:65,
-    borderRadius:32.5
+  avatar: {
+    width: 65,
+    height: 65,
+    borderRadius: 32.5
   },
-  rightItem:{
-    marginLeft:15,
-    flex:1
+  rightItem: {
+    marginLeft: 8,
+    flex: 1
   },
-  rightTopItem:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
+  rightTopItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  rightBottomItem:{
-    flexDirection:'row',
-    alignItems:'center',
+  rightBottomItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  name:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor
+  name: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor
   },
-  idText:{
-    fontSize:FONTSIZE.small,
-    color:'#999'
-  },
-  amtTitle:{
-    fontSize:FONTSIZE.small,
-    color:COLOR.primaryTextColor,
-    marginRight:15
-  },
-  amtImg:{
-    width:16,
-    height:17,
-    marginRight:8
-  },
-  amtText:{
-    fontSize:FONTSIZE.primary,
-    color:COLOR.primaryTextColor,
-  },
-  topItem:{
-    flexDirection:'row',
-    alignItems:'center',
-    paddingVertical:10,
-  },
-  childItem:{
-    justifyContent:'center',
-    alignItems:'center',
-    flex:1
-  },
-  line:{
-    width:1,
-    height:44,
-    backgroundColor:COLOR.grayColor
-  },
-  grayTitle:{
+  idText: {
     fontSize: FONTSIZE.small,
-    color:COLOR.grayTextColor
+    color: '#999'
   },
-  normalTitle:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.secondaryColor
+  amtTitle: {
+    fontSize: FONTSIZE.small,
+    color: COLOR.primaryTextColor,
+    marginRight: 15
   },
-  descView:{
-    paddingVertical:10,
-    paddingLeft:25,
-    paddingRight:10,
-    backgroundColor:COLOR.whiteColor
+  amtImg: {
+    width: 16,
+    height: 17,
+    marginRight: 8
   },
-  questText:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor
+  amtText: {
+    fontSize: FONTSIZE.primary,
+    color: COLOR.primaryTextColor,
   },
-  list:{
-    flex:1,
-    backgroundColor:COLOR.bgColor,
+  topItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
   },
-  item:{
-    flexDirection:'row',
-    paddingVertical:10,
-    paddingHorizontal:15
+  childItem: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1
   },
-  itemImg:{
-    width:35,
-    height:35,
-    borderRadius:17.5
+  line: {
+    width: 1,
+    height: 44,
+    backgroundColor: COLOR.grayColor
   },
-  itemRight:{
-    marginLeft:10,
-    flex:1
+  grayTitle: {
+    fontSize: FONTSIZE.small,
+    color: '#333333'
   },
-  itemRightTop:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between'
+  normalTitle: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.secondaryColor
   },
-  moneyText:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.normalColor
+  descView: {
+    paddingVertical: 10,
+    paddingLeft: 25,
+    paddingRight: 10,
+    backgroundColor: COLOR.whiteColor
   },
-  itemMoney:{
-    width:16,
-    height:17,
-    marginHorizontal:8
+  questText: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor,
+    lineHeight: 24
   },
-  itemRightQuestion:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor,
-    marginTop:10
+  list: {
+
   },
-  itemRightBottom:{
-    flexDirection:'row',
-    alignSelf:'flex-end',
-    marginTop:10,
+  item: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+    paddingHorizontal: 15
   },
-  btn:{
-    paddingVertical:5,
-    paddingHorizontal:10,
-    borderRadius:10,
-    backgroundColor:COLOR.primaryColor
+  itemImg: {
+    width: 35,
+    height: 35,
+    borderRadius: 17.5
   },
-  btnText:{
-    fontSize:FONTSIZE.small,
-    color:COLOR.normalColor
+  itemRight: {
+    marginLeft: 10,
+    flex: 1
   },
-  slider:{
-    flex:1,
-    height:6,
+  itemRightTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
-  thumbStyle:{
-    width:65,
-    height:16,
+  moneyText: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.normalColor
   },
-  messageItem:{
-    padding:15,
+  itemMoney: {
+    width: 16,
+    height: 17,
+    marginHorizontal: 8
   },
-  messageTitle:{
-    color:'#8aade6',
-    fontSize:FONTSIZE.small
+  itemRightQuestion: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor,
+    marginTop: 10
   },
-  moreMessageItem:{
-    flexDirection:'row',
-    alignItems:'center',
+  itemRightBottom: {
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    marginTop: 10,
   },
-  arrowRight:{
-    width:6,
-    height:9,
-    resizeMode:'contain',
-    marginHorizontal:8
+  btn: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    backgroundColor: COLOR.primaryColor
   },
-  news:{
-    width:14,
-    height:10,
-    resizeMode:'contain'
+  btnText: {
+    fontSize: FONTSIZE.small,
+    color: '#BE8200'
   },
-  message:{
-    fontSize:FONTSIZE.small,
-    color:COLOR.normalTextColor
+  slider: {
+    flex: 1,
+    height: 6,
   },
-  userItem:{
-    flexDirection:'row',
-    alignItems:'center'
+  thumbStyle: {
+    width: 65,
+    height: 16,
+  },
+  messageItem: {
+    padding: 15,
+  },
+  messageTitle: {
+    color: '#8aade6',
+    fontSize: FONTSIZE.small
+  },
+  moreMessageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  arrowRight: {
+    width: 6,
+    height: 9,
+    resizeMode: 'contain',
+    marginHorizontal: 8
+  },
+  news: {
+    width: 14,
+    height: 10,
+    resizeMode: 'contain'
+  },
+  message: {
+    fontSize: FONTSIZE.small,
+    color: COLOR.normalTextColor
+  },
+  userItem: {
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });

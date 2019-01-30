@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
     backgroundColor:COLOR.whiteColor
   },
   pickerItem:{
-    borderWidth:1,
     borderColor:COLOR.borderColor,
     backgroundColor:'#fffbdf',
     width: 325,
@@ -128,7 +127,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal:15,
     justifyContent:'space-between',
-    alignSelf:'center'
+    alignSelf:'center',
+    borderRadius:5,
+    borderWidth:1,
+    borderTopWidth:0
   },
   pickerText:{
     fontSize:FONTSIZE.normal,

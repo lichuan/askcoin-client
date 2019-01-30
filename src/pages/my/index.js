@@ -15,24 +15,30 @@ import {
   Animated,
   ScrollView
 } from 'react-native';
-import ScrollableTabView,{DefaultTabBar}from 'react-native-scrollable-tab-view';
+import { I18n } from '../../language/I18n'
+
 import MyAnswer from './MyAnswer';
 import MyQuestion from './MyQuestion';
 
 import myBg from '../../resource/icons/my_bg.png';
-import headerBg from '../../resource/icons/1.png';
 import zzJbIcon from '../../resource/icons/zz_jb.png';
 import HeaderView from '../../components/HeaderView';
 import arrowLeft from '../../resource/icons/arrow_left.png';
 import NavButton from '../../components/NavButton';
 import MyBtTw from '../../resource/icons/my_bt_tw.png'
 import SwipeTopBar from '../../components/SwipeTopBar';
+import UserStore from '../../stores/user';
+import {defaultAvatars} from "../../resource/avatars";
+const Buffer = require('buffer/').Buffer;
+import {observer} from 'mobx-react'
+
+
+
 
 const IphoneTop = isIphoneX() ? 40 : 20;
 
-
-export default class index extends Component {
-  tabs = ['我的提问','我的回答'];
+class index extends Component {
+  tabs = [I18n.t('myQuestions'),I18n.t('myAnswers')];
   constructor(props) {
     super(props);
     this.state = {
@@ -69,7 +75,7 @@ export default class index extends Component {
   }
 
   askQuestion(){
-    this.props.navigation && this.props.navigation.navigate('AskQuestion',{name:'发起提问'});
+    this.props.navigation && this.props.navigation.navigate('AskQuestion');
   }
 
   renderHeader(){
@@ -78,7 +84,7 @@ export default class index extends Component {
         source={myBg}
         style={styles.bg}>
         <HeaderView
-          headerTitle="我的"
+          headerTitle={I18n.t('my')}
           leftItems={()=>
             <NavButton
               btnStyle={{paddingHorizontal:0}}
@@ -92,20 +98,22 @@ export default class index extends Component {
             />
           }/>
         <Image
-          source={headerBg}
+            resizeMode={'contain'}
+          source={defaultAvatars[UserStore.avatar-1].avatar}
           style={styles.header}/>
         <Text style={styles.title}>
-          {'杨欧巴'}
+          {Buffer.from(UserStore.name,'base64').toString()}
         </Text>
         <Text style={styles.idText}>
-          {'#123456'}
+          {`#${UserStore.id}`}
         </Text>
         <View style={styles.amtItem}>
-          <Text style={styles.amtTitle}>{'账户余额:'}</Text>
+          <Text style={styles.amtTitle}>{I18n.t('balance')}</Text>
           <Image
+              resizeMode={'contain'}
             style={styles.amtImg}
             source={zzJbIcon}/>
-          <Text style={styles.amtText}>{'200'}</Text>
+          <Text style={styles.amtText}>{UserStore.balance}</Text>
         </View>
       </ImageBackground>
     )
@@ -167,6 +175,8 @@ export default class index extends Component {
   }
 }
 
+export default observer(index)
+
 const styles = StyleSheet.create({
   container:{
     flex:1,
@@ -193,7 +203,6 @@ const styles = StyleSheet.create({
   header:{
     width:65,
     height:65,
-    borderRadius:32.5,
     marginVertical:15
   },
   title:{
@@ -211,18 +220,18 @@ const styles = StyleSheet.create({
     alignItems:'center'
   },
   amtTitle:{
-    fontSize:FONTSIZE.small,
-    color:COLOR.primaryTextColor,
+    fontSize:14,
+    color: '#BE8200',
     marginRight:15
   },
   amtImg:{
-    width:16,
-    height:17,
+    width:14,
+    height:18,
     marginRight:8
   },
   amtText:{
-    fontSize:FONTSIZE.primary,
-    color:COLOR.primaryTextColor,
+    fontSize:14,
+    color: '#BE8200',
   },
   back:{
     width: 9,

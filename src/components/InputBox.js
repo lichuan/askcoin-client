@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: FONTSIZE.normal,
     color: COLOR.normalTextColor,
-    marginLeft: 15
+    marginLeft: 15,
   },
   loginBt:{
     width:17,

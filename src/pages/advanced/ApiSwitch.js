@@ -9,64 +9,52 @@ import {
   TouchableOpacity,
   TextInput,
   StyleSheet,
-  FlatList
+  FlatList, Modal, ScrollView
 } from 'react-native';
-import laBa from '../../resource/icons/chonghzi_laba.png';
 import SwipeOut from 'react-native-swipeout';
-import SwitchButton from '../../components/SwitchButton';
 import ApiPopup from './ApiPopup';
 import NavButton from '../../components/NavButton';
 import HintCell from '../../components/HintCell';
 import AlertControl from '../../components/AlertControl';
+import {I18n} from "../../language/I18n";
+import ModalContainer from "../../views/modalContainer";
+import choose from '../../resource/icons/login_choose.png'
+import {appState, switchApi, initRouter, apiSaved,confirmNet, ws, setRouterName} from '../../net/net';
+
+const SharedPreferences = require('react-native-shared-preferences');
+
+
 
 export default class ApiSwitch extends Component {
 
-  static navigationOptions = ({navigation})=>{
+
+  static navigationOptions = ({navigation}) => {
     const {state} = navigation;
     return {
       headerRight: (
-        <NavButton
-          data={{
-            type:'text',
-            text: '添加',
-            onPress:()=> {
-              state.params.onAdd && state.params.onAdd()
-            }
-          }}
-        />
+          <NavButton
+              data={{
+                type: 'text',
+                text: I18n.t('add'),
+                onPress: () => {
+                  state.params.onAdd && state.params.onAdd()
+                }
+              }}
+          />
       )
     };
   };
 
-  data = [
-    {
-      name:'API服务器节点1',
-      isOpen:true,
-    },
-    {
-      name:'API服务器节点2',
-      isOpen:false,
-    },
-    {
-      name:'API服务器节点3',
-      isOpen:false,
-    },
-    {
-      name:'API服务器节点4',
-      isOpen:true,
-    },
-    {
-      name:'API服务器节点5',
-      isOpen:true,
-    },
-    {
-      name:'API服务器节点6',
-      isOpen:true,
-    }
-  ];
+
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      deleteTip: false,
+      api: appState.apiIndex,
+      apiList:[],
+      apied:'',
+      delIndex:0
+    };
   }
 
   componentWillMount() {
@@ -74,79 +62,132 @@ export default class ApiSwitch extends Component {
   }
 
   componentDidMount() {
+    appState.apiPage = true;
+    initRouter(this);
     this.props.navigation && this.props.navigation.setParams({
-      onAdd:()=>{
+      onAdd: () => {
         this.apiPopup && this.apiPopup.open();
       }
     });
+
+    SharedPreferences.getItem('apilist',(res)=>{
+      this.setState({apiList:JSON.parse(res)})
+      const api = JSON.parse(res).indexOf(appState.api);
+    })
+  }
+
+  componentWillUnmount(){
+    confirmNet();
+    appState.apiPage = false;
+    appState.switchAPI = false
   }
 
   render() {
+    setRouterName('ApiSwitch');
+    const {deleteTip, apiList} = this.state
     return (
-      <View style={styles.container}>
-        <HintCell hintTitle="向左滑动可以删除节点哦~"/>
-        <FlatList
-          style={styles.list}
-          data={this.data}
-          keyExtractor={(item,index)=>index}
-          renderItem={({item,index})=>this.renderItem(item,index)}
-          ItemSeparatorComponent={()=>this.renderItemSeparator()}/>
-        <ApiPopup
-          ref={(r)=>this.apiPopup = r}/>
-        <AlertControl ref={r=>{this._alert=r}}/>
-      </View>
+        <View style={styles.container}>
+          <HintCell hintTitle={I18n.t('slideToLeft')}/>
+          <FlatList
+              style={styles.list}
+              data={apiList}
+              keyExtractor={(item, index) => index}
+              renderItem={({item, index}) => this.renderItem(item, index)}
+              ItemSeparatorComponent={() => this.renderItemSeparator()}/>
+          <ApiPopup
+              onAdd={(name, address)=>{
+                this.setState({apiList: apiList.concat({name, address})},()=>{
+                  console.log('apilist-->',apiList)
+                  SharedPreferences.setItem('apilist', JSON.stringify(apiList.concat({name, address})))
+                })
+              }}
+              ref={(r) => this.apiPopup = r}/>
+          <AlertControl ref={r => {
+            this._alert = r
+          }}/>
+          <Modal
+              transparent
+              visible={deleteTip}>
+            <ModalContainer>
+              <View style={styles.tipView}>
+                <ScrollView>
+                  <Text style={styles.tipTitle}>{I18n.t('deleteAPI')}</Text>
+                  <Text style={styles.tip}>{I18n.t('sureDelAPI')}</Text>
+                </ScrollView>
+                <View style={{flexDirection: 'row', borderTopColor: '#E7E7E7', borderTopWidth: 1}}>
+                  <TouchableOpacity
+                      style={[styles.tipBtn, {borderRightColor: '#E7E7E7', borderRightWidth: 1}]}
+                      onPress={() => {
+                        this.setState({deleteTip: false})
+                      }}>
+                    <Text style={styles.btnTitle}>{I18n.t('cancel')}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                      style={styles.tipBtn}
+                      onPress={() => {
+                        this.setState({deleteTip: false});
+                        if(apiList[this.state.delIndex].address === appState.api){
+                          ws.close();
+                          appState.api = '';
+                          SharedPreferences.removeItem('removeItem');
+                        }
+                         apiList.splice(this.state.delIndex, 1);
+                         this.setState({apiList});
+                        SharedPreferences.setItem('apilist', JSON.stringify(apiList))
+                      }}>
+                    <Text style={styles.btnTitle}>{I18n.t('OK')}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ModalContainer>
+          </Modal>
+        </View>
     )
   }
 
-  renderItem(item,index){
+  renderItem(item, index) {
     let swipeOutBtns = [
       {
-        text: '删除',
-        backgroundColor:'#FD808F',
-        color:COLOR.whiteColor,
-        onPress:()=>{
-          this._alert.show({
-            desc:'温馨提示',
-            title : "非常抱歉您的备份文件失败，请重新选择~",
-            titleStyle : {},
-            message : '',
-            messageStyle : {},
-            buttons : [
-              {title:'取消'},
-              {
-                title:'确认',
-                onPress:()=>{
-
-                }
-              },
-            ] ,
-          });
+        text: I18n.t('remove'),
+        backgroundColor: '#FD808F',
+        color: COLOR.whiteColor,
+        onPress: () => {
+          this.setState({delIndex:index})
+          this.setState({deleteTip: true});
         }
       }
     ];
-    return(
-      <SwipeOut
-        autoClose={true}
-        backgroundColor={COLOR.whiteColor}
-        buttonWidth={45}
-        right={swipeOutBtns}>
-        <View style={styles.item}>
-          <Text style={styles.title}>
-            {item.name}
-          </Text>
-          <SwitchButton
-            isOpen={item.isOpen}
-            onvaluechange={(isOpen)=>{
-              console.log(isOpen)
-            }}/>
-        </View>
-      </SwipeOut>
+    return (
+        <SwipeOut
+            autoClose={true}
+            backgroundColor={COLOR.whiteColor}
+            buttonWidth={64}
+            right={swipeOutBtns}>
+          <TouchableOpacity onPress={() => {
+            appState.apiName = item.name
+            SharedPreferences.setItem('APIADDRESS',item.address);
+            apiSaved.api = item.address;
+            this.setState({api: index, apied: item.address});
+            appState.api = item.address;
+            switchApi();
+          }}>
+            <View style={styles.item}>
+              <View>
+                <Text style={styles.title}>
+                  {item.name}
+                </Text>
+                <Text style={styles.addr}>{item.address}</Text>
+              </View>
+              {item.address === appState.api ? (<Image source={choose}/>) : (null)}
+            </View>
+          </TouchableOpacity>
+        </SwipeOut>
     )
   }
 
-  renderItemSeparator(){
-    return(
-      <View style={styles.line}/>
+  renderItemSeparator() {
+    return (
+        <View style={styles.line}/>
     )
   }
 }
@@ -157,24 +198,59 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
   },
 
-  list:{
-    backgroundColor:COLOR.bgColor,
-    flex:1
+  list: {
+    backgroundColor: COLOR.bgColor,
+    flex: 1
   },
-  item:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    height:65,
-    paddingHorizontal:15,
-    width:ScreenWidth
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 65,
+    paddingHorizontal: 15,
+    width: ScreenWidth
   },
-  title:{
-    fontSize:FONTSIZE.normal,
-    color:COLOR.primaryTextColor
+  title: {
+    fontSize: FONTSIZE.normal,
+    color: COLOR.primaryTextColor
   },
-  line:{
-    height:1,
-    backgroundColor:COLOR.diverColor
-  }
+  line: {
+    height: 1,
+    backgroundColor: COLOR.diverColor
+  },
+  addr: {
+    color: '#666666',
+    fontSize: 15
+  },
+  btnTitle: {
+    fontSize: 17,
+    color: COLOR.normalColor,
+  },
+  tipView: {
+    width: ScreenWidth / 10 * 9,
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    overflow: 'hidden'
+  },
+  tipTitle: {
+    fontSize: 17,
+    alignSelf: 'center',
+    marginTop: 15,
+    color: '#333333'
+  },
+  tip: {
+    fontSize: 15,
+    lineHeight: 23,
+    paddingHorizontal: 24,
+    marginTop:6,
+    marginBottom:24,
+  },
+  tipBtn: {
+    height: 52,
+    backgroundColor: '#fff',
+    width: ScreenWidth / 10 * 9 / 2,
+    color: COLOR.primaryColor,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 });
