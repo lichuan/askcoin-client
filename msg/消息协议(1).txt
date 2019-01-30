@@ -1,0 +1,519 @@
+enum MSG_TYPE
+{
+    MSG_SYS,
+    MSG_ACCOUNT,
+    MSG_TX,
+    MSG_BLOCK,
+    MSG_TOPIC
+};
+
+enum MSG_CMD
+{
+    SYS_PING,
+    SYS_PONG,
+    SYS_INFO,
+
+    ACCOUNT_IMPORT = 0,
+    ACCOUNT_TOP100,
+    ACCOUNT_PROBE,
+    ACCOUNT_QUERY,
+    ACCOUNT_HISTORY_PROBE,
+    
+    TX_CMD = 0,
+    
+    BLOCK_SYNC = 0,
+
+    TOPIC_QUESTION_PROBE = 0,
+    TOPIC_DETAIL_PROBE,
+    TOPIC_LIST,
+    TOPIC_ANSWER_LIST
+};
+
+enum EC
+{
+    ERR_TX_EXIST = 1, // 该交易已存在，请勿重复发送
+    ERR_PUBKEY_EXIST, // 该公钥已被注册
+    ERR_SIGN_EXPIRED, // 注册所用的签名串已过期
+    ERR_REG_FAILED, // 注册失败，请稍候再尝试
+    ERR_REG_WAIT, // 专用于注册的探测消息，用于指示继续下一秒再探测
+    ERR_TX_EXPIRED, // 该交易已过期
+    ERR_NAME_EXIST, // 该用户名已被注册
+    ERR_REFERRER_NOT_EXIST, // 推荐人帐户不存在
+    ERR_REFERRER_BALANCE_NOT_ENOUGH, // 推荐人帐户余额不足
+    ERR_PUBKEY_NOT_REGISTERED, // 你的公钥还未注册
+    ERR_BALANCE_NOT_ENOUGH, // 你的帐户余额不足
+    ERR_RECEIVER_NOT_EXIST, // 收款人帐户不存在
+    ERR_TOPIC_EXIST, // 你所发起的topic已存在，请勿重复发送
+    ERR_TOPIC_NUM_EXCEED_LIMIT, // 你所发起的topic数量已达上限
+    ERR_TOPIC_NOT_EXIST, // 该topic不存在或已过期
+    ERR_REPLY_NOT_EXIST, // 你所回复的目标不存在
+    ERR_REPLY_NUM_EXCEED_LIMIT, // 该topic内的回复数量已达上限
+    ERR_JOINED_TOPIC_NUM_EXCEED_LIMIT, // 你参与回答的topic数量已达上限
+    ERR_TOPIC_BALANCE_NOT_ENOUGH, // 你的打赏金额已超出该topic的剩余金额
+};
+
+C: client
+S: server
+
+1. C ---------------------> S:
+{
+    "msg_type": MSG_SYS,
+    "msg_cmd": SYS_PING,
+    "msg_id": 消息id
+}
+
+2. S ---------------------> C:
+{
+    "msg_type": MSG_SYS,
+    "msg_cmd": SYS_PONG,
+    "msg_id": 消息id
+}
+
+3. C ---------------------> S:
+{
+    "msg_type": MSG_SYS,
+    "msg_cmd": SYS_INFO,
+    "msg_id": 消息id
+}
+
+4. S ---------------------> C:
+{
+    "msg_type": MSG_SYS,
+    "msg_cmd": SYS_INFO,
+    "msg_id": 消息id
+    "utc": 服务端utc数字,
+    "version": 版本号数字
+}
+
+5. C ---------------------> S:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "type": 1,
+        "pubkey": 公钥串,
+        "utc": 客户端utc数字,
+        "avatar": 头像id,
+        "sign": 推荐人签名串,
+        "sign_data": {
+            "block_id": 客户端本地的block id (最大能支持64位数字),
+            "fee": 2 (固定为2),
+            "name": 用户名称,
+            "referrer": 推荐人公钥串
+        }
+    }
+}
+
+6. C ---------------------> S:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "type": 2,
+        "pubkey": 公钥串,
+        "utc": 客户端utc数字,
+        "block_id": 客户端本地的block id (最大能支持64位数字),
+        "fee": 2,
+        "amount": 发送的数量 (最大能支持64位数字)
+        "memo": 备注信息 (如果没有备注，不需要上传这个字段),
+        "receiver": 收款人的公钥串
+    }
+}
+
+7. C ---------------------> S:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "type": 3,
+        "pubkey": 公钥串,
+        "utc": 客户端utc数字,
+        "block_id": 客户端本地的block id (最大能支持64位数字),
+        "fee": 2,
+        "reward": 发布的这个topic的奖励数量 (最大能支持64位数字),
+        "topic": 这个topic的内容
+    }
+}
+
+8. C ---------------------> S:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "type": 4,
+        "pubkey": 公钥串,
+        "utc": 客户端utc数字,
+        "block_id": 客户端本地的block id (最大能支持64位数字),
+        "fee": 2,
+        "topic_key": 回复的topic的topic_key,
+        "reply": 这条回复的内容,
+        "reply_to": 回复引用的那个回复的reply_key (如果是回复所有，这个字段不需要)
+    }
+}
+
+9. C ---------------------> S:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "type": 5,
+        "pubkey": 公钥串,
+        "utc": 客户端utc数字,
+        "block_id": 客户端本地的block id (最大能支持64位数字),
+        "fee": 2,
+        "topic_key": 打赏的topic的topic_key,
+        "reply_to": 打赏的那条回复的reply_key,
+        "amount": 打赏的数量 (最大能支持64位数字)
+    }
+}
+
+10. S ---------------------> C:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 消息id,
+    "type": 类型数字 (和客户端发送上来的data字段中的type一致),
+    "err_code": 错误id (如果发生了错误，才会有这个字段，否则这个字段不存在)
+}
+
+11. S ---------------------> C:
+{
+    "msg_type": MSG_TX,
+    "msg_cmd": TX_CMD,
+    "msg_id": 1 (固定为1)
+    "type": 1
+    "err_code": 错误id (如果发生了错误，才会有这个字段，否则这个字段不存在)
+}
+
+12. S ---------------------> C:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_LIST,
+    "msg_id": 0 (固定为0),
+    "topic_key": topic的key串,
+    "topic_data": topic的内容,
+    "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+    "block_id": topic所属的区块id (最大能支持64位数字),
+    "utc": utc数字,
+    "id": topic的作者的id号 (最大能支持64位数字),
+    "avatar": topic的作者的头像id,
+    "name": topic的作者的名字
+}
+
+13. S ---------------------> C:
+{
+    "msg_type": MSG_BLOCK,
+    "msg_cmd": BLOCK_SYNC,
+    "msg_id": 0 (固定为0),
+    "block_id": 最新的区块id (最大能支持64位数字),
+    "block_hash": 最新的区块hash
+}
+
+14. C ---------------------> S:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_TOP100,
+    "msg_id": 消息id
+}
+
+15. S ---------------------> C:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_TOP100,
+    "msg_id": 消息id,
+    "top100": [
+        {
+            "name": 用户名,
+            "id": 用户id (最大能支持64位数字),
+            "avatar": 用户头像id,
+            "balance": 用户资产余额 (最大能支持64位数字)
+        },
+        {
+            "name": 用户名,
+            "id": 用户id (最大能支持64位数字),
+            "avatar": 用户头像id,
+            "balance": 用户资产余额 (最大能支持64位数字)
+        }
+    ]
+}
+
+16. C ---------------------> S:       //探测消息
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_PROBE,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "pubkey": 公钥串,
+        "utc": 服务端utc数字
+    }
+}
+
+17. S ---------------------> C:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_PROBE,
+    "msg_id": 消息id,
+    "err_code": 错误id (如果发生了错误，才会有这个字段，否则这个字段不存在)
+}
+
+18. C ---------------------> S:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_QUERY,
+    "msg_id": 消息id,
+    "id": 用户id (最大能支持64位数字)
+}
+
+19. S ---------------------> C:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_QUERY,
+    "msg_id": 消息id,
+    "id": 用户id (最大能支持64位数字),
+    "err_code": 错误id (如果发生了错误，才会有这个字段，否则这个字段不存在),
+    "avatar": 用户头像id,
+    "name": 用户名,
+    "pubkey": 用户的公钥串
+}
+
+20. C ---------------------> S:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_IMPORT,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "pubkey": 公钥串,
+        "utc": 服务端utc数字
+    }
+}
+
+21. C ---------------------> S:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_IMPORT,
+    "msg_id": 消息id,
+    "sign": 签名串,
+    "data": {
+        "pubkey": 公钥串,
+        "utc": 服务端utc数字
+    }
+}
+
+22. S ---------------------> C:
+{
+    "msg_type": MSG_ACCOUNT,
+    "msg_cmd": ACCOUNT_IMPORT,
+    "msg_id": 消息id,
+    "block_id": 最新的区块id (最大能支持64位数字),
+    "block_hash": 最新的区块hash,
+    "err_code": 错误id (如果发生了错误，才会有这个字段，否则这个字段不存在),
+    "topics:"[
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        },
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        }
+    ],
+    "questions:"[
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "block_hash": topic所属的区块hash,
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        },
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "block_hash": topic所属的区块hash,
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        }
+    ],
+    "answers:"[
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        },
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        }
+    ]
+}
+
+23. C ---------------------> S:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_QUESTION_PROBE,
+    "msg_id": 消息id,
+    "type": (0或者1，0表示我的问题列表是空或者已经探测到最后一个topic了，1表示问题列表不为空情况下的正常探测),
+    "topic_key": 该topic的topic_key串 (当上面的type为1是，才有该字段),
+    "block_hash": 该topic的区块hash (当上面的type为1是，才有该字段)
+}
+
+24. S ---------------------> C:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_QUESTION_PROBE,
+    "msg_id": 消息id,
+    "topic_key": 该topic的topic_key串 (当23号消息的type为1是，才有该字段),
+    "result": (0, 1, 2这三个数字，0表示全部替换，1表示追加替换, 2表示继续尝试下一个探测),
+    "questions:"[
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "block_hash": topic所属的区块hash,
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        },
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "block_hash": topic所属的区块hash,
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        }
+    ]
+}
+
+25. C ---------------------> S:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_DETAIL_PROBE,
+    "msg_id": 消息id,
+    "topic_key": topic的key串
+    "type": (0或者1，0表示详情reply列表是空或者已经探测到最后一个reply了，1表示详情回复列表不为空情况下的正常探测),
+    "reply_key": 该reply的reply_key串 (当上面的type为1是，才有该字段),
+    "block_hash": 该reply的区块hash (当上面的type为1是，才有该字段)
+}
+
+26. S ---------------------> C:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_DETAIL_PROBE,
+    "msg_id": 消息id,
+    "topic_key": topic的key串
+    "reply_key": 该topic的topic_key串 (当25号消息的type为1是，才有该字段),
+    "result": (0, 1, 2这三个数字，0表示全部替换，1表示追加替换, 2表示继续尝试下一个探测, 3表示这个topic不存在),
+    "topic_balance": 该topic剩余的打赏金额
+    "replies:"[
+        {
+            "reply_key": reply的key串,
+            "type": reply的类型 (0表示正常回复，1表示这个reply代表打赏回复)
+            "reply_data": reply的内容,
+            "balance": reply的余额 (最大能支持64位数字, 如果该reply代表正常回复，此字段表示收到的打赏总量，如果该reply代表一个打赏回复，此字段表示打赏金额),
+            "block_id": reply所属的区块id (最大能支持64位数字),
+            "block_hash": reply所属的区块hash,
+            "utc": utc数字,
+            "id": reply的作者的id号 (最大能支持64位数字),
+            "avatar": reply的作者的头像id,
+            "name": reply的作者的名字,
+            "reply_to": 回复的目标reply的reply_key串 (如果是回复所有，则没有该字段，上面的type为1时，此字段表示打赏的目标reply的reply_key)
+        },
+        {
+            "reply_key": reply的key串,
+            "type": reply的类型 (0表示正常回复，1表示这个reply代表打赏回复)
+            "reply_data": reply的内容,
+            "balance": reply的余额 (最大能支持64位数字, 如果该reply代表正常回复，此字段表示收到的打赏总量，如果该reply代表一个打赏回复，此字段表示打赏金额),
+            "block_id": reply所属的区块id (最大能支持64位数字),
+            "block_hash": reply所属的区块hash,
+            "utc": utc数字,
+            "id": reply的作者的id号 (最大能支持64位数字),
+            "avatar": reply的作者的头像id,
+            "name": reply的作者的名字,
+            "reply_to": 回复的目标reply的reply_key串 (如果是回复所有，则没有该字段，上面的type为1时，此字段表示打赏的目标reply的reply_key)
+        }
+    ]
+}
+
+27. C ---------------------> S:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_ANSWER_LIST,
+    "msg_id": 消息id
+}
+
+28. S ---------------------> C:
+{
+    "msg_type": MSG_TOPIC,
+    "msg_cmd": TOPIC_ANSWER_LIST,
+    "msg_id": 消息id,
+    "answers:"[
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        },
+        {
+            "topic_key": topic的key串,
+            "topic_data": topic的内容,
+            "topic_reward": topic的奖励ASK币的总数量 (最大能支持64位数字),
+            "block_id": topic所属的区块id (最大能支持64位数字),
+            "utc": utc数字,
+            "id": topic的作者的id号 (最大能支持64位数字),
+            "avatar": topic的作者的头像id,
+            "name": topic的作者的名字
+        }
+    ]
+}
