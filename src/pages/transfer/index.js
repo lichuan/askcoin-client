@@ -215,7 +215,6 @@ class index extends Component {
 
   renderFirstPage() {
     const {amount, memoContent} = this.state;
-    console.log('queryuser----->',UserStore.queryUser)
     return (
         <View style={styles.firstPage}>
           <View style={styles.content}>
@@ -309,7 +308,7 @@ class index extends Component {
     )
   }
 
-  renderSecondPage() {
+  renderSecondPage =()=> {
     return (
         <FlatList
             style={styles.list}
@@ -457,7 +456,7 @@ class index extends Component {
                     marginLeft: 12,
                     borderRadius: 5,
                     paddingHorizontal: 4
-                  }}>{this.loadConfirms(appState.blockID, item.block_id)}</Text>
+                  }}>{item.confirms}</Text>
                 </View>
           </View>
         </View>
