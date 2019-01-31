@@ -44,7 +44,12 @@ let questionTimer;
 
 let questionProbeTimer;
 
+let top100Timer;
+
+let historyTimer;
+
 let answerProbeTimer;
+
 
 let replyProbeTimer;
 
@@ -356,8 +361,9 @@ try {
       } else if (msg_cmd === 1) {
         //top100 111
         Top100List.top100 = data.top100;
-        setTimeout(()=>{
+        top100Timer = setTimeout(()=>{
           loadTop100();
+          top100Timer && clearTimeout(top100Timer)
         },10000)
       } else if (msg_cmd === 2) {
         if (msg_id === 0) {
@@ -381,10 +387,22 @@ try {
         switch (msg_id) {
           case 0:
             //history 140
-            History.history = data.histories;
+            History.history = data.histories.slice().map((item)=>{
+              let confirms = 0;
+              if(appState.blockID - item.block_id +1 < 0 ||  appState.blockID - item.block_id +1 === 0 ){
+                confirms = 0;
+              }else if(appState.blockID - item.block_id +1 > 1000) {
+                confirms = 1000
+              }else {
+                confirms = appState.blockID -item.block_id +1
+              }
+              item.confirms = (confirms === 1000? 'confirmed': `${confirms} confirms`)
+              return item
+            })
             UserStore.handleBalance(data.balance)
-            setTimeout(()=>{
+            historyTimer = setTimeout(()=>{
               transferHistory()
+              historyTimer && clearTimeout(historyTimer)
             },10000)
             break;
           default:
@@ -441,6 +459,18 @@ try {
           //300 receive new block info
           appState.blockID = data.block_id;
           appState.blockHash = data.block_hash;
+          History.history = History.history.slice().map((item)=>{
+            let confirms = 0;
+            if(data.block_id - item.block_id +1 < 0 ||  data.block_id - item.block_id +1 === 0 ){
+              confirms = 0;
+            }else if(data.block_id - item.block_id +1 > 1000) {
+              confirms = 1000
+            }else {
+              confirms = data.block_id -item.block_id +1
+            }
+            item.confirms = (confirms === 1000? 'confirmed': `${confirms} confirms`)
+            return item
+          })
         }
       }
 
