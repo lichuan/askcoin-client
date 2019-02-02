@@ -43,7 +43,7 @@
     "react-native-loading-spinner-overlay": "^1.0.1",
     "react-native-os": "^1.2.1",
     "react-native-parallax-scroll-view": "^0.21.0",
-    "react-native-randombytes": "^3.5.1",
+    "react-native-randombytes": "^3.5.2",
     "react-native-scrollable-tab-view": "^0.8.0",
     "react-native-shared-preferences": "0.0.8",
     "react-native-splash-screen": "^3.0.6",
