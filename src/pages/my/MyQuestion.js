@@ -43,6 +43,7 @@ var Buffer = require('buffer/').Buffer
     const {questions} = TopicStore;
     return (
         <FlatList
+            extraData={appState.blockID}
             style={styles.list}
             data={questions.slice().reverse()}
             keyExtractor={(item, index) => index}

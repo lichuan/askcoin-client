@@ -51,6 +51,7 @@ class MyAnswer extends Component {
     const {answers} = TopicStore;
     return (
         <FlatList
+            extraData={appState.blockID}
             style={styles.list}
             data={answers.slice().sort(compare('block_id'))}
             keyExtractor={(item, index) => index}
