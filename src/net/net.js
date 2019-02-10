@@ -155,9 +155,7 @@ function initNetwork(_app, api) {
 try {
   app = _app;
   if (ws === null || ws.readyState === 3) {
-    /*ws = new WebSocket(api ? api : apiSaved.api);*/
-    ws = new WebSocket('ws://80.85.84.155:29050')
-    console.log('tag--------------------->')
+    ws = new WebSocket(api ? api : apiSaved.api);
     appState.api = api ? api : apiSaved.api;
   }
   if (ws.readyState === 1) {
@@ -351,7 +349,7 @@ try {
             const resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName: 'Tabs'})//要跳转到的页面名字
+                NavigationActions.navigate({routeName: 'Tabs'})
               ]
             });
             router.props.navigation && router.props.navigation.dispatch(resetAction);
@@ -389,7 +387,6 @@ try {
         switch (msg_id) {
           case 0:
             //history 140
-              console.log('new history---------->',data.histories)
             History.history = data.histories.slice().map((item)=>{
               let confirms = 0;
               if(appState.blockID - item.block_id +1 < 0 ||  appState.blockID - item.block_id +1 === 0 ){

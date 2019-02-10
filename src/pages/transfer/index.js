@@ -311,7 +311,7 @@ class index extends Component {
         <FlatList
             extraData={appState.blockID}
             style={styles.list}
-            data={History.history.reverse()}
+            data={History.history.slice().reverse()}
             keyExtractor={(item, index) => index}
             renderItem={({item, index}) => this.renderItem(item, index)}
             ItemSeparatorComponent={() => this.renderItemSeparator()}/>
