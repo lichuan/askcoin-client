@@ -349,7 +349,7 @@ try {
             const resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName: 'Tabs'})//要跳转到的页面名字
+                NavigationActions.navigate({routeName: 'Tabs'})
               ]
             });
             router.props.navigation && router.props.navigation.dispatch(resetAction);

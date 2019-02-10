@@ -169,7 +169,6 @@ class index extends Component {
                 </View>
               </View>
             </ModalContainer>
-
           </Modal>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -283,7 +282,6 @@ class index extends Component {
           <Button
               onPress={() => {
                 initRouter(this)
-                console.log('id------>',this.state.id)
                 if(this.state.id === '' || isNaN(this.state.id)){
                   toast(I18n.t('inputError13'))
                   return
@@ -311,6 +309,7 @@ class index extends Component {
   renderSecondPage =()=> {
     return (
         <FlatList
+            extraData={appState.blockID}
             style={styles.list}
             data={History.history.slice().reverse()}
             keyExtractor={(item, index) => index}
@@ -377,19 +376,6 @@ class index extends Component {
     }
     return returnHistory;
   };
-
-  loadConfirms = (app_block_id,block_id)=>{
-    let confirms = 0;
-    if(app_block_id - block_id +1 < 0 ||  app_block_id - block_id +1 === 0 ){
-      confirms = 0;
-    }else if(app_block_id - block_id +1 > 1000) {
-      confirms = 1000
-    }else {
-      confirms = app_block_id - block_id +1
-    }
-    return confirms === 1000? 'confirmed': `${confirms} confirms`
-  };
-
 
   renderItem(item, index) {
     const date = new Date(item.utc*1000);
