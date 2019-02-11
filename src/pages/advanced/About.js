@@ -51,7 +51,7 @@ class About extends Component{
           <Item.Content>{appState.blockHash}</Item.Content>
         </Item>
         <Item style={{flexDirection:'column',alignItems:'flex-start',borderBottomWidth:0}}>
-          <Item.Title >{`${I18n.t('curHash')}(hex)`}</Item.Title>
+          <Item.Title >{`${I18n.t('curHash')} (hex)`}</Item.Title>
           <Item.Content>{Buffer.from(appState.blockHash, 'base64').toString('hex')}</Item.Content>
         </Item>
       </View>

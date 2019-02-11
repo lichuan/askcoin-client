@@ -34,7 +34,7 @@ export default {
   myQuestion: 'My question',
   totalReward: 'Total reward',
   amountAwarded: 'Amount awarded',
-  remainingReward: 'remaining reward',
+  remainingReward: 'Remaining reward',
   longClick: 'If you press the reply content for a few seconds, the reward bar will come out',
   reply: 'Reply',
   replyToAll: 'Reply to all',
