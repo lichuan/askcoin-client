@@ -36,7 +36,7 @@ class About extends Component{
       <View style={{backgroundColor:'#f2f2f2',flex:1}}>
         <Item>
           <Item.Title>{I18n.t('appVersion')}</Item.Title>
-          <Item.Content>{'0.0.1'}</Item.Content>
+          <Item.Content>{'0.0.2'}</Item.Content>
         </Item>
         <Item>
           <Item.Title>{I18n.t('nodeVersion')}</Item.Title>
