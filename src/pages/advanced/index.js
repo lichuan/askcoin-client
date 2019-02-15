@@ -102,9 +102,6 @@ const IphoneTop = isIphoneX() ? 40 : 20;
     appState.loginStatus = '-1';
     TopicStore.clear();
     SharedPreferences.setItem('app_is_auto_login', '-1')
-    SharedPreferences.getItem('app_is_auto_login',(res)=>{
-      console.log('exit app---->',res)
-    });
     SharedPreferences.removeItem('TOPICLIST');
     SharedPreferences.removeItem('QUESTIONLIST');
     SharedPreferences.removeItem('ANSWERLIST');

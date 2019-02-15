@@ -47,6 +47,21 @@ const realm = new Realm({schema:[topicSchema, replySchema]});
      });
 };
 
+ const deleteNotPastTopic = ()=>{
+   let topics = realm.objects("topicSchema");
+   const notPastTopics = topics.filter((item)=>{
+     return appState.blockID - item.block_id < 4320
+   });
+
+   realm.write(()=>{
+     notPastTopics.forEach((item)=>{
+       realm.delete(item)
+     })
+   });
+
+ }
+
+
  const getTopic = (type)=>{
    let topics = realm.objects("topicSchema").filtered(`type==${type}`);
    if(type === 0){
@@ -63,8 +78,6 @@ const realm = new Realm({schema:[topicSchema, replySchema]});
        return appState.blockID - item.block_id < 4320
      })
    }
-
-   console.log('topic--------->',topics)
 
    return topics;
  };
@@ -135,4 +148,4 @@ const deleteReply = (key) =>{
 
 
 
- export {addTopic, getTopic, deleteTopic, addReply, getReply,deleteReplyByTopicKey, deleteReply,deleteAll}
+ export {addTopic, getTopic, deleteTopic, addReply, getReply,deleteReplyByTopicKey, deleteReply,deleteAll, deleteNotPastTopic}

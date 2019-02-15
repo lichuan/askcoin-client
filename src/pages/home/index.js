@@ -121,6 +121,7 @@ const IphoneTop = isIphoneX() ? 40 : 20;
   renderListView() {
     return (
         <FlatList
+            extraData={appState.blockID}
             style={styles.list}
             data={TopicStore.topics.slice().sort(compare('block_id'))}
             keyExtractor={(item, index) => index}
@@ -132,42 +133,46 @@ const IphoneTop = isIphoneX() ? 40 : 20;
 
   renderItem(item, index) {
     return (
-        <View style={styles.item}>
-          <View style={styles.itemTop}>
-            <Image
-                resizeMode={'contain'}
-                style={styles.itemImg}
-                source={defaultAvatars[item.avatar-1].avatar}/>
-            <View style={styles.nameItem}>
-              <Text style={styles.name}>
-                {Buffer.from(item.name,'base64').toString()}
+        <View>
+        {appState.blockID - item.block_id > 4320?(null):(
+            <View style={styles.item}>
+              <View style={styles.itemTop}>
+                <Image
+                    resizeMode={'contain'}
+                    style={styles.itemImg}
+                    source={defaultAvatars[item.avatar-1].avatar}/>
+                <View style={styles.nameItem}>
+                  <Text style={styles.name}>
+                    {Buffer.from(item.name,'base64').toString()}
+                  </Text>
+                  <Text style={styles.itemIdText}>
+                    {`#${item.id}`}
+                  </Text>
+                </View>
+                <Image
+                    resizeMode={'contain'}
+                    source={homeMoneyIcon}
+                    style={styles.amtImg}/>
+                <Text style={styles.amtText}>
+                  {item.topic_reward}
+                </Text>
+              </View>
+              <Text style={styles.itemQuestion}>
+                {Buffer.from(item.topic_data,'base64').toString()}
               </Text>
-              <Text style={styles.itemIdText}>
-                {`#${item.id}`}
-              </Text>
+              <TouchableOpacity
+                  onPress={()=>{
+                    TopicStore.handleSelectTopic(item)
+                    appState.replyMode = 0;
+                    this.props.navigation && this.props.navigation.navigate('Reply', {name: '抢答回复'});
+                  }}
+                  style={styles.itemBtn}>
+                <Image
+                    style={styles.itemBtnImg}
+                    source={I18n.locale === 'en' ? homeBtEN : homeBtCH}/>
+              </TouchableOpacity>
             </View>
-            <Image
-                resizeMode={'contain'}
-                source={homeMoneyIcon}
-                style={styles.amtImg}/>
-            <Text style={styles.amtText}>
-              {item.topic_reward}
-            </Text>
-          </View>
-          <Text style={styles.itemQuestion}>
-            {Buffer.from(item.topic_data,'base64').toString()}
-          </Text>
-          <TouchableOpacity
-              onPress={()=>{
-                TopicStore.handleSelectTopic(item)
-                appState.replyMode = 0;
-                this.props.navigation && this.props.navigation.navigate('Reply', {name: '抢答回复'});
-              }}
-              style={styles.itemBtn}>
-            <Image
-                style={styles.itemBtnImg}
-                source={I18n.locale === 'en' ? homeBtEN : homeBtCH}/>
-          </TouchableOpacity>
+        )}
         </View>
     )
   }
