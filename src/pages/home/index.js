@@ -134,7 +134,7 @@ const IphoneTop = isIphoneX() ? 40 : 20;
   renderItem(item, index) {
     return (
         <View>
-        {appState.blockID - item.block_id > 4320?(null):(
+        {appState.blockID - item.block_id >= 4320?(null):(
             <View style={styles.item}>
               <View style={styles.itemTop}>
                 <Image

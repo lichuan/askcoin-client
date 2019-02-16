@@ -20,7 +20,7 @@ import {I18n} from "../../language/I18n";
 import ModalContainer from "../../views/modalContainer";
 import choose from '../../resource/icons/login_choose.png'
 import {appState, switchApi, initRouter, apiSaved,confirmNet, ws, setRouterName} from '../../net/net';
-import {deleteNotPastTopic} from '../../utils/db'
+import {deleteType0Topics} from '../../utils/db'
 import TopicStore from '../../stores/topic'
 const SharedPreferences = require('react-native-shared-preferences');
 
@@ -164,10 +164,10 @@ export default class ApiSwitch extends Component {
             buttonWidth={64}
             right={swipeOutBtns}>
           <TouchableOpacity onPress={() => {
-            deleteNotPastTopic();
-            TopicStore.handleTopics([])
-            TopicStore.handleQuestions([])
-            TopicStore.handleAnswers([])
+            deleteType0Topics();
+            // TopicStore.handleTopics([])
+            // TopicStore.handleQuestions([])
+            // TopicStore.handleAnswers([])
 
             appState.apiName = item.name
             SharedPreferences.setItem('APIADDRESS',item.address);

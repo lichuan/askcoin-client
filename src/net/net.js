@@ -313,13 +313,13 @@ try {
           UserStore.handleID(data.id);
           UserStore.handleBalance(data.balance);
           SharedPreferences.setItem('privkeyhex', temimpprivkey);
+          initTopic();
 
           const topics = data.topics;
 
           const questions = data.questions;
 
           const answers = data.answers;
-
 
           questions.forEach((item) => {
             handleTopicsData(1, item)
@@ -990,11 +990,11 @@ const handleTopicsData = (type, topic) => {
 
 
         if (topicIndex === -1 && answerIndex === -1 && UserStore.id !== topic.id && UserStore.name !== topic.name) {
-          if (TopicStore.topics.length > 200) {
+          if (TopicStore.topics.length >= 200) {
             topics.slice().splice(0, 1);
-            deleteTopic(TopicStore.topics.slice()[0].topic_key)
+            deleteTopic(TopicStore.topics.slice()[0].topic_key);
           }
-          TopicStore.handleTopics(topics.concat(topic))
+          TopicStore.handleTopics(topics.concat(topic));
           addTopic(topic, 0);
         }
       } catch (error) {
@@ -1003,6 +1003,10 @@ const handleTopicsData = (type, topic) => {
       break;
     case 1:
       if (index === 0) {
+        if(questions.length >= 200) {
+          questions.slice().splice(0, 1);
+          deleteTopic(TopicStore.questions.slice()[0].topic_key);
+        }
         TopicStore.handleQuestions(questions.concat(topic));
       }else {
         const index2 = TopicStore.questions.slice().findIndex((item => {
@@ -1015,6 +1019,10 @@ const handleTopicsData = (type, topic) => {
       break;
     case 2:
       if (index === 0) {
+        if(answers.length >= 200) {
+          answers.slice().splice(0, 1);
+          deleteTopic(TopicStore.answers.slice()[0].topic_key);
+        }
         TopicStore.handleAnswers(answers.concat(topic));
       }else {
         const index3 = TopicStore.answers.slice().findIndex((item) => {
@@ -1126,6 +1134,7 @@ const handleReply = (reply, resultCode) => {
 
 
 const initTopic = async () => {
+  TopicStore.clear();
   TopicStore.handleTopics(getTopic(0));
   TopicStore.handleQuestions(getTopic(1));
   TopicStore.handleAnswers(getTopic(2));

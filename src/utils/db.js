@@ -50,7 +50,7 @@ const realm = new Realm({schema:[topicSchema, replySchema]});
  const deleteNotPastTopic = ()=>{
    let topics = realm.objects("topicSchema");
    const notPastTopics = topics.filter((item)=>{
-     return appState.blockID - item.block_id < 4320
+     return appState.blockID - item.block_id <= 4320
    });
 
    realm.write(()=>{
@@ -58,15 +58,27 @@ const realm = new Realm({schema:[topicSchema, replySchema]});
        realm.delete(item)
      })
    });
-
  }
 
+ const deleteType0Topics = ()=>{
+  let type = 0;
+  let topics = realm.objects("topicSchema").filtered(`type==${type}`);
+  const type0Topics = topics.filter((item)=>{
+    return true;
+  });
+
+  realm.write(()=>{
+     type0Topics.forEach((item)=>{
+       realm.delete(item)
+     })
+   });   
+ }
 
  const getTopic = (type)=>{
    let topics = realm.objects("topicSchema").filtered(`type==${type}`);
-   if(type === 0){
+   if(type === 0) {
       const pastTopics = topics.filter((item)=>{
-        return appState.blockID - item.block_id > 4320
+        return appState.blockID - item.block_id >= 4320 || appState.blockID < item.block_id;
       });
 
      realm.write(()=>{
@@ -75,8 +87,22 @@ const realm = new Realm({schema:[topicSchema, replySchema]});
        })
      });
      topics = topics.filter((item)=>{
-       return appState.blockID - item.block_id < 4320
-     })
+       return appState.blockID - item.block_id < 4320 && appState.blockID >= item.block_id;
+     });
+   } else {
+    const unpastTopics = topics.filter((item)=> {
+      return appState.blockID - item.block_id <= 4320;
+    });
+
+    realm.write(()=>{
+       unpastTopics.forEach((item)=>{
+         realm.delete(item)
+       })
+     });
+
+    topics = topics.filter((item)=>{
+       return appState.blockID - item.block_id > 4320;
+     });
    }
 
    return topics;
@@ -148,4 +174,4 @@ const deleteReply = (key) =>{
 
 
 
- export {addTopic, getTopic, deleteTopic, addReply, getReply,deleteReplyByTopicKey, deleteReply,deleteAll, deleteNotPastTopic}
+ export {addTopic, getTopic, deleteTopic, addReply, getReply,deleteReplyByTopicKey, deleteReply,deleteAll, deleteType0Topics}

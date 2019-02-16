@@ -83,7 +83,6 @@ class App extends Component<{}> {
   async componentWillMount(){
     BackHandler.addEventListener('hardwareBackPress', this.onBackPressed);
     setTimeout(()=>{
-      initTopic();
       initNetwork(this);
       loadLoginStatus(this);
       loadPrivkey();
