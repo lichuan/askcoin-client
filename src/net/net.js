@@ -770,6 +770,11 @@ const handleRouter = (_router) => {
 
 const closeWS = () => {
   pingTimer && clearTimeout(pingTimer);
+  questionProbeTimer && clearTimeout(questionProbeTimer)
+  answerProbeTimer && clearTimeout(answerProbeTimer)
+  historyTimer && clearTimeout(historyTimer)
+  top100Timer && clearTimeout(top100Timer)
+  replyProbeTimer && clearTimeout(replyProbeTimer)
   appState.appClose = true;
   appState.connError = false;
   if (ws.readyState === 3) {
@@ -978,7 +983,7 @@ const handleTopicsData = (type, topic) => {
           return item.topic_key === topic.topic_key
         });
 
-        if (topicIndex !== -1 && TopicStore.topics.slice()[topicIndex].block_id < topic.block_id) {
+        if (topicIndex !== -1) {
           topics.splice(topicIndex, 1, topic);
           TopicStore.handleTopics(topics)
         }
@@ -999,14 +1004,26 @@ const handleTopicsData = (type, topic) => {
     case 1:
       if (index === 0) {
         TopicStore.handleQuestions(questions.concat(topic));
-        addTopic(topic, 1);
+      }else {
+        const index2 = TopicStore.questions.slice().findIndex((item => {
+          return item.topic_key === topic.topic_key
+        }));
+        questions.splice(index2, 1, topic)
+        TopicStore.handleQuestions(questions);
       }
+      addTopic(topic, 1);
       break;
     case 2:
       if (index === 0) {
         TopicStore.handleAnswers(answers.concat(topic));
-        addTopic(topic, 2)
+      }else {
+        const index3 = TopicStore.answers.slice().findIndex((item) => {
+          return item.topic_key === topic.topic_key
+        });
+        answers.splice(index3, 1, topic)
+        TopicStore.handleAnswers(answers);
       }
+      addTopic(topic, 2)
       break;
     default:
   }
