@@ -545,7 +545,7 @@ try {
   ws.onerror = (e) => {
     // 发生了一个错误
     router.setState({select: false});
-    pingTimer && clearTimeout(pingTimer);
+    clearTimers();
     if (appState.switchAPI) {
       appState.switchAPI = false;
       initNetwork(app, appState.api);
@@ -562,7 +562,7 @@ try {
 
   ws.onclose = (e) => {
     // 连接被关闭了
-    answerProbeTimer && clearTimeout(answerProbeTimer);
+    clearTimers();
   };
 }catch (error){
 
@@ -768,13 +768,17 @@ const handleRouter = (_router) => {
   router.props.navigation && router.props.navigation.replace(_router)
 }
 
-const closeWS = () => {
+const clearTimers = () => {
   pingTimer && clearTimeout(pingTimer);
   questionProbeTimer && clearTimeout(questionProbeTimer)
   answerProbeTimer && clearTimeout(answerProbeTimer)
   historyTimer && clearTimeout(historyTimer)
   top100Timer && clearTimeout(top100Timer)
   replyProbeTimer && clearTimeout(replyProbeTimer)
+};
+
+const closeWS = () => {
+  clearTimers();
   appState.appClose = true;
   appState.connError = false;
   if (ws.readyState === 3) {
@@ -789,16 +793,15 @@ const close = () => {
 };
 
 const switchApi = () => {
+  clearTimers();
   appState.mode = 1;
   appState.switchAPI = true;
   appState.switchAPITip = true;
   app.setState({loading: true, loadingContent: I18n.t('reTryLoading')});
   if (ws.readyState === 3) {
     initNetwork(app, appState.api);
-    pingTimer && clearTimeout(pingTimer);
     return
   }
-  pingTimer && clearTimeout(pingTimer);
   ws.close();
 };
 
@@ -933,20 +936,20 @@ const probeQuestion = () => {
   let packet = {};
   packet.msg_type = 4;
   packet.msg_cmd = 0;
-  switch (appState.questionType) {
-    case 0:
-      packet.msg_id = 0;
-      break;
-    case 1:
-      packet.msg_id = 1;
-      const latest = TopicStore.questions.slice().reverse()[0];
-      try {
-        packet.block_hash = latest.block_hash;
-        packet.topic_key = latest.topic_key;
-      } catch (error) {
 
-      }
+  if (TopicStore.questions.slice().length === 0 || appState.questionProbeCount > 10) {
+    packet.msg_id = 0;
+  } else {
+    packet.msg_id = 1;
+    const latest = TopicStore.questions.slice().reverse()[0];
+    try {
+      packet.block_hash = latest.block_hash;
+      packet.topic_key = latest.topic_key;
+    } catch (error) {
+
+    }
   }
+
   try {
     ws.readyState === 1 && ws.send(JSON.stringify(packet));
   } catch (error) {
